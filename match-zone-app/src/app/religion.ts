@@ -1,0 +1,8 @@
+export enum Religion{
+  CHRISTIANITY,
+  ISLAM,
+  HINDUISM,
+  BUDDHISM,
+  JUDAISM,
+  ATHEIST
+}
