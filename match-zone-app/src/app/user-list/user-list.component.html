@@ -1,1 +1,96 @@
-<p>user-list works!</p>
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-3 shadow-sm">
+
+      <div class="container">
+        <form action="#">
+
+          <h3 class="text-center border-bottom">Filters</h3>
+
+          <br>
+
+          <p class="border-bottom"><b>Name</b></p>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="search" class="form-check-input" name="name">
+            </label>
+          </div>
+
+          <br><br>
+
+          <p class="border-bottom"><b>Gender</b></p>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="gender" value="man"><small>Man</small>
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="gender" value="woman"><small>Woman</small>
+            </label>
+          </div>
+
+          <br><br>
+
+          <p class="border-bottom"><b>Age</b></p>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="number" class="form-control form-control-sm" min="18" max="75" step="1" name="ageMin">
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="number" class="form-control form-control-sm" min="18" max="75" step="1" name="ageMax">
+            </label>
+          </div>
+
+          <br><br>
+
+          <p class="border-bottom"><b>City</b></p>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="search" class="form-check-input" name="city">
+            </label>
+          </div>
+
+          <br><br>
+
+          <button type="submit" class="btn btn-success btn-block">Apply</button>
+
+        </form>
+      </div>
+
+    </div>
+
+    <div class="col-sm-9">
+
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-sm-4" *ngFor="let user of users | async">
+            <div class="card shadow animated">
+              <a (click)="userDetails(user.id)"><img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap"></a>
+              <div class="card-body">
+                <h5 class="card-title">{{user.personalDetails.firstName}}</h5>
+                <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
+                <small>{{user.appearance.about}}</small>
+                <p class="text-right">Rating:<b> 4.0</b></p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,1 +1,346 @@
-<p>user-details works!</p>
+<div class="container">
+
+  <div class="col-sm-12">
+
+    <div class="container">
+
+      <div class="row my-2">
+
+        <div class="col-lg-8 order-lg-2 shadow-sm">
+
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
+            </li>
+            <li class="nav-item">
+              <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
+            </li>
+          </ul>
+
+          <div class="tab-content py-4" *ngIf="user">
+            <div class="tab-pane active" id="profile">
+              <h5 class="mb-3">User Profile</h5>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  <h6>About</h6>
+                  <hr>
+                  <p>{{user.appearance.about}}</p>
+                  <h6>Hobbies</h6>
+                  <hr>
+                  <p>{{user.appearance.hobbies}}</p>
+                </div>
+                <div class="col-md-6">
+                  <h6>Appearance</h6>
+                  <hr>
+                  <b>Eyes: </b> {{user.appearance.eyes}}
+                  <br>
+                  <b>Hair colour: </b> {{user.appearance.hairColour}}
+                  <br>
+                  <b>Height: </b> {{user.appearance.height}} cm
+                  <br>
+                  <b>Physique: </b> {{user.appearance.physique}}
+                  <br>
+                  <br>
+                  <h6>Other</h6>
+                  <hr>
+                  <b>Country: </b> {{user.personalDetails.country}}
+                  <br>
+                  <b>City: </b> {{user.personalDetails.city}}
+                  <br>
+                  <b>Occupation: </b> {{user.personalDetails.occupation}}
+                  <br>
+                  <b>Marital status: </b> {{user.personalDetails.maritalStatus}}
+                  <br>
+                  <b>Education: </b> {{user.personalDetails.education}}
+                  <br>
+                  <b>Religion: </b> {{user.personalDetails.religion}}
+
+                </div>
+
+              </div>
+              <!--/row-->
+            </div>
+
+            <div class="tab-pane" id="messages">
+              <div class="alert alert-info alert-dismissable">
+                <a class="panel-close" data-dismiss="alert"> This is an <strong>.alert</strong>. Use this to show important messages to the user.</a><button class="btn btn-danger">x</button>
+              </div>
+
+              <div class="card mb-3 shadow-sm" style="max-width:700px; max-height: 160px">
+                <div class="row no-gutters">
+                  <div class="col-md-2">
+                    <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=beautiful-blur-blurred-background-733872.jpg&fm=jpg" class="card-img" alt="...">
+                    <p  class="text-center"><small><b>Margarita</b></small></p>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <p class="card-text"><small>Hey, You looks stunning. I want to spend some time with You, send me a PM.  Hey, You looks stunning. I want to spend some time with You, send me a PM</small></p>
+                      <hr>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mb-3 shadow-sm" style="max-width:700px; max-height: 160px">
+                <div class="row no-gutters">
+                  <div class="col-md-2">
+                    <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=beautiful-blur-blurred-background-733872.jpg&fm=jpg" class="card-img" alt="...">
+                    <p  class="text-center"><small><b>Margarita</b></small></p>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <p class="card-text"><small>Hey, You looks stunning.</small></p>
+                      <hr>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mb-3 shadow-sm" style="max-width:700px; max-height: 160px">
+                <div class="row no-gutters">
+                  <div class="col-md-2">
+                    <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=beautiful-blur-blurred-background-733872.jpg&fm=jpg" class="card-img" alt="...">
+                    <p  class="text-center"><small><b>Margarita</b></small></p>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <p class="card-text"><small>Hey, You looks stunning. I want to spend some time with You, send me a PM.</small></p>
+                      <hr>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="tab-pane" id="edit">
+              <form (ngSubmit)="onSubmit()" role="form">
+                <h4 class="text-center">Personal details</h4>
+                <div class="form-group row">
+                  <label for="FirstName" class="col-lg-3 col-form-label form-control-label">First name</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="FirstName" type="text" required [(ngModel)]="user.personalDetails.firstName" name="firstName">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Email" class="col-lg-3 col-form-label form-control-label">Email</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Email" type="email" required [(ngModel)]="user.email" name="email">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Age" class="col-lg-3 col-form-label form-control-label">Age</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Age" type="number" required [(ngModel)]="user.personalDetails.age" name="age">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Country" class="col-lg-3 col-form-label form-control-label">Country</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Country" type="text" required [(ngModel)]="user.personalDetails.country" name="country">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="City" class="col-lg-3 col-form-label form-control-label">City</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="City" type="text" required [(ngModel)]="user.personalDetails.city" name="city">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Occupation" class="col-lg-3 col-form-label form-control-label">Occupation</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Occupation" type="text" [(ngModel)]="user.personalDetails.occupation" name="occupation">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="MaritalStatus" class="col-lg-3 col-form-label form-control-label">Marital status</label>
+                  <div class="col-lg-9">
+                    <select id="MaritalStatus" class="form-control" size="0" [(ngModel)]="user.personalDetails.maritalStatus" name="maritalStatus">
+                      <option value="MARRIED">Married</option>
+                      <option value="Widowed">Widowed</option>
+                      <option value="Separated">Separated</option>
+                      <option value="Divorced ">Divorced</option>
+                      <option value="Single">Single</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Education" class="col-lg-3 col-form-label form-control-label">Education</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Education" type="text" [(ngModel)]="user.personalDetails.education" name="education">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Religion" class="col-lg-3 col-form-label form-control-label">Religion</label>
+                  <div class="col-lg-9">
+                    <select id="Religion" class="form-control" size="0" [(ngModel)]="user.personalDetails.religion" name="religion">
+                      <option value="Christianity">Christianity</option>
+                      <option value="Islam">Islam</option>
+                      <option value="Hinduism">Hinduism</option>
+                      <option value="Buddhism">Buddhism</option>
+                      <option value="Judaism">Judaism</option>
+                      <option value="Atheist">Atheist</option>
+                    </select>
+                  </div>
+                </div>
+                <br>
+                <h4 class="text-center">Appearance</h4>
+                <div class="form-group row">
+                  <label for="Eyes" class="col-lg-3 col-form-label form-control-label">Eyes</label>
+                  <div class="col-lg-9">
+                    <select id="Eyes" class="form-control" size="0" [(ngModel)]="user.appearance.eyes" name="eyes">
+                      <option value="Blue">Blue</option>
+                      <option value="Brown">Brown</option>
+                      <option value="Green">Green</option>
+                      <option value="Hazel ">Hazel</option>
+                      <option value="Gray">Gray</option>
+                      <option value="Amber">Amber</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="HairColour" class="col-lg-3 col-form-label form-control-label">Hair colour</label>
+                  <div class="col-lg-9">
+                    <select id="HairColour" class="form-control" size="0" [(ngModel)]="user.appearance.hairColour" name="hairColour">
+                      <option value="Black">Black</option>
+                      <option value="DARK_BROWN">Dark brown</option>
+                      <option value="Light brown">Light brown</option>
+                      <option value="Brown">Brown</option>
+                      <option value="Dark blonde">Dark blonde</option>
+                      <option value="Light blonde">Light blonde</option>
+                      <option value="Blonde">Blonde</option>
+                      <option value="Ginger red">Ginger red</option>
+                      <option value="Grey">Grey</option>
+                      <option value="White">White</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Height" class="col-lg-3 col-form-label form-control-label">Height</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Height" type="number" min="140" max="210" [(ngModel)]="user.appearance.height" name="height">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Physique" class="col-lg-3 col-form-label form-control-label">Physique</label>
+                  <div class="col-lg-9">
+                    <select id="Physique" class="form-control" size="0" [(ngModel)]="user.appearance.physique" name="physique">
+                      <option value="Skinny">Skinny</option>
+                      <option value="Slim">Slim</option>
+                      <option value="Normal">Normal</option>
+                      <option value="Shapely">Shapely</option>
+                      <option value="Muscular">Muscular</option>
+                      <option value="Thick">Thick</option>
+                      <option value="Fat">Fat</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="WriteAboutYourself">Write about yourself</label>
+                  <textarea class="form-control" id="WriteAboutYourself" rows="3" [(ngModel)]="user.appearance.about" name="about"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="Hobbies">Hobbies</label>
+                  <textarea class="form-control" id="Hobbies" rows="3" [(ngModel)]="user.appearance.hobbies" name="hobbies"></textarea>
+                </div>
+                <br><br>
+                <h4 class="text-center">Account details</h4>
+                <div class="form-group row">
+                  <label for="TimeZone" class="col-lg-3 col-form-label form-control-label">Time Zone</label>
+                  <div class="col-lg-9">
+                    <select id="TimeZone" class="form-control" size="0" [(ngModel)]="user.timeZoneId" name="timeZoneId">
+                      <option value="Hawaii">(GMT-10:00) Hawaii</option>
+                      <option value="Alaska">(GMT-09:00) Alaska</option>
+                      <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                      <option value="Arizona">(GMT-07:00) Arizona</option>
+                      <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                      <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                      <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                      <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
+                      <option value="Atlantic Standard Time (Canada)">(GMT-04:00) Atlantic Standard Time (Canada)</option>
+                      <option value="Argentina Time">(GMT-03:00) Argentina Time</option>
+                      <option value="Azores Time">(GMT-02:00) Azores Time</option>
+                      <option value="West Africa Time">(GMT-01:00) West Africa Time</option>
+                      <option value="Central European Time">(GMT+01:00) Central European Time</option>
+                      <option value="Eastern European Time">(GMT+02:00) Eastern European Time (Kaliningrad)</option>
+                      <option value="Moscow Time">(GMT+03:00) Moscow Time</option>
+                      <option value="Caucasus Time">(GMT+04:00) Samara, Armenia, Azerbaidjan, Georgia, Mauritius Times</option>
+                      <option value="Pakistan Standard Time">(GMT+05:00) Pakistan Standard Time</option>
+                      <option value="Bangladesh Standard Time">(GMT+06:00) Bangladesh Standard Time</option>
+                      <option value="Christmas Island Time (Australia)">(GMT+07:00) Christmas Island Time (Australia)</option>
+                      <option value="China Standard Time">(GMT+08:00) China Standard Time</option>
+                      <option value="Japan Standard Time">(GMT+09:00) Japan Standard Time</option>
+                      <option value="East Australian Standard Time">(GMT+10:00) East Australian Standard Time</option>
+                      <option value="Sakhalin Time">(GMT+11:00) Sakhalin Time</option>
+                      <option value="New Zealand Standard Time">(GMT+12:00) New Zealand Standard Time</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Username" class="col-lg-3 col-form-label form-control-label">Username</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Username" type="text" required [(ngModel)]="user.username" name="username">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="Password" class="col-lg-3 col-form-label form-control-label">Password</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="Password" type="password" required [(ngModel)]="user.password" name="password">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="ConfirmPassword" class="col-lg-3 col-form-label form-control-label">Confirm password</label>
+                  <div class="col-lg-9">
+                    <input class="form-control" id="ConfirmPassword" type="password" required [(ngModel)]="user.repeatedPassword" name="repeatedPassword">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label form-control-label"></label>
+                  <div class="col-lg-9">
+                    <input type="reset" class="btn btn-secondary" value="Cancel">
+                    <input type="submit" class="btn btn-primary" value="Save Changes">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 order-lg-1 text-center">
+          <img src="data:image/png;base64,{{user.personalDetails.photo}}" class="mx-auto img-fluid img-circle d-block shadow" alt="avatar">
+          <h6 class="mt-2">{{user.personalDetails.firstName}}, {{user.personalDetails.age}} years old</h6>
+
+          <label for="File" class=" col-form-label form-control-label">
+            <input type="file" id="File" class="custom-file-input" (change)="onFileSelected($event)">
+            <span class="custom-file-control btn btn-primary">Change avatar</span>
+          </label>
+            <button type="button" class="btn btn-success" [disabled]="!selectedFiles" (click)="onUpload()">Upload</button>
+
+
+          <br><br>
+          <h3>Rate</h3>
+          <div class="star-rating">
+            <span class="fa fa-star-o star-size-1" data-rating="1" onclick="SetRatingStar()"></span>
+            <span class="fa fa-star-o star-size-2" data-rating="2"></span>
+            <span class="fa fa-star-o star-size-3" data-rating="3"></span>
+            <span class="fa fa-star-o star-size-4" data-rating="4"></span>
+            <span class="fa fa-star-o star-size-5" data-rating="5"></span>
+            <input type="hidden" name="whatever" class="rating-value" value="2.56">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

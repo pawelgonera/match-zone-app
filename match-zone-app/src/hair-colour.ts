@@ -1,0 +1,12 @@
+export enum HairColour {
+  BLACK,
+  DARK_BROWN,
+  LIGHT_BROWN,
+  BROWN,
+  DARK_BLONDE,
+  LIGHT_BLONDE,
+  BLONDE,
+  GINGER_RED,
+  GREY,
+  WHITE
+}

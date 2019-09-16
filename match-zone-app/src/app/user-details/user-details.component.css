@@ -1,0 +1,33 @@
+.card-columns{
+  top-margin: 100px;
+}
+
+.star-rating {
+  line-height:32px;
+  font-size:3.0em;
+  color:gold;
+}
+
+.star-size-1{
+  font-size:0.5em;
+}
+
+.star-size-2{
+  font-size:0.75em;
+}
+
+.star-size-3{
+  font-size:1.0em;
+}
+
+.star-size-4{
+  font-size:1.25em;
+}
+
+.star-size-5{
+  font-size:1.75em;
+}
+
+.star-rating .fa-star{
+  color: gold;
+}

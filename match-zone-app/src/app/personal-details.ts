@@ -4,9 +4,11 @@ import {Religion} from "./religion";
 export class PersonalDetails {
     id: number;
     firstName: string;
+    age: number;
+    photo: Blob;
     country: string;
     city: string;
-    ccupation: string;
+    occupation: string;
     maritalStatus: MaritalStatus;
     education: string;
     religion: Religion;
