@@ -1,5 +1,6 @@
 package pl.poul12.matchzone.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,9 +21,15 @@ public class User {
     @Transient
     private String repeatedPassword;
     private String timeZoneId;
-    @OneToOne(cascade = CascadeType.ALL)
+    //@OneToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "id_personal_details")
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user")
     private PersonalDetails personalDetails;
-    @OneToOne(cascade = CascadeType.ALL)
+    //@OneToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "id_appearance")
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user")
     private Appearance appearance;
 
 }

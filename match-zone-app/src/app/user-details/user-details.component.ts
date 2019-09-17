@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { User } from "../user";
-import { UserService } from "../user.service";
-import {HttpClient, HttpResponse, HttpEventType, HttpRequest} from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {User} from "../user";
+import {UserService} from "../user.service";
+import {HttpClient, HttpRequest, HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-user-details',
@@ -15,6 +15,10 @@ export class UserDetailsComponent implements OnInit {
   user: User;
   updated = false;
 
+  birthDate: Date;
+  timeDifference: number;
+  age: number;
+
   selectedFiles: FileList;
   selectedFile: File = null;
 
@@ -22,15 +26,7 @@ export class UserDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private http: HttpClient) { }
 
   ngOnInit() {
-    this.user = new User();
-
-    this.id = this.route.snapshot.params['id'];
-
-    this.userService.getUser(this.id)
-      .subscribe(data => {
-        console.log(data);
-        this.user = data;
-      }, error => console.log(error));
+    this.getUser();
   }
 
   update() {
@@ -81,12 +77,42 @@ export class UserDetailsComponent implements OnInit {
     this.reloadData(this.id);
   }
 
+  parseDate(dateString: string): Date {
+    if (dateString) {
+      return new Date(dateString);
+    }
+    return null;
+  }
+
+  public calculateAge(user: User): number {
+    this.birthDate = user.personalDetails.dateOfBirth;
+    if (this.birthDate) {
+      this.timeDifference = Math.abs(Date.now() - new Date(this.birthDate).getTime());
+      this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
+    }
+    return this.age;
+  }
+
   reloadData(id: number) {
     this.router.navigate(['profile', id]);
   }
 
   list(){
     this.router.navigate(['users']);
+  }
+
+  getUser(): User{
+    this.user = new User();
+
+    this.id = this.route.snapshot.params['id'];
+
+    this.userService.getUser(this.id)
+      .subscribe(data => {
+        console.log(data);
+        this.user = data;
+      }, error => console.log(error));
+
+    return this.user;
   }
 
 }

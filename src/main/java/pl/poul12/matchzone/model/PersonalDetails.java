@@ -1,12 +1,13 @@
 package pl.poul12.matchzone.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.poul12.matchzone.model.enums.MaritalStatus;
 import pl.poul12.matchzone.model.enums.Religion;
 
 import javax.persistence.*;
-import java.sql.Blob;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Data
@@ -18,7 +19,7 @@ public class PersonalDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
-    private Integer age;
+    private LocalDateTime dateOfBirth;
     @Lob
     private byte[] photo;
     private String country;
@@ -27,4 +28,9 @@ public class PersonalDetails {
     private MaritalStatus maritalStatus;
     private String education;
     private Religion religion;
+    //@OneToOne(mappedBy = "personalDetails")
+    @JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    User user;
 }

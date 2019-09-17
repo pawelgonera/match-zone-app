@@ -1,10 +1,11 @@
 import {MaritalStatus} from "./marital-status";
 import {Religion} from "./religion";
+import {User} from "./user";
 
 export class PersonalDetails {
     id: number;
     firstName: string;
-    age: number;
+    dateOfBirth: Date;
     photo: Blob;
     country: string;
     city: string;
@@ -12,4 +13,5 @@ export class PersonalDetails {
     maritalStatus: MaritalStatus;
     education: string;
     religion: Religion;
+    user: User;
 }

@@ -71,18 +71,20 @@
         <div class="row">
 
           <div class="col-sm-4" *ngFor="let user of users | async">
-            <div class="card shadow animated">
-              <a (click)="userDetails(user.id)"><img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap"></a>
-              <div class="card-body">
-                <h5 class="card-title">{{user.personalDetails.firstName}}</h5>
-                <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
-                <small>{{user.appearance.about}}</small>
-                <p class="text-right">Rating:<b> 4.0</b></p>
+            <a (click)="userDetails(user.id)">
+              <div class="card shadow animated">
+               <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{user.personalDetails.firstName}}</h5>
+                  <p>{{calculateAge(user)}} years old, {{user.personalDetails.city}}</p>
+                  <small>{{user.appearance.about}}</small>
+                  <p class="text-right">Rating:<b> 4.0</b></p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
               </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
+            </a>
           </div>
 
         </div>

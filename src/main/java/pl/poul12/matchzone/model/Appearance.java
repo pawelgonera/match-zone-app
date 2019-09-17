@@ -1,5 +1,6 @@
 package pl.poul12.matchzone.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.poul12.matchzone.model.enums.Eyes;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-class Appearance {
+public class Appearance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,4 +23,9 @@ class Appearance {
     private Physique physique;
     private String about;
     private String hobbies;
+    //@OneToOne(mappedBy = "appearance")
+    @JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    User user;
 }

@@ -10,7 +10,12 @@ import { Router } from '@angular/router';
   styleUrls: ["./user-list.component.css"]
 })
 export class UserListComponent implements OnInit {
+
   users: Observable<User[]>;
+
+  birthDate: Date;
+  timeDifference: number;
+  age: number;
 
   constructor(private userService: UserService,
               private router: Router) {}
@@ -40,4 +45,14 @@ export class UserListComponent implements OnInit {
   userDetails(id: number){
     this.router.navigate(['profile', id]);
   }
+
+  public calculateAge(user: User): number {
+    this.birthDate = user.personalDetails.dateOfBirth;
+    if (this.birthDate) {
+      this.timeDifference = Math.abs(Date.now() - new Date(this.birthDate).getTime());
+      this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
+    }
+    return this.age;
+  }
+
 }
