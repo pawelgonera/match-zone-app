@@ -24,12 +24,12 @@ public class User {
     //@OneToOne(cascade = CascadeType.ALL)
     //@JoinColumn(name = "id_personal_details")
     @JsonManagedReference
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PersonalDetails personalDetails;
     //@OneToOne(cascade = CascadeType.ALL)
     //@JoinColumn(name = "id_appearance")
     @JsonManagedReference
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Appearance appearance;
 
 }

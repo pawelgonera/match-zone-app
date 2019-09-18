@@ -8,26 +8,45 @@
   color:gold;
 }
 
+.star-size-0{
+  font-size: 2.0rem;
+}
+
 .star-size-1{
-  font-size:0.5em;
+  font-size: 2.5rem;
 }
 
 .star-size-2{
-  font-size:0.75em;
+  font-size:3.0rem;
 }
 
 .star-size-3{
-  font-size:1.0em;
+  font-size:3.5rem;
 }
 
 .star-size-4{
-  font-size:1.25em;
+  font-size:4.0rem;
 }
 
 .star-size-5{
-  font-size:1.75em;
+  font-size:4.5rem;
 }
 
 .star-rating .fa-star{
   color: gold;
 }
+
+
+.star {
+  color: #b0c4de;
+}
+.filled {
+  color: gold;
+}
+.bad {
+  color: #deb0b0;
+}
+.filled.bad {
+  color: #ff1e1e;
+}
+

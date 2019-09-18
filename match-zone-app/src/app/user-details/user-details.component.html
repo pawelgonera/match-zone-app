@@ -121,7 +121,7 @@
 
             </div>
             <div class="tab-pane" id="edit">
-              <form (ngSubmit)="onSubmit()" role="form">
+              <form (ngSubmit)="onSubmit()">
                 <h4 class="text-center">Personal details</h4>
                 <div class="form-group row">
                   <label for="FirstName" class="col-lg-3 col-form-label form-control-label">First Name</label>
@@ -326,14 +326,15 @@
 
           <br><br>
           <h3>Rate</h3>
-          <div class="star-rating">
-            <span class="fa fa-star-o star-size-1" data-rating="1" onclick="SetRatingStar()"></span>
-            <span class="fa fa-star-o star-size-2" data-rating="2"></span>
-            <span class="fa fa-star-o star-size-3" data-rating="3"></span>
-            <span class="fa fa-star-o star-size-4" data-rating="4"></span>
-            <span class="fa fa-star-o star-size-5" data-rating="5"></span>
-            <input type="hidden" name="whatever" class="rating-value" value="2.56">
-          </div>
+          <ngb-rating [(rate)]="currentRate" max="6" >
+            <ng-template let-fill="fill" let-index="index" >
+              <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3"
+                    [class.star-size-0]="index == 0" [class.star-size-1]="index == 1" [class.star-size-2]="index == 2" [class.star-size-3]="index == 3"
+                    [class.star-size-4]="index == 4" [class.star-size-5]="index == 5">&#9733;</span>
+            </ng-template>
+          </ngb-rating>
+          <hr>
+          <pre>Rate: <b> {{currentRate}} </b></pre>
 
         </div>
 

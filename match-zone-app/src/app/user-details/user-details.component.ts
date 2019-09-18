@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {User} from "../user";
 import {UserService} from "../user.service";
 import {HttpClient, HttpRequest, HttpResponse} from "@angular/common/http";
+import {PersonalDetails} from "../personal-details";
+import {Appearance} from "../appearance";
 
 @Component({
   selector: 'app-user-details',
@@ -12,8 +14,11 @@ import {HttpClient, HttpRequest, HttpResponse} from "@angular/common/http";
 export class UserDetailsComponent implements OnInit {
 
   id: number;
-  user: User;
+  user: User = new User();
   updated = false;
+
+  personalDetails: PersonalDetails = new PersonalDetails();
+  appearance: Appearance = new Appearance();
 
   birthDate: Date;
   timeDifference: number;
@@ -22,10 +27,13 @@ export class UserDetailsComponent implements OnInit {
   selectedFiles: FileList;
   selectedFile: File = null;
 
+  currentRate = 0;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private http: HttpClient) { }
 
   ngOnInit() {
+    this.user.personalDetails = this.personalDetails;
+    this.user.appearance = this.appearance;
     this.getUser();
   }
 
@@ -102,8 +110,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   getUser(): User{
-    this.user = new User();
-
     this.id = this.route.snapshot.params['id'];
 
     this.userService.getUser(this.id)
@@ -114,5 +120,6 @@ export class UserDetailsComponent implements OnInit {
 
     return this.user;
   }
+
 
 }

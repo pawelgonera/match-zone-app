@@ -38,13 +38,13 @@ public class UserService {
 
     public User createUser(User user){
 
-        PersonalDetails personalDetails = new PersonalDetails();
+        /*PersonalDetails personalDetails = new PersonalDetails();
         personalDetails.setUser(user);
         personalDetailsRepository.save(personalDetails);
 
         Appearance appearance = new Appearance();
         appearance.setUser(user);
-        appearanceRepository.save(appearance);
+        appearanceRepository.save(appearance);*/
 
         return userRepository.save(user);
     }
@@ -71,10 +71,10 @@ public class UserService {
 
     public User updateUser(Long id, User user) throws ResourceNotFoundException {
 
-        User userFound = getUserById(id);
-        User userUpdated = setUserToUpdate(userFound, user);
+        //User userFound = getUserById(id);
+        //User userUpdated = setUserToUpdate(userFound, user);
 
-        return userRepository.save(userUpdated);
+        return userRepository.save(user);
     }
 
     public Map<String, Boolean> deleteUser(Long id) throws ResourceNotFoundException {

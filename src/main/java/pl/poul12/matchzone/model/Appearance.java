@@ -25,7 +25,7 @@ public class Appearance {
     private String hobbies;
     //@OneToOne(mappedBy = "appearance")
     @JsonBackReference
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
 }

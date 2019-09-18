@@ -1,6 +1,8 @@
 package pl.poul12.matchzone.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.poul12.matchzone.model.enums.MaritalStatus;
@@ -22,6 +24,7 @@ public class PersonalDetails {
     private LocalDateTime dateOfBirth;
     @Lob
     private byte[] photo;
+    private Double rating;
     private String country;
     private String city;
     private String occupation;
@@ -30,7 +33,7 @@ public class PersonalDetails {
     private Religion religion;
     //@OneToOne(mappedBy = "personalDetails")
     @JsonBackReference
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
 }
