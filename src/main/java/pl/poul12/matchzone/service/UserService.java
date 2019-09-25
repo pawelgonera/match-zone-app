@@ -17,12 +17,10 @@ import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.repository.AppearanceRepository;
 import pl.poul12.matchzone.repository.PersonalDetailsRepository;
 import pl.poul12.matchzone.repository.UserRepository;
+import pl.poul12.matchzone.security.forms.RegisterForm;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -42,10 +40,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User createUser(User user){
+    public User createUser(RegisterForm registerUser){
 
-        user.setRole("USER");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user = buildUser(registerUser);
+        user.setRole(registerUser.getRole());
 
         return userRepository.save(user);
     }
@@ -60,9 +58,12 @@ public class UserService {
 
     public Optional<User> getUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<User> userFound = userRepository.findUserByUsername(username);
+        return userRepository.findUserByUsername(username);
+    }
 
-        return userFound;
+    public Optional<User> getUserByEmail(String email) throws UsernameNotFoundException {
+
+        return userRepository.findUserByEmail(email);
     }
 
     public ResponseEntity<String> savePhoto(Long id, MultipartFile file) throws ResourceNotFoundException {
@@ -98,34 +99,18 @@ public class UserService {
     }
 
 
-    private User setUserToUpdate(User userFound, User user){
+    private User buildUser(RegisterForm registerUser){
 
-        userFound.setUsername(user.getUsername());
-        userFound.setEmail(user.getEmail());
-        userFound.setPassword(user.getPassword());
-        userFound.setTimeZoneId(user.getTimeZoneId());
+        User user = new User();
+        PersonalDetails personalDetails = new PersonalDetails();
+        personalDetails.setFirstName(registerUser.getName());
+        personalDetails.setDateOfBirth(registerUser.getDateOfBirth());
+        user.setPersonalDetails(personalDetails);
+        user.setUsername(registerUser.getUsername());
+        user.setEmail(registerUser.getEmail());
+        user.setPassword(passwordEncoder.encode(registerUser.getPassword()));
 
-        PersonalDetails personalDetails = user.getPersonalDetails();
-        userFound.getPersonalDetails().setFirstName(personalDetails.getFirstName());
-        userFound.getPersonalDetails().setCountry(personalDetails.getCountry());
-        userFound.getPersonalDetails().setCity(personalDetails.getCity());
-        userFound.getPersonalDetails().setDateOfBirth(personalDetails.getDateOfBirth());
-        userFound.getPersonalDetails().setEducation(personalDetails.getEducation());
-        userFound.getPersonalDetails().setMaritalStatus(personalDetails.getMaritalStatus());
-        userFound.getPersonalDetails().setOccupation(personalDetails.getOccupation());
-        userFound.getPersonalDetails().setReligion(personalDetails.getReligion());
-        userFound.setPersonalDetails(personalDetails);
-
-        Appearance appearance = user.getAppearance();
-        userFound.getAppearance().setEyes(appearance.getEyes());
-        userFound.getAppearance().setHairColour(appearance.getHairColour());
-        userFound.getAppearance().setHeight(appearance.getHeight());
-        userFound.getAppearance().setPhysique(appearance.getPhysique());
-        userFound.getAppearance().setAbout(appearance.getAbout());
-        userFound.getAppearance().setHobbies(appearance.getHobbies());
-        userFound.setAppearance(appearance);
-
-        return userFound;
+        return user;
     }
 
 
