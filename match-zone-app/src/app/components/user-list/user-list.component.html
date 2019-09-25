@@ -78,7 +78,7 @@
                   <h5 class="card-title">{{user.personalDetails.firstName}}</h5>
                   <p>{{calculateAge(user)}} years old, {{user.personalDetails.city}}</p>
                   <small>{{user.appearance.about}}</small>
-                  <p class="text-right">Rating:<b> 4.0</b></p>
+                  <p class="text-right">Rating:<b> {{user.vote.rating}}</b></p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">Last updated 3 mins ago</small>

@@ -1,15 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {User} from "../user";
-import {UserService} from "../user.service";
+import {User} from "../../model/user";
+import {UserService} from "../../service/user.service";
 import {HttpClient, HttpRequest, HttpResponse} from "@angular/common/http";
-import {PersonalDetails} from "../personal-details";
-import {Appearance} from "../appearance";
+import {PersonalDetails} from "../../model/personal-details";
+import {Appearance} from "../../model/appearance";
+import {Vote} from "../../model/vote";
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.css']
+  styleUrls: ['./user-details.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UserDetailsComponent implements OnInit {
 
@@ -19,6 +21,7 @@ export class UserDetailsComponent implements OnInit {
 
   personalDetails: PersonalDetails = new PersonalDetails();
   appearance: Appearance = new Appearance();
+  vote: Vote = new Vote();
 
   birthDate: Date;
   timeDifference: number;
@@ -29,11 +32,13 @@ export class UserDetailsComponent implements OnInit {
 
   currentRate = 0;
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private http: HttpClient) { }
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private http: HttpClient) {
+  }
 
   ngOnInit() {
     this.user.personalDetails = this.personalDetails;
     this.user.appearance = this.appearance;
+    this.user.vote = this.vote;
     this.getUser();
   }
 
@@ -68,7 +73,7 @@ export class UserDetailsComponent implements OnInit {
 
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile);
-    const req = new HttpRequest('POST', 'http://localhost:8080/match-zone/api/v1/users/' + this.id + '/changeavatar', formData, {
+    const req = new HttpRequest('POST', 'http://localhost:8080/match-zone/api/v1/users/' + this.id + '/change-avatar', formData, {
         reportProgress: true,
         responseType: 'text'
       }
@@ -119,6 +124,22 @@ export class UserDetailsComponent implements OnInit {
       }, error => console.log(error));
 
     return this.user;
+  }
+
+  onVote(user: User){
+    let votes = user.vote.countedVotes;
+    let sum = user.vote.sumOfVotes;
+    votes++;
+    sum += this.currentRate;
+    console.log(sum);
+    user.vote.rating = sum / votes;
+    user.vote.countedVotes = votes;
+    user.vote.sumOfVotes = sum;
+
+    this.userService.updateUser(this.id, user)
+      .subscribe(data => console.log(data), error => console.log(error));
+
+    //this.reloadData(user.id);
   }
 
 

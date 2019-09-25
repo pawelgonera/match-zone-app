@@ -1,7 +1,13 @@
 package pl.poul12.matchzone.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
@@ -21,14 +27,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private PersonalDetailsRepository personalDetailsRepository;
-    private AppearanceRepository appearanceRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    public UserService(UserRepository userRepository, PersonalDetailsRepository personalDetailsRepository, AppearanceRepository appearanceRepository) {
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.personalDetailsRepository = personalDetailsRepository;
-        this.appearanceRepository = appearanceRepository;
+        //this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers(){
@@ -38,13 +44,8 @@ public class UserService {
 
     public User createUser(User user){
 
-        /*PersonalDetails personalDetails = new PersonalDetails();
-        personalDetails.setUser(user);
-        personalDetailsRepository.save(personalDetails);
-
-        Appearance appearance = new Appearance();
-        appearance.setUser(user);
-        appearanceRepository.save(appearance);*/
+        user.setRole("USER");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
     }
@@ -53,7 +54,15 @@ public class UserService {
 
         Optional<User> userFound = userRepository.findById(id);
 
-        return userFound.orElseThrow(() -> new ResourceNotFoundException("User not found for this id: " + id));
+        return userFound.orElseThrow(() -> new ResourceNotFoundException("User not found for this id: " + id)
+        );
+    }
+
+    public Optional<User> getUserByUsername(String username) throws UsernameNotFoundException {
+
+        Optional<User> userFound = userRepository.findUserByUsername(username);
+
+        return userFound;
     }
 
     public ResponseEntity<String> savePhoto(Long id, MultipartFile file) throws ResourceNotFoundException {
@@ -63,16 +72,17 @@ public class UserService {
         try {
             user.getPersonalDetails().setPhoto(file.getBytes());
             userRepository.save(user);
+            logger.info("Photo uploaded");
             return ResponseEntity.status(HttpStatus.OK).body("You successfully uploaded " + file.getOriginalFilename() + "!");
         }catch (IOException e){
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Something went wrong with your file " + file.getOriginalFilename());
+            logger.error("Something went wrong with your file: {}", file.getOriginalFilename());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Something went wrong with your file" + file.getOriginalFilename());
         }
     }
 
     public User updateUser(Long id, User user) throws ResourceNotFoundException {
 
         //User userFound = getUserById(id);
-        //User userUpdated = setUserToUpdate(userFound, user);
 
         return userRepository.save(user);
     }

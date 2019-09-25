@@ -1,5 +1,6 @@
 import {PersonalDetails} from "./personal-details";
 import {Appearance} from "./appearance";
+import {Vote} from "./vote";
 
 export class User{
     id: number;
@@ -10,6 +11,7 @@ export class User{
     timeZoneId: string;
     personalDetails: PersonalDetails;
     appearance: Appearance;
+    vote: Vote;
 
     /*constructor(userResponse: any){
       this.id = userResponse.id;

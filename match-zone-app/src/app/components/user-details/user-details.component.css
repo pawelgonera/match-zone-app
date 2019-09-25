@@ -33,11 +33,12 @@
 }
 
 .star-rating .fa-star{
-  color: gold;
+  color:gold;
 }
 
 
 .star {
+  line-height:32px;
   color: #b0c4de;
 }
 .filled {

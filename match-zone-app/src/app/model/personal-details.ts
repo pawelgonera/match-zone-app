@@ -4,10 +4,9 @@ import {User} from "./user";
 
 export class PersonalDetails {
     id: number;
-    firstName: string;
+    firstName: string = '';
     dateOfBirth: Date;
     photo: Blob;
-    rating: number;
     country: string;
     city: string;
     occupation: string;

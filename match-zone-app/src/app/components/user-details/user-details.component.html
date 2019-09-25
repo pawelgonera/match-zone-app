@@ -328,13 +328,14 @@
           <h3>Rate</h3>
           <ngb-rating [(rate)]="currentRate" max="6" >
             <ng-template let-fill="fill" let-index="index" >
-              <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3"
+              <span class="star" [class.filled]="fill === 100"
                     [class.star-size-0]="index == 0" [class.star-size-1]="index == 1" [class.star-size-2]="index == 2" [class.star-size-3]="index == 3"
                     [class.star-size-4]="index == 4" [class.star-size-5]="index == 5">&#9733;</span>
             </ng-template>
           </ngb-rating>
           <hr>
-          <pre>Rate: <b> {{currentRate}} </b></pre>
+          <button type="button" class="btn btn-success" (click)="onVote(user)">Vote</button>
+          <pre class="text-right">Rate: <b> {{user.vote.rating}} </b></pre>
 
         </div>
 

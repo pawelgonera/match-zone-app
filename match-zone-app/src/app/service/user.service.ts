@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserService {
 
-  private baseUrl = '/api/v1/users';
+  private baseUrl = 'http://localhost:8080/match-zone/api/v1/users';
 
   constructor(private http: HttpClient) { }
 
@@ -16,7 +14,7 @@ export class UserService {
   }
 
   createUser(user: Object): Observable<Object> {
-    return this.http.post(`${this.baseUrl}`, user);
+    return this.http.post(`${this.baseUrl}/register`, user);
   }
 
   updateUser(id: number, value: any): Observable<Object> {
