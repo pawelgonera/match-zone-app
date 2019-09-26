@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {Register} from "../model/register";
 
-@Injectable()
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
 
   private baseUrl = 'http://localhost:8080/match-zone/api/v1/users';
@@ -13,8 +20,8 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  createUser(user: Object): Observable<Object> {
-    return this.http.post(`${this.baseUrl}/register`, user);
+  createUser(user: Register): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/register`, user, httpOptions);
   }
 
   updateUser(id: number, value: any): Observable<Object> {

@@ -1,21 +1,28 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {User} from "../model/user";
-import * as bcrypt from 'bcryptjs';
+import {Login} from "../model/login";
+import {Observable} from "rxjs";
+import {JwtResponse} from "../model/jwt-response";
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationService {
 
-  private baseUrl = 'http://localhost:8080/match-zone/api/v1/users';
-
-  public errorMessage = '';
-  authenticated = false;
+  private loginUrl = 'http://localhost:8080/match-zone/api/v1/users/login';
 
   constructor(public http: HttpClient) {
   }
 
-  authenticate(credentials, callback) {
+  authenticate(credentials: Login): Observable<JwtResponse> {
+    return this.http.post<JwtResponse>(this.loginUrl, credentials, httpOptions);
+  }
+
+  /*authenticate(credentials, callback) {
     console.log(credentials);
     const headers = new HttpHeaders(credentials ? {
       authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
@@ -29,15 +36,15 @@ export class AuthenticationService {
         return callback && callback(data);
       });
 
-  }
+  }*/
 
-  public logIn(user: User, callback) {
+  /*public logIn(user: User, callback) {
     console.log(user);
-    /*const headers = new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.set('Accept', 'application/json');
     // creating base64 encoded String from user name and password
     const base64Credential: string = btoa( user.username + ':' + user.password);
-    headers.set( 'Authorization', 'Basic ' + base64Credential);*/
+    headers.set( 'Authorization', 'Basic ' + base64Credential);
     const pass = bcrypt.hash(user.password, 10);
     console.log(pass);
     const headers = new HttpHeaders(user ? {
@@ -54,7 +61,7 @@ export class AuthenticationService {
         const u = data.principal;
         return callback && callback(data);
       });
-  }
+  }*/
 
   logOut() {
     // remove user from local storage to log user out

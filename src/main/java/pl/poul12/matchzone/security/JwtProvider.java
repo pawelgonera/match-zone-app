@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import pl.poul12.matchzone.model.User;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 
 @Component
@@ -21,20 +21,23 @@ public class JwtProvider {
     @Value("${poul12.app.jwtExpiration}")
     private int jwtExpiration;
 
+    @Transactional
     public String generateJwtToken(Authentication authentication) {
-
-        User userPrincipal = (User) authentication.getPrincipal();
+        System.out.println("Iam in JwtProvider1");
+        UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+        System.out.println("Iam in JwtProvider2");
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+                        .setSubject((userPrincipal.getUsername()))
+                        .setIssuedAt(new Date())
+                        .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
+                        .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                        .compact();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
+            System.out.println("Iam in validateJwtToken");
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
@@ -53,6 +56,7 @@ public class JwtProvider {
     }
 
     public String getUserNameFromJwtToken(String token) {
+        System.out.println("Iam in getUserNameFromJwtToken");
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

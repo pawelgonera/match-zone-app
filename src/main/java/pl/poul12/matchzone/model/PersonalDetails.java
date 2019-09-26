@@ -1,14 +1,11 @@
 package pl.poul12.matchzone.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.*;
 import pl.poul12.matchzone.model.enums.MaritalStatus;
 import pl.poul12.matchzone.model.enums.Religion;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
@@ -19,10 +16,10 @@ import java.time.LocalDateTime;
 public class PersonalDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
+    @Basic(fetch=FetchType.EAGER)
     @Lob
     private byte[] photo;
     private Double rating;
@@ -32,8 +29,8 @@ public class PersonalDetails {
     private MaritalStatus maritalStatus;
     private String education;
     private Religion religion;
-    @JsonBackReference
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     User user;

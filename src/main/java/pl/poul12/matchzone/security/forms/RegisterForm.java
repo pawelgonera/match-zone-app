@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.validation.constraints.*;
 
@@ -23,7 +24,7 @@ public class RegisterForm {
     @Email
     private String email;
 
-    private String role;
+    private Set<String> role;
 
     @NotBlank
     @Size(min = 6, max = 40)
@@ -34,7 +35,6 @@ public class RegisterForm {
     private String repeatedPassword;
 
     @NotBlank
-    @Past
-    private LocalDateTime dateOfBirth;
+    private String dateOfBirth;
 
 }

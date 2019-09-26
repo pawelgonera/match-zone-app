@@ -1,33 +1,90 @@
 import { Observable } from "rxjs";
 import { UserService} from "../../service/user.service";
 import { User} from "../../model/user";
-import {Component, OnInit, ViewEncapsulation} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import { Router } from '@angular/router';
+import {UserDetailsComponent} from "../user-details/user-details.component";
+import {PersonalDetails} from "../../model/personal-details";
+import {OtherService} from "../../service/other.service";
+import {Appearance} from "../../model/appearance";
+import {Vote} from "../../model/vote";
 
 @Component({
   selector: "app-user-list",
   templateUrl: "./user-list.component.html",
   styleUrls: ["./user-list.component.css"],
-  encapsulation: ViewEncapsulation.None
 })
 export class UserListComponent implements OnInit {
 
   users: Observable<User[]>;
+  personalDetails: PersonalDetails;
+  appearance: Observable<Appearance>;
+  vote: Observable<Vote>;
 
-  birthDate: Date;
-  timeDifference: number;
-  age: number;
 
-  constructor(private userService: UserService,
-              private router: Router) {}
+  constructor(private userService: UserService, private router: Router, private userDetailsComponent: UserDetailsComponent, private otherService: OtherService) {}
 
   ngOnInit() {
+
+
+
+
+
     this.reloadData();
+
+
+
+  }
+
+  loadPersonalDetails(id){
+    return this.otherService.getPersonalDetails(id)
+      .subscribe(data => {
+          console.log(data);
+          this.personalDetails = data;
+        },
+        error => console.log(error));
+  }
+
+  loadAppearance(id){
+    return this.otherService.getAppearance(id)
+      .subscribe(data => {
+          console.log(data);
+          this.appearance = data;
+        },
+        error => console.log(error));
+  }
+
+  loadVote(id){
+    return   this.otherService.getVote(id)
+      .subscribe(data => {
+          console.log(data);
+          this.vote = data;
+        },
+        error => console.log(error));
   }
 
   reloadData() {
     this.users = this.userService.getUsersList();
   }
+
+  displayPhoto(user){
+    //this.loadPersonalDetails(user);
+    // this.personalDetails.photo;
+  }
+
+  displayCity(id){
+    //this.loadPersonalDetails(id);
+    return this.personalDetails.city;
+  }
+
+  displayRating(user){
+    //return this.vote = this.otherService.getVote(user.id);
+  }
+
+  displayAbout(user){
+    //return this.appearance = this.otherService.getAppearance(user.id);
+  }
+
 
   deleteUser(id: number) {
     this.userService.deleteUser(id)
@@ -47,13 +104,13 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['profile', id]);
   }
 
+
+
   public calculateAge(user: User): number {
-    this.birthDate = user.personalDetails.dateOfBirth;
-    if (this.birthDate) {
-      this.timeDifference = Math.abs(Date.now() - new Date(this.birthDate).getTime());
-      this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
-    }
-    return this.age;
+
+    this.personalDetails = this.otherService.getPersonalDetails(user.id);
+
+    return this.userDetailsComponent.calculateAge(this.personalDetails);
   }
 
 }

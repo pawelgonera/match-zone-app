@@ -11,42 +11,73 @@
 
       </div>
 
-    <div class="col-sm-6">
-
-      <div [hidden]="submitted" class="signup-form">
-        <form (ngSubmit)="onSubmit()">
-
-            <h2>Sign Up</h2>
-            <p>It's free and only takes a minute.</p>
-            <hr>
-            <div class="form-group">
-              <input type="text" class="form-control" name="username" placeholder="Username" required [(ngModel)]="user.username">
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" name="firstName" placeholder="First Name" required [(ngModel)]="user.personalDetails.firstName">
-            </div>
-            <div class="form-group">
-              <input type="email" class="form-control" name="email" placeholder="Email Address" required [(ngModel)]="user.email">
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" name="password" placeholder="Password" required [(ngModel)]="user.password">
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" name="repeatedPassword" placeholder="Confirm Password" required [(ngModel)]="user.repeatedPassword">
-            </div>
-            <label for="date_of_birth_id">Date of birth</label>
-            <div class="form-group">
-              <input type="date" class="form-control" id="date_of_birth_id" name="dateOfBirth" required [value]="user.personalDetails.dateOfBirth | date:'yyyy-MM-dd'" (input)="user.personalDetails.dateOfBirth=parseDate($event.target.value)">
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
-            </div>
-
-        </form>
-        <div class="text-center">Already have an account? <a href="#">Login here</a></div>
+      <div *ngIf="isSignedUp; else signupForm">
+        Your registration is successful. Please login!
       </div>
 
-    </div>
+    <ng-template #signupForm>
+      <div class="col-sm-6">
+
+        <div [hidden]="submitted" class="signup-form">
+          <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+              <h2>Sign Up</h2>
+              <p>It's free and only takes a minute.</p>
+              <hr>
+              <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username" #username="ngModel" required />
+                <div class="alert alert-danger" *ngIf="f.submitted && username.invalid">
+                  <div *ngIf="username.errors.required">UserName is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="First Name" [(ngModel)]="form.name" #name="ngModel" required />
+                <div class="alert alert-danger" *ngIf="f.submitted && name.invalid">
+                  <div *ngIf="name.errors.required">First Name is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="email" placeholder="Email Address" [(ngModel)]="form.email" #email="ngModel" required email />
+                <div class="alert alert-danger" *ngIf="f.submitted && email.invalid">
+                  <div *ngIf="email.errors.required">Email is required</div>
+                  <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password" #password="ngModel" required minlength="6" />
+                <div class="alert alert-danger" *ngIf="f.submitted && password.invalid">
+                  <div *ngIf="password.errors.required">Password is required</div>
+                  <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="repeatedPassword" placeholder="Confirm Password" [(ngModel)]="form.repeatedPassword" #repeatedPassword="ngModel" required minlength="6" />
+                <div class="alert alert-danger" *ngIf="f.submitted && repeatedPassword.invalid">
+                  <div *ngIf="repeatedPassword.errors.required">Password is required</div>
+                  <div *ngIf="repeatedPassword.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+              </div>
+              <label for="date_of_birth_id">Date of birth</label>
+              <div class="form-group">
+                <!--<input type="date" class="form-control" id="date_of_birth_id" name="dateOfBirth" required [value]="register.dateOfBirth | date:'yyyy-MM-dd'"   (input)="register.dateOfBirth=parseDate($event.target.value)">-->
+                <input type="date" class="form-control" id="date_of_birth_id" name="dateOfBirth" [(ngModel)]="form.dateOfBirth" #dateOfBirth="ngModel" required />
+                <div class="alert alert-danger" *ngIf="f.submitted && dateOfBirth.invalid">
+                  <div *ngIf="dateOfBirth.errors.required">Date of Birth is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
+                <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-danger">
+                  Signup failed!<br/>{{errorMessage}}
+                </div>
+              </div>
+
+          </form>
+          <div class="text-center">Already have an account? <a href="#">Login here</a></div>
+        </div>
+
+      </div>
+    </ng-template>
 
     </div>
   </div>

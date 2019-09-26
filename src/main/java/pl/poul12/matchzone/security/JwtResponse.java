@@ -10,18 +10,18 @@ public class JwtResponse {
     private String username;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtResponse(String accessToken, String username, Collection<? extends GrantedAuthority> authorities) {
-        this.token = accessToken;
+    public JwtResponse(String token, String username, Collection<? extends GrantedAuthority> authorities) {
+        this.token = token;
         this.username = username;
         this.authorities = authorities;
     }
 
-    public String getAccessToken() {
+    public String getToken() {
         return token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.token = accessToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getTokenType() {

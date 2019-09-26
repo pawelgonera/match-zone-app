@@ -1,5 +1,6 @@
 package pl.poul12.matchzone.service;
 
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,15 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
-import pl.poul12.matchzone.model.Appearance;
-import pl.poul12.matchzone.model.PersonalDetails;
-import pl.poul12.matchzone.model.User;
-import pl.poul12.matchzone.repository.AppearanceRepository;
-import pl.poul12.matchzone.repository.PersonalDetailsRepository;
-import pl.poul12.matchzone.repository.UserRepository;
+import pl.poul12.matchzone.model.*;
+import pl.poul12.matchzone.model.enums.RoleName;
+import pl.poul12.matchzone.repository.*;
 import pl.poul12.matchzone.security.forms.RegisterForm;
 
+import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -27,12 +29,25 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
+    private EntityManager entityManager;
+
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
+
+    private PersonalDetailsRepository personalDetailsRepository;
+    private AppearanceRepository appearanceRepository;
+    private VoteRepository voteRepository;
+
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsRepository personalDetailsRepository,
+                       AppearanceRepository appearanceRepository, VoteRepository voteRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
-        //this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.personalDetailsRepository = personalDetailsRepository;
+        this.appearanceRepository = appearanceRepository;
+        this.entityManager = entityManager;
+        this.voteRepository = voteRepository;
     }
 
     public List<User> getAllUsers(){
@@ -43,7 +58,16 @@ public class UserService {
     public User createUser(RegisterForm registerUser){
 
         User user = buildUser(registerUser);
-        user.setRole(registerUser.getRole());
+
+        Set<String> strRoles = registerUser.getRole();
+
+        Set<Role> roles = new HashSet<>();
+        for(String role : strRoles) {
+            Role roleFound = roleRepository.findByName(RoleName.valueOf(role.toUpperCase())).orElseThrow(() -> new RuntimeException("Not found any role!"));
+            roles.add(roleFound);
+        }
+
+        user.setRoles(roles);
 
         return userRepository.save(user);
     }
@@ -69,10 +93,13 @@ public class UserService {
     public ResponseEntity<String> savePhoto(Long id, MultipartFile file) throws ResourceNotFoundException {
 
         User user = getUserById(id);
+        PersonalDetails personalDetails = personalDetailsRepository.findByUserId(user.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("PersonalDetails not found for this id: " + id)
+        );
 
         try {
-            user.getPersonalDetails().setPhoto(file.getBytes());
-            userRepository.save(user);
+            personalDetails.setPhoto(file.getBytes());
+            personalDetailsRepository.save(personalDetails);
             logger.info("Photo uploaded");
             return ResponseEntity.status(HttpStatus.OK).body("You successfully uploaded " + file.getOriginalFilename() + "!");
         }catch (IOException e){
@@ -102,13 +129,21 @@ public class UserService {
     private User buildUser(RegisterForm registerUser){
 
         User user = new User();
-        PersonalDetails personalDetails = new PersonalDetails();
-        personalDetails.setFirstName(registerUser.getName());
-        personalDetails.setDateOfBirth(registerUser.getDateOfBirth());
-        user.setPersonalDetails(personalDetails);
         user.setUsername(registerUser.getUsername());
+        user.setFirstName(registerUser.getName());
         user.setEmail(registerUser.getEmail());
         user.setPassword(passwordEncoder.encode(registerUser.getPassword()));
+        PersonalDetails personalDetails = new PersonalDetails();
+        personalDetails.setDateOfBirth(LocalDate.parse(registerUser.getDateOfBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        personalDetails.setUser(user);
+        Appearance appearance = new Appearance();
+        appearance.setUser(user);
+        Vote vote = new Vote();
+        vote.setUser(user);
+
+        personalDetailsRepository.save(personalDetails);
+        appearanceRepository.save(appearance);
+        voteRepository.save(vote);
 
         return user;
     }

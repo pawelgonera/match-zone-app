@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
@@ -6,12 +6,12 @@ import {HttpClient, HttpRequest, HttpResponse} from "@angular/common/http";
 import {PersonalDetails} from "../../model/personal-details";
 import {Appearance} from "../../model/appearance";
 import {Vote} from "../../model/vote";
+import {OtherService} from "../../service/other.service";
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class UserDetailsComponent implements OnInit {
 
@@ -19,9 +19,9 @@ export class UserDetailsComponent implements OnInit {
   user: User = new User();
   updated = false;
 
-  personalDetails: PersonalDetails = new PersonalDetails();
-  appearance: Appearance = new Appearance();
-  vote: Vote = new Vote();
+  personalDetails: PersonalDetails;
+  appearance: Appearance;
+  vote: Vote;
 
   birthDate: Date;
   timeDifference: number;
@@ -32,14 +32,46 @@ export class UserDetailsComponent implements OnInit {
 
   currentRate = 0;
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private http: HttpClient) {
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private http: HttpClient, private otherService: OtherService) {
   }
 
   ngOnInit() {
-    this.user.personalDetails = this.personalDetails;
-    this.user.appearance = this.appearance;
-    this.user.vote = this.vote;
+    this.id = this.route.snapshot.params['id'];
+
     this.getUser();
+
+    this.loadPersonalDetails(this.id);
+    this.loadAppearance(this.id);
+    this.loadVote(this.id);
+
+    this.reloadData(this.id);
+  }
+
+  loadPersonalDetails(id){
+    return this.otherService.getPersonalDetails(id)
+      .subscribe(data => {
+          console.log(data);
+          this.personalDetails = data;
+        },
+        error => console.log(error));
+  }
+
+  loadAppearance(id){
+    return this.otherService.getAppearance(id)
+      .subscribe(data => {
+          console.log(data);
+          this.appearance = data;
+        },
+        error => console.log(error));
+  }
+
+  loadVote(id){
+    return   this.otherService.getVote(id)
+      .subscribe(data => {
+          console.log(data);
+          this.vote = data;
+        },
+        error => console.log(error));
   }
 
   update() {
@@ -50,7 +82,14 @@ export class UserDetailsComponent implements OnInit {
         this.user = data;
       }, error => console.log(error));
 
+
     this.userService.updateUser(this.id, this.user)
+      .subscribe(data => console.log(data), error => console.log(error));
+
+    this.otherService.updatePersonalDetails(this.id, this.personalDetails)
+      .subscribe(data => console.log(data), error => console.log(error));
+
+    this.otherService.updateAppearance(this.id, this.appearance)
       .subscribe(data => console.log(data), error => console.log(error));
 
     this.reloadData(this.id);
@@ -97,12 +136,10 @@ export class UserDetailsComponent implements OnInit {
     return null;
   }
 
-  public calculateAge(user: User): number {
-    this.birthDate = user.personalDetails.dateOfBirth;
-    if (this.birthDate) {
-      this.timeDifference = Math.abs(Date.now() - new Date(this.birthDate).getTime());
-      this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
-    }
+  public calculateAge(personalDetails): number {
+    this.timeDifference = Math.abs(Date.now() - new Date(personalDetails.dateOfBirth).getTime());
+    this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
+
     return this.age;
   }
 
@@ -114,29 +151,28 @@ export class UserDetailsComponent implements OnInit {
     this.router.navigate(['users']);
   }
 
-  getUser(): User{
+  getUser(){
     this.id = this.route.snapshot.params['id'];
-
-    this.userService.getUser(this.id)
+    console.log('snapshot id: ', this.id);
+    return this.userService.getUser(this.id)
       .subscribe(data => {
-        console.log(data);
+        console.log('user from data', data);
         this.user = data;
       }, error => console.log(error));
 
-    return this.user;
   }
 
-  onVote(user: User){
-    let votes = user.vote.countedVotes;
-    let sum = user.vote.sumOfVotes;
+  onVote(vote: Vote){
+    let votes = vote.countedVotes;
+    let sum = vote.sumOfVotes;
     votes++;
     sum += this.currentRate;
     console.log(sum);
-    user.vote.rating = sum / votes;
-    user.vote.countedVotes = votes;
-    user.vote.sumOfVotes = sum;
+    vote.rating = sum / votes;
+    vote.countedVotes = votes;
+    vote.sumOfVotes = sum;
 
-    this.userService.updateUser(this.id, user)
+    this.otherService.updateVote(this.id, vote)
       .subscribe(data => console.log(data), error => console.log(error));
 
     //this.reloadData(user.id);

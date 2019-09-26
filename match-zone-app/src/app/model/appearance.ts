@@ -1,4 +1,4 @@
-import {Eyes} from "../../eyes";
+import {Eyes} from "./eyes";
 import {HairColour} from "../../hair-colour";
 import {Physique} from "./physique";
 import {User} from "./user";

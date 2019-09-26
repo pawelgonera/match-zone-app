@@ -28,36 +28,36 @@
                 <div class="col-md-6">
                   <h6>About</h6>
                   <hr>
-                  <p>{{user.appearance.about}}</p>
+                  <p>{{appearance.about}}</p>
                   <h6>Hobbies</h6>
                   <hr>
-                  <p>{{user.appearance.hobbies}}</p>
+                  <p>{{appearance.hobbies}}</p>
                 </div>
                 <div class="col-md-6">
                   <h6>Appearance</h6>
                   <hr>
-                  <b>Eyes: </b> {{user.appearance.eyes}}
+                  <b>Eyes: </b> {{appearance.eyes}}
                   <br>
-                  <b>Hair colour: </b> {{user.appearance.hairColour}}
+                  <b>Hair colour: </b> {{appearance.hairColour}}
                   <br>
-                  <b>Height: </b> {{user.appearance.height}} cm
+                  <b>Height: </b> {{appearance.height}} cm
                   <br>
-                  <b>Physique: </b> {{user.appearance.physique}}
+                  <b>Physique: </b> {{appearance.physique}}
                   <br>
                   <br>
                   <h6>Other</h6>
                   <hr>
-                  <b>Country: </b> {{user.personalDetails.country}}
+                  <b>Country: </b> {{personalDetails.country}}
                   <br>
-                  <b>City: </b> {{user.personalDetails.city}}
+                  <b>City: </b> {{personalDetails.city}}
                   <br>
-                  <b>Occupation: </b> {{user.personalDetails.occupation}}
+                  <b>Occupation: </b> {{personalDetails.occupation}}
                   <br>
-                  <b>Marital status: </b> {{user.personalDetails.maritalStatus}}
+                  <b>Marital status: </b> {{personalDetails.maritalStatus}}
                   <br>
-                  <b>Education: </b> {{user.personalDetails.education}}
+                  <b>Education: </b> {{personalDetails.education}}
                   <br>
-                  <b>Religion: </b> {{user.personalDetails.religion}}
+                  <b>Religion: </b> {{personalDetails.religion}}
 
                 </div>
 
@@ -126,7 +126,7 @@
                 <div class="form-group row">
                   <label for="FirstName" class="col-lg-3 col-form-label form-control-label">First Name</label>
                   <div class="col-lg-9">
-                    <input class="form-control" id="FirstName" type="text" required [(ngModel)]="user.personalDetails.firstName" name="firstName">
+                    <input class="form-control" id="FirstName" type="text" required [(ngModel)]="user.firstName" name="firstName">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -138,55 +138,55 @@
                 <div class="form-group row">
                   <label for="DateOfBirth" class="col-lg-3 col-form-label form-control-label">Date Of Birth</label>
                   <div class="col-lg-9">
-                    <input class="form-control" id="DateOfBirth" type="date" required [value]="user.personalDetails.dateOfBirth | date:'yyyy-MM-dd'" (input)="user.personalDetails.dateOfBirth=parseDate($event.target.value)" name="dateOfBirth">
+                    <input class="form-control" id="DateOfBirth" type="date" required [(ngModel)]="personalDetails.dateOfBirth" name="dateOfBirth">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="Country" class="col-lg-3 col-form-label form-control-label">Country</label>
                   <div class="col-lg-9">
-                    <input class="form-control" id="Country" type="text" required [(ngModel)]="user.personalDetails.country" name="country">
+                    <input class="form-control" id="Country" type="text" required [(ngModel)]="personalDetails.country" name="country">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="City" class="col-lg-3 col-form-label form-control-label">City</label>
                   <div class="col-lg-9">
-                    <input class="form-control" id="City" type="text" required [(ngModel)]="user.personalDetails.city" name="city">
+                    <input class="form-control" id="City" type="text" required [(ngModel)]="personalDetails.city" name="city">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="Occupation" class="col-lg-3 col-form-label form-control-label">Occupation</label>
                   <div class="col-lg-9">
-                    <input class="form-control" id="Occupation" type="text" [(ngModel)]="user.personalDetails.occupation" name="occupation">
+                    <input class="form-control" id="Occupation" type="text" [(ngModel)]="personalDetails.occupation" name="occupation">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="MaritalStatus" class="col-lg-3 col-form-label form-control-label">Marital status</label>
                   <div class="col-lg-9">
-                    <select id="MaritalStatus" class="form-control" size="0" [(ngModel)]="user.personalDetails.maritalStatus" name="maritalStatus">
+                    <select id="MaritalStatus" class="form-control" size="0" [(ngModel)]="personalDetails.maritalStatus" name="maritalStatus">
                       <option value="MARRIED">Married</option>
-                      <option value="Widowed">Widowed</option>
-                      <option value="Separated">Separated</option>
-                      <option value="Divorced ">Divorced</option>
-                      <option value="Single">Single</option>
+                      <option value="WIDOWED">Widowed</option>
+                      <option value="SEPARATED">Separated</option>
+                      <option value="DIVORCED">Divorced</option>
+                      <option value="SINGLE">Single</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="Education" class="col-lg-3 col-form-label form-control-label">Education</label>
                   <div class="col-lg-9">
-                    <input class="form-control" id="Education" type="text" [(ngModel)]="user.personalDetails.education" name="education">
+                    <input class="form-control" id="Education" type="text" [(ngModel)]="personalDetails.education" name="education">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="Religion" class="col-lg-3 col-form-label form-control-label">Religion</label>
                   <div class="col-lg-9">
-                    <select id="Religion" class="form-control" size="0" [(ngModel)]="user.personalDetails.religion" name="religion">
-                      <option value="Christianity">Christianity</option>
-                      <option value="Islam">Islam</option>
-                      <option value="Hinduism">Hinduism</option>
-                      <option value="Buddhism">Buddhism</option>
-                      <option value="Judaism">Judaism</option>
-                      <option value="Atheist">Atheist</option>
+                    <select id="Religion" class="form-control" size="0" [(ngModel)]="personalDetails.religion" name="religion">
+                      <option value="CHRISTIANITY">Christianity</option>
+                      <option value="ISLAM">Islam</option>
+                      <option value="HINDUISM">Hinduism</option>
+                      <option value="BUDDHISM">Buddhism</option>
+                      <option value="JUDAISM">Judaism</option>
+                      <option value="ATHEIST">Atheist</option>
                     </select>
                   </div>
                 </div>
@@ -195,60 +195,60 @@
                 <div class="form-group row">
                   <label for="Eyes" class="col-lg-3 col-form-label form-control-label">Eyes</label>
                   <div class="col-lg-9">
-                    <select id="Eyes" class="form-control" size="0" [(ngModel)]="user.appearance.eyes" name="eyes">
-                      <option value="Blue">Blue</option>
-                      <option value="Brown">Brown</option>
-                      <option value="Green">Green</option>
-                      <option value="Hazel ">Hazel</option>
-                      <option value="Gray">Gray</option>
-                      <option value="Amber">Amber</option>
+                    <select id="Eyes" class="form-control" size="0" [(ngModel)]="appearance.eyes" name="eyes">
+                      <option value="BLUE">Blue</option>
+                      <option value="BROWN">Brown</option>
+                      <option value="GREEN">Green</option>
+                      <option value="HAZEL ">Hazel</option>
+                      <option value="GREY">Grey</option>
+                      <option value="AMBER">Amber</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="HairColour" class="col-lg-3 col-form-label form-control-label">Hair colour</label>
                   <div class="col-lg-9">
-                    <select id="HairColour" class="form-control" size="0" [(ngModel)]="user.appearance.hairColour" name="hairColour">
-                      <option value="Black">Black</option>
+                    <select id="HairColour" class="form-control" size="0" [(ngModel)]="appearance.hairColour" name="hairColour">
+                      <option value="BLACK">Black</option>
                       <option value="DARK_BROWN">Dark brown</option>
-                      <option value="Light brown">Light brown</option>
-                      <option value="Brown">Brown</option>
-                      <option value="Dark blonde">Dark blonde</option>
-                      <option value="Light blonde">Light blonde</option>
-                      <option value="Blonde">Blonde</option>
-                      <option value="Ginger red">Ginger red</option>
-                      <option value="Grey">Grey</option>
-                      <option value="White">White</option>
+                      <option value="LIGHT_BROWN">Light brown</option>
+                      <option value="BROWN">Brown</option>
+                      <option value="DARK_BLONDE">Dark blonde</option>
+                      <option value="LIGHT_BLONDE">Light blonde</option>
+                      <option value="BLONDE">Blonde</option>
+                      <option value="GINGER_RED">Ginger red</option>
+                      <option value="GREY">Grey</option>
+                      <option value="WHITE">White</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="Height" class="col-lg-3 col-form-label form-control-label">Height</label>
                   <div class="col-lg-9">
-                    <input class="form-control" id="Height" type="number" min="140" max="210" [(ngModel)]="user.appearance.height" name="height">
+                    <input class="form-control" id="Height" type="number" min="140" max="210" [(ngModel)]="appearance.height" name="height">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="Physique" class="col-lg-3 col-form-label form-control-label">Physique</label>
                   <div class="col-lg-9">
-                    <select id="Physique" class="form-control" size="0" [(ngModel)]="user.appearance.physique" name="physique">
-                      <option value="Skinny">Skinny</option>
-                      <option value="Slim">Slim</option>
-                      <option value="Normal">Normal</option>
-                      <option value="Shapely">Shapely</option>
-                      <option value="Muscular">Muscular</option>
-                      <option value="Thick">Thick</option>
-                      <option value="Fat">Fat</option>
+                    <select id="Physique" class="form-control" size="0" [(ngModel)]="appearance.physique" name="physique">
+                      <option value="SKINNY">Skinny</option>
+                      <option value="SLIM">Slim</option>
+                      <option value="NORMAL">Normal</option>
+                      <option value="SHAPELY">Shapely</option>
+                      <option value="MUSCULAR">Muscular</option>
+                      <option value="THICK">Thick</option>
+                      <option value="FAT">Fat</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="WriteAboutYourself">Write about yourself</label>
-                  <textarea class="form-control" id="WriteAboutYourself" rows="3" [(ngModel)]="user.appearance.about" name="about"></textarea>
+                  <textarea class="form-control" id="WriteAboutYourself" rows="3" [(ngModel)]="appearance.about" name="about"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="Hobbies">Hobbies</label>
-                  <textarea class="form-control" id="Hobbies" rows="3" [(ngModel)]="user.appearance.hobbies" name="hobbies"></textarea>
+                  <textarea class="form-control" id="Hobbies" rows="3" [(ngModel)]="appearance.hobbies" name="hobbies"></textarea>
                 </div>
                 <br><br>
                 <h4 class="text-center">Account details</h4>
@@ -314,8 +314,8 @@
         </div>
 
         <div class="col-lg-4 order-lg-1 text-center">
-          <img *ngIf="user.personalDetails.photo" src="data:image/png;base64,{{user.personalDetails.photo}}" class="mx-auto img-fluid img-circle d-block shadow" alt="avatar">
-          <h6 class="mt-2">{{user.personalDetails.firstName}}, {{calculateAge(user)}} years old</h6>
+          <img *ngIf="personalDetails.photo" src="data:image/png;base64,{{personalDetails.photo}}" class="mx-auto img-fluid img-circle d-block shadow" alt="avatar">
+          <h6 class="mt-2">{{user.firstName}}, {{calculateAge(personalDetails)}} years old</h6>
 
           <label for="File" class=" col-form-label form-control-label">
             <input type="file" id="File" class="custom-file-input" (change)="onFileSelected($event)">
@@ -334,8 +334,8 @@
             </ng-template>
           </ngb-rating>
           <hr>
-          <button type="button" class="btn btn-success" (click)="onVote(user)">Vote</button>
-          <pre class="text-right">Rate: <b> {{user.vote.rating}} </b></pre>
+          <button type="button" class="btn btn-success" (click)="onVote(vote)">Vote</button>
+          <pre class="text-right">Rate: <b> {{vote.rating}} </b></pre>
 
         </div>
 

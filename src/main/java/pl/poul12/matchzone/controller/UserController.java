@@ -40,19 +40,18 @@ public class UserController {
     private JwtProvider jwtProvider;
     private UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
         this.userService = userService;
     }
 
-    @CrossOrigin
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/users")
     public List<User> getAllUsers() {
 
         return userService.getAllUsers();
     }
 
-    @CrossOrigin
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
 
@@ -106,13 +105,18 @@ public class UserController {
     @PostMapping("/users/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginForm login) {
 
+        System.out.println("Start of login controller");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
-
+        System.out.println("login: username: " + login.getUsername() + " password: " + login.getPassword());
+        System.out.println("login controller after authentication");
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        System.out.println("login controller after securitycontextholder");
         String jwt = jwtProvider.generateJwtToken(authentication);
+        System.out.println("login controller after generateJwtToken");
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        System.out.println("userdetails username form login controller: " + userDetails.getUsername());
+        System.out.println("End of login controller");
 
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }

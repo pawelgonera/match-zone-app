@@ -1,27 +1,37 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../model/user";
 import {AuthenticationService} from "../../service/authentication.service";
 import {Router} from "@angular/router";
-import {HttpHeaders} from "@angular/common/http";
+import {Login} from "../../model/login";
+import {TokenService} from "../../service/token.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
 
   user: User = new User();
-  errorMessage: string;
+  form: any = {};
+  isLoggedIn = false;
+  isLoginFailed = false;
+  errorMessage = '';
+  roles: string[] = [];
+  private login: Login;
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private router: Router, private tokenService: TokenService) { }
 
   ngOnInit() {
+    if (this.tokenService.getToken()) {
+      this.isLoggedIn = true;
+      this.roles = this.tokenService.getAuthorities();
+      this.router.navigate(['/users']);
+    }
   }
 
-  login() {
-    this.authService.authenticate(this.user, (e) => {
+  logIn() {
+    /*this.authService.authenticate(this.user, (e) => {
       this.router.navigate(['users']);
       console.log(e);
       let resp: any;
@@ -31,7 +41,36 @@ export class LoginComponent implements OnInit {
         // store user details  in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(resp));
       }
-    });
+    });*/
+
+    console.log(this.form);
+
+    this.login = new Login(
+      this.form.username,
+      this.form.password);
+
+    this.authService.authenticate(this.login)
+      .subscribe(data => {
+        console.log(data);
+        this.tokenService.saveToken(data.token);
+        this.tokenService.saveUsername(data.username);
+        this.tokenService.saveAuthorities(data.authorities);
+
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.roles = this.tokenService.getAuthorities();
+        //this.reloadData();
+      },
+      error => {
+        console.log(error);
+        this.errorMessage = error.error.message;
+        this.isLoginFailed = true;
+      }
+    );
+
   }
 
+  reloadData() {
+    window.location.reload();
+  }
 }

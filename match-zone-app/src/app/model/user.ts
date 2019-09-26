@@ -1,10 +1,11 @@
 import {PersonalDetails} from "./personal-details";
-import {Appearance} from "./appearance";
 import {Vote} from "./vote";
+import {Appearance} from "./appearance";
 
 export class User{
     id: number;
     username: string;
+    firstName: string;
     email: string;
     password: string;
     repeatedPassword: string;

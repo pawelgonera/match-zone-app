@@ -1,25 +1,34 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from "@angular/router";
-import {User} from "./model/user";
+import {TokenService} from "./service/token.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'match-zone-app';
 
-  currentUser: User;
+  info: any;
 
-  constructor( public router: Router) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  constructor(private tokenService: TokenService, public router: Router) {
+    //this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
+  ngOnInit() {
+    this.info = {
+      token: this.tokenService.getToken(),
+      username: this.tokenService.getUsername(),
+      authorities: this.tokenService.getAuthorities()
+    };
+  }
+
+
   logOut() {
-    localStorage.removeItem('currentUser');
-    this.router.navigate(['/logout']);
+    //localStorage.removeItem('currentUser');
+    this.tokenService.signOut();
+    this.router.navigate(['/login']);
   }
 
 }

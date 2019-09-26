@@ -73,12 +73,12 @@
           <div class="col-sm-4" *ngFor="let user of users | async">
             <a (click)="userDetails(user.id)">
               <div class="card shadow animated">
-               <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
+               <img class="card-img-top" src="data:image/png;base64,{{displayPhoto(user)}}" alt="Card image cap">
                 <div class="card-body">
-                  <h5 class="card-title">{{user.personalDetails.firstName}}</h5>
-                  <p>{{calculateAge(user)}} years old, {{user.personalDetails.city}}</p>
-                  <small>{{user.appearance.about}}</small>
-                  <p class="text-right">Rating:<b> {{user.vote.rating}}</b></p>
+                  <h5 class="card-title">{{user.firstName}}</h5>
+                  <p>{{calculateAge(user)}} years old, {{displayCity(user.id)}}</p>
+                  <small>{{displayAbout(user)}}</small>
+                  <p class="text-right">Rating:<b> {{displayRating(user)}}</b></p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
