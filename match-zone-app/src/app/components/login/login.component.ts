@@ -31,18 +31,6 @@ export class LoginComponent implements OnInit {
   }
 
   logIn() {
-    /*this.authService.authenticate(this.user, (e) => {
-      this.router.navigate(['users']);
-      console.log(e);
-      let resp: any;
-      resp = e.principal;
-      // this.user.fullName = 'ndh';
-      if (resp) {
-        // store user details  in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(resp));
-      }
-    });*/
-
     console.log(this.form);
 
     this.login = new Login(

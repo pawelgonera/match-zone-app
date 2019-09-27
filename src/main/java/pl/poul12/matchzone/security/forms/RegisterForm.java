@@ -3,7 +3,6 @@ package pl.poul12.matchzone.security.forms;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.validation.constraints.*;

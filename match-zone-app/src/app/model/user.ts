@@ -14,15 +14,4 @@ export class User{
     appearance: Appearance;
     vote: Vote;
 
-    /*constructor(userResponse: any){
-      this.id = userResponse.id;
-      this.username = userResponse.username;
-      this.email = userResponse.email;
-      this.password = userResponse.password;
-      this.repeatedPassword = userResponse.repeatedPassword;
-      this.timeZoneId = userResponse.timeZoneId;
-      this.personalDetails = userResponse.personalDetails;
-      this.appearance = userResponse.appearance;
-    }*/
-
 }

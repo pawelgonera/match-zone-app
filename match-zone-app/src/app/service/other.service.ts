@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {PersonalDetails} from "../model/personal-details";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class OtherService {
 
   constructor(private http: HttpClient) { }
 
-  getPersonalDetails(id: number): any {
+  getPersonalDetails(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/personal/${id}`);
   }
 

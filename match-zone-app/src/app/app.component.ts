@@ -13,7 +13,6 @@ export class AppComponent implements OnInit{
   info: any;
 
   constructor(private tokenService: TokenService, public router: Router) {
-    //this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
@@ -24,9 +23,7 @@ export class AppComponent implements OnInit{
     };
   }
 
-
   logOut() {
-    //localStorage.removeItem('currentUser');
     this.tokenService.signOut();
     this.router.navigate(['/login']);
   }

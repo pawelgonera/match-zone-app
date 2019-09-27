@@ -5,19 +5,16 @@ import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.repository.PersonalDetailsRepository;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 public class PersonalDetailsService {
 
-    private EntityManager entityManager;
     private PersonalDetailsRepository personalDetailsRepository;
 
-    public PersonalDetailsService(PersonalDetailsRepository personalDetailsRepository, EntityManager entityManager) {
+    public PersonalDetailsService(PersonalDetailsRepository personalDetailsRepository) {
         this.personalDetailsRepository = personalDetailsRepository;
-        this.entityManager = entityManager;
     }
 
     @Transactional

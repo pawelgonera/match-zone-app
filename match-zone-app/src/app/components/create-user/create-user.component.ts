@@ -13,10 +13,6 @@ import {Register} from "../../model/register";
 export class CreateUserComponent implements OnInit {
 
   user: User = new User();
-  //errorMessage: string;
-  //personalDetails: PersonalDetails = new PersonalDetails();
-  //appearance: Appearance = new Appearance();
-  //vote: Vote = new Vote();
   submitted = false;
   form: any = {};
   register: Register;
@@ -27,9 +23,6 @@ export class CreateUserComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
-    //this.user.personalDetails = this.personalDetails;
-    //this.user.appearance = this.appearance;
-    //this.user.vote = this.vote;
 
   }
 
@@ -64,10 +57,4 @@ export class CreateUserComponent implements OnInit {
     this.save();
   }
 
-  parseDate(dateString: string): Date {
-    if (dateString) {
-      return new Date(dateString);
-    }
-    return null;
-  }
 }

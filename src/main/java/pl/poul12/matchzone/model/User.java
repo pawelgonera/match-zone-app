@@ -1,5 +1,6 @@
 package pl.poul12.matchzone.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.*;
@@ -33,7 +34,7 @@ public class User {
     @Transient
     private String repeatedPassword;
     private String timeZoneId;
-    /*@JsonManagedReference
+    @JsonManagedReference
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private PersonalDetails personalDetails;
@@ -44,7 +45,7 @@ public class User {
     @JsonManagedReference
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
-    private Vote vote;*/
+    private Vote vote;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

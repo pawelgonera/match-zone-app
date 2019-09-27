@@ -1,6 +1,8 @@
 package pl.poul12.matchzone.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import pl.poul12.matchzone.model.enums.MaritalStatus;
 import pl.poul12.matchzone.model.enums.Religion;
 
@@ -19,7 +21,7 @@ public class PersonalDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate dateOfBirth;
-    @Basic(fetch=FetchType.EAGER)
+    @Type(type = "org.hibernate.type.ImageType")
     @Lob
     private byte[] photo;
     private Double rating;
@@ -29,7 +31,7 @@ public class PersonalDetails {
     private MaritalStatus maritalStatus;
     private String education;
     private Religion religion;
-    //@JsonBackReference
+    @JsonBackReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude

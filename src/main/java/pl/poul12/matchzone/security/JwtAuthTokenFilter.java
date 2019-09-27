@@ -31,10 +31,10 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwt(request);
             if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
-                System.out.println("Iam in doFilterInternal in JWTTokenFilter");
+                logger.info("Iam in doFilterInternal in JWTTokenFilter");
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
 
-                System.out.println("username form tokenprovider: " + username);
+                logger.info("username form tokenprovider: " + username);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -51,9 +51,9 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     private String getJwt(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
-        System.out.println("Iam in getJwt before if");
+        logger.info("Iam in getJwt before if");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            System.out.println("Iam in getJwt inside if");
+            logger.info("Iam in getJwt inside if");
             return authHeader.replace("Bearer ", "");
         }
 

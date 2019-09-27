@@ -18,12 +18,13 @@ export class UserDetailsComponent implements OnInit {
   id: number;
   user: User = new User();
   updated = false;
+  isChangeDataFailed = false;
+  errorMessage = '';
 
-  personalDetails: PersonalDetails;
-  appearance: Appearance;
-  vote: Vote;
+  personalDetails: PersonalDetails = new PersonalDetails();
+  appearance: Appearance = new Appearance();
+  vote: Vote = new Vote();
 
-  birthDate: Date;
   timeDifference: number;
   age: number;
 
@@ -84,7 +85,14 @@ export class UserDetailsComponent implements OnInit {
 
 
     this.userService.updateUser(this.id, this.user)
-      .subscribe(data => console.log(data), error => console.log(error));
+      .subscribe(data => {
+        console.log(data);
+        this.isChangeDataFailed = false;
+      }, error => {
+        console.log(error);
+        this.errorMessage = error.error.message;
+        this.isChangeDataFailed = true;
+      });
 
     this.otherService.updatePersonalDetails(this.id, this.personalDetails)
       .subscribe(data => console.log(data), error => console.log(error));
@@ -129,13 +137,6 @@ export class UserDetailsComponent implements OnInit {
     this.reloadData(this.id);
   }
 
-  parseDate(dateString: string): Date {
-    if (dateString) {
-      return new Date(dateString);
-    }
-    return null;
-  }
-
   public calculateAge(personalDetails): number {
     this.timeDifference = Math.abs(Date.now() - new Date(personalDetails.dateOfBirth).getTime());
     this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
@@ -153,7 +154,6 @@ export class UserDetailsComponent implements OnInit {
 
   getUser(){
     this.id = this.route.snapshot.params['id'];
-    console.log('snapshot id: ', this.id);
     return this.userService.getUser(this.id)
       .subscribe(data => {
         console.log('user from data', data);
@@ -175,8 +175,6 @@ export class UserDetailsComponent implements OnInit {
     this.otherService.updateVote(this.id, vote)
       .subscribe(data => console.log(data), error => console.log(error));
 
-    //this.reloadData(user.id);
   }
-
 
 }

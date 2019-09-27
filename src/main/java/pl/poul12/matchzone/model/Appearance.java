@@ -24,7 +24,7 @@ public class Appearance {
     private Physique physique;
     private String about;
     private String hobbies;
-    //@JsonBackReference
+    @JsonBackReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude

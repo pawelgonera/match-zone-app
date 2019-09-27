@@ -27,7 +27,6 @@ public class VoteController {
         return ResponseEntity.ok().body(vote);
     }
 
-
     @PutMapping("/vote/{id}")
     public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "id") Long userId, @Valid @RequestBody Vote vote) throws ResourceNotFoundException {
 

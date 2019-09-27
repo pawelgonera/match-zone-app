@@ -23,9 +23,9 @@ public class JwtProvider {
 
     @Transactional
     public String generateJwtToken(Authentication authentication) {
-        System.out.println("Iam in JwtProvider1");
+        logger.info("Iam in JwtProvider1");
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
-        System.out.println("Iam in JwtProvider2");
+        logger.info("Iam in JwtProvider2");
 
         return Jwts.builder()
                         .setSubject((userPrincipal.getUsername()))
@@ -56,7 +56,7 @@ public class JwtProvider {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        System.out.println("Iam in getUserNameFromJwtToken");
+        logger.info("Iam in getUserNameFromJwtToken");
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

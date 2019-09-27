@@ -1,13 +1,11 @@
 package pl.poul12.matchzone.service;
 
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +18,6 @@ import pl.poul12.matchzone.security.forms.RegisterForm;
 import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -29,7 +26,6 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    private EntityManager entityManager;
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -41,12 +37,11 @@ public class UserService {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsRepository personalDetailsRepository,
-                       AppearanceRepository appearanceRepository, VoteRepository voteRepository, EntityManager entityManager) {
+                       AppearanceRepository appearanceRepository, VoteRepository voteRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.personalDetailsRepository = personalDetailsRepository;
         this.appearanceRepository = appearanceRepository;
-        this.entityManager = entityManager;
         this.voteRepository = voteRepository;
     }
 
@@ -110,9 +105,11 @@ public class UserService {
 
     public User updateUser(Long id, User user) throws ResourceNotFoundException {
 
-        //User userFound = getUserById(id);
+        User userFound = getUserById(id);
 
-        return userRepository.save(user);
+        User userUpdated = updateUser(userFound, user);
+
+        return userRepository.save(userUpdated);
     }
 
     public Map<String, Boolean> deleteUser(Long id) throws ResourceNotFoundException {
@@ -124,7 +121,6 @@ public class UserService {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
-
 
     private User buildUser(RegisterForm registerUser){
 
@@ -146,6 +142,17 @@ public class UserService {
         voteRepository.save(vote);
 
         return user;
+    }
+
+    private User updateUser(User userFound, User user){
+
+        userFound.setUsername(user.getUsername());
+        userFound.setFirstName(user.getFirstName());
+        userFound.setPassword(passwordEncoder.encode(user.getPassword()));
+        userFound.setEmail(user.getEmail());
+        userFound.setTimeZoneId(user.getTimeZoneId());
+
+        return userFound;
     }
 
 

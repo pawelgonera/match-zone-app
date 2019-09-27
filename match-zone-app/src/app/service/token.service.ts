@@ -16,7 +16,6 @@ export class TokenService {
   }
 
   public saveToken(token: string) {
-    console.log('saveToken');
     window.sessionStorage.removeItem(TOKEN_KEY);
     window.sessionStorage.setItem(TOKEN_KEY, token);
   }
@@ -27,7 +26,6 @@ export class TokenService {
   }
 
   public saveUsername(username: string) {
-    console.log('saveUsername');
     window.sessionStorage.removeItem(USERNAME_KEY);
     window.sessionStorage.setItem(USERNAME_KEY, username);
   }
@@ -38,14 +36,12 @@ export class TokenService {
   }
 
   public saveAuthorities(authorities: string[]) {
-    console.log('saveAuthorities');
     window.sessionStorage.removeItem(AUTHORITIES_KEY);
     window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
   }
 
   public getAuthorities(): string[] {
     this.roles = [];
-    console.log('getAuthorities', sessionStorage.getItem(AUTHORITIES_KEY));
     if (sessionStorage.getItem(TOKEN_KEY)) {
       console.log('getAuthorities -> if get token', sessionStorage.getItem(AUTHORITIES_KEY));
       JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)).forEach(authority => {
