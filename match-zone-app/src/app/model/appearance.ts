@@ -1,6 +1,6 @@
-import {Eyes} from "./eyes";
-import {HairColour} from "../../hair-colour";
-import {Physique} from "./physique";
+import {Eyes} from "./enum/eyes";
+import {HairColour} from "./enum/hair-colour";
+import {Physique} from "./enum/physique";
 import {User} from "./user";
 
 export class Appearance {

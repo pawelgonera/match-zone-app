@@ -7,19 +7,27 @@ import {PersonalDetails} from "../../model/personal-details";
 import {Appearance} from "../../model/appearance";
 import {Vote} from "../../model/vote";
 import {OtherService} from "../../service/other.service";
+import {TokenService} from "../../service/token.service";
+import { filter } from 'rxjs/operators';
+import {Observable} from 'rxjs/'
+import {Rating} from "../../model/rating";
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
 })
-export class UserDetailsComponent implements OnInit {
+export class UserDetailsComponent implements OnInit{
 
   id: number;
   user: User = new User();
   updated = false;
   isChangeDataFailed = false;
   errorMessage = '';
+
+  usernameFromToken: string;
+  usernameFromSnapshot: string;
+  allowAccess = false;
 
   personalDetails: PersonalDetails = new PersonalDetails();
   appearance: Appearance = new Appearance();
@@ -33,25 +41,71 @@ export class UserDetailsComponent implements OnInit {
 
   currentRate = 0;
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private http: HttpClient, private otherService: OtherService) {
+  isVoted = false;
+  //countedVotes: number;
+  //sumOfVotes: number;
+  rating: Rating = new Rating();
+
+  username: string;
+
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService,
+              private http: HttpClient, private otherService: OtherService, private tokenService: TokenService) {
   }
 
   ngOnInit() {
+
     this.id = this.route.snapshot.params['id'];
 
     this.getUser();
 
+    this.usernameFromToken = this.tokenService.getUsername();
+
     this.loadPersonalDetails(this.id);
     this.loadAppearance(this.id);
-    this.loadVote(this.id);
+
+    this.otherService.checkIfLoggedUserVoted(this.id, this.usernameFromToken).subscribe((isvoted: boolean) => {
+      this.isVoted = isvoted;
+      console.log('isVotedIn', this.isVoted);
+    });
+    console.log('isVotedOut', this.isVoted);
 
     this.reloadData(this.id);
+  }
+
+  checkIfLoggedUserVoted(){
+
+    this.otherService.getVotesAuthors(this.id).pipe(filter(name => name.toString() === this.usernameFromToken.toString()))
+      .subscribe(name => {
+        this.username = name;
+        if(this.username.toString() === this.usernameFromToken)
+        {
+          console.log('if done');
+          this.isVoted = true;
+        }
+        console.log('username from usernames: ', this.username.toString(), this.isVoted);
+      });
+
+
+
+    //this.usernames.subscribe(names => console.log('names: ', names));
+
+    /*this.usernames.pipe(filter(name => name.toString() === this.usernameFromToken.toString()))
+      .subscribe(name => {
+        this.username = name;
+        if(this.username.toString() === this.usernameFromToken)
+        {
+          console.log('if done');
+          this.isVoted = true;
+        }
+        console.log('username from usernames: ', this.username.toString(), this.isVoted);
+      });*/
+
   }
 
   loadPersonalDetails(id){
     return this.otherService.getPersonalDetails(id)
       .subscribe(data => {
-          console.log(data);
+          console.log('personalDetails: ', data);
           this.personalDetails = data;
         },
         error => console.log(error));
@@ -60,17 +114,8 @@ export class UserDetailsComponent implements OnInit {
   loadAppearance(id){
     return this.otherService.getAppearance(id)
       .subscribe(data => {
-          console.log(data);
+          console.log('appearance: ', data);
           this.appearance = data;
-        },
-        error => console.log(error));
-  }
-
-  loadVote(id){
-    return   this.otherService.getVote(id)
-      .subscribe(data => {
-          console.log(data);
-          this.vote = data;
         },
         error => console.log(error));
   }
@@ -79,14 +124,14 @@ export class UserDetailsComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.userService.getUser(this.id)
       .subscribe(data => {
-        console.log(data);
+        console.log('userToUpdate: ', data);
         this.user = data;
       }, error => console.log(error));
 
 
     this.userService.updateUser(this.id, this.user)
       .subscribe(data => {
-        console.log(data);
+        console.log('updatedUser: ', data);
         this.isChangeDataFailed = false;
       }, error => {
         console.log(error);
@@ -95,10 +140,10 @@ export class UserDetailsComponent implements OnInit {
       });
 
     this.otherService.updatePersonalDetails(this.id, this.personalDetails)
-      .subscribe(data => console.log(data), error => console.log(error));
+      .subscribe(data => console.log('updatedPersonalDetails: ', data), error => console.log(error));
 
     this.otherService.updateAppearance(this.id, this.appearance)
-      .subscribe(data => console.log(data), error => console.log(error));
+      .subscribe(data => console.log('updatedAppearance: ', data), error => console.log(error));
 
     this.reloadData(this.id);
   }
@@ -110,8 +155,8 @@ export class UserDetailsComponent implements OnInit {
 
   onFileSelected(event){
     this.selectedFiles = event.target.files;
-    console.log(event);
-    console.log(this.selectedFile);
+    console.log('event(file): ', event);
+    console.log('selectedFiles:', this.selectedFile);
   }
 
   onUpload(){
@@ -156,24 +201,43 @@ export class UserDetailsComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     return this.userService.getUser(this.id)
       .subscribe(data => {
-        console.log('user from data', data);
         this.user = data;
+        this.usernameFromSnapshot = this.user.username;
+        if(this.usernameFromToken){
+          if(this.usernameFromToken === this.usernameFromSnapshot){
+            this.allowAccess = true;
+            console.log('ACCESS: ', this.allowAccess);
+          }
+        }
       }, error => console.log(error));
 
   }
 
   onVote(vote: Vote){
-    let votes = vote.countedVotes;
-    let sum = vote.sumOfVotes;
-    votes++;
-    sum += this.currentRate;
-    console.log(sum);
-    vote.rating = sum / votes;
-    vote.countedVotes = votes;
-    vote.sumOfVotes = sum;
 
-    this.otherService.updateVote(this.id, vote)
-      .subscribe(data => console.log(data), error => console.log(error));
+    vote.value = this.currentRate;
+    vote.author = this.usernameFromToken;
+
+    this.otherService.addVote(this.id, vote)
+      .subscribe(data => {
+        console.log('addedVote: ', data);
+      }, err => {
+        console.log(err);
+      });
+
+    this.otherService.getRatingInfo(this.id).subscribe( rating => {
+      this.rating = rating;
+      console.log('ratingInfo: ', rating);
+
+      this.rating.countedVotes++;
+      this.rating.sumOfVotes += this.currentRate;
+      this.personalDetails.rating = this.rating.sumOfVotes / this.rating.countedVotes;
+
+      this.otherService.updatePersonalDetails(this.id, this.personalDetails)
+        .subscribe(data => console.log('updatedPersonalDetailsForRating: ', data), error => console.log(error));
+    }, error => console.log(error));
+
+    this.reloadData(this.id);
 
   }
 

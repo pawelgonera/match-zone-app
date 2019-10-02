@@ -21,7 +21,6 @@ export class TokenService {
   }
 
   public getToken(): string {
-    console.log('getToken', sessionStorage.getItem(TOKEN_KEY));
     return sessionStorage.getItem(TOKEN_KEY);
   }
 
@@ -43,7 +42,6 @@ export class TokenService {
   public getAuthorities(): string[] {
     this.roles = [];
     if (sessionStorage.getItem(TOKEN_KEY)) {
-      console.log('getAuthorities -> if get token', sessionStorage.getItem(AUTHORITIES_KEY));
       JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)).forEach(authority => {
         this.roles.push(authority.authority);
       });

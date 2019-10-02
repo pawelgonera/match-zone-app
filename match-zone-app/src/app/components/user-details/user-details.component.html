@@ -15,7 +15,7 @@
             <li class="nav-item">
               <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="allowAccess">
               <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
             </li>
           </ul>
@@ -349,25 +349,47 @@
           <img *ngIf="personalDetails.photo" src="data:image/png;base64,{{personalDetails.photo}}" class="mx-auto img-fluid img-circle d-block shadow" alt="avatar">
           <h6 class="mt-2">{{user.firstName}}, {{calculateAge(personalDetails)}} years old</h6>
 
-          <label for="File" class=" col-form-label form-control-label">
-            <input type="file" id="File" class="custom-file-input" (change)="onFileSelected($event)">
-            <span class="custom-file-control btn btn-primary">Change avatar</span>
-          </label>
+          <br>
+
+          <div *ngIf="allowAccess; else beforeVote">
+
+            <label for="File" class=" col-form-label form-control-label">
+              <input type="file" id="File" class="custom-file-input" (change)="onFileSelected($event)">
+              <span class="custom-file-control btn btn-primary">Change avatar</span>
+            </label>
             <button type="button" class="btn btn-success" [disabled]="!selectedFiles" (click)="onUpload()">Upload</button>
 
+            <h3>Rate</h3>
+            <hr>
+            <h1>{{personalDetails.rating | number: '1.1-1'}}</h1>
+          </div>
 
-          <br><br>
-          <h3>Rate</h3>
-          <ngb-rating [(rate)]="currentRate" max="6" >
-            <ng-template let-fill="fill" let-index="index" >
-              <span class="star" [class.filled]="fill === 100"
-                    [class.star-size-0]="index == 0" [class.star-size-1]="index == 1" [class.star-size-2]="index == 2" [class.star-size-3]="index == 3"
-                    [class.star-size-4]="index == 4" [class.star-size-5]="index == 5">&#9733;</span>
+          <ng-template #beforeVote>
+
+            <div *ngIf="isVoted; else notVotedYet">
+              <h3>Rate</h3>
+              <hr>
+              <h1>{{personalDetails.rating  | number: '1.1-1'}}</h1>
+            </div>
+
+            <ng-template #notVotedYet>
+              <h3>Rate</h3>
+              <hr>
+              <h1>{{personalDetails.rating | number: '1.1-1'}}</h1>
+              <ngb-rating [(rate)]="currentRate" max="6" >
+                <ng-template let-fill="fill" let-index="index" >
+                  <span class="star" [class.filled]="fill === 100"
+                        [class.star-size-0]="index == 0" [class.star-size-1]="index == 1" [class.star-size-2]="index == 2" [class.star-size-3]="index == 3"
+                        [class.star-size-4]="index == 4" [class.star-size-5]="index == 5">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+              <hr>
+              <button type="button" class="btn btn-success" (click)="onVote(vote)">Vote</button>
+              <pre class="text-right">Rate: <b> {{vote.value}} </b></pre>
             </ng-template>
-          </ngb-rating>
-          <hr>
-          <button type="button" class="btn btn-success" (click)="onVote(vote)">Vote</button>
-          <pre class="text-right">Rate: <b> {{vote.rating}} </b></pre>
+
+          </ng-template>
+
 
         </div>
 

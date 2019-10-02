@@ -13,12 +13,14 @@
     <li class="nav-item">
       <a class="nav-link" href="#">CONTACT</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link nav-link-custom" href="#"><i class="fas fa-user mr-1"></i> SIGN IN</a>
+    <li class="nav-item" *ngIf="isLoggedIn; else loggedOut">
+      <a class="nav-link nav-link-custom" (click)="logOut()"><i class="fas fa-user mr-1"></i> LOG OUT</a>
     </li>
-    <li>
-      <button class="glyphicon glyphicon-log-in btn btn-danger" (click)="logOut()"> LogOut</button>
+    <ng-template #loggedOut>
+    <li >
+      <a class="nav-link nav-link-custom" routerLink="login"><i class="fas fa-user mr-1"></i> SIGN IN</a>
     </li>
+    </ng-template>
   </ul>
 
 </div>

@@ -15,12 +15,11 @@ public class Vote{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long sumOfVotes;
-    private Integer countedVotes;
-    private Double rating;
+    private Integer value;
+    private String author;
     @JsonBackReference
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_user")
     @EqualsAndHashCode.Exclude
-    User user;
+    private User user;
 }

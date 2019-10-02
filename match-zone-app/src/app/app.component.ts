@@ -11,6 +11,7 @@ export class AppComponent implements OnInit{
   title = 'match-zone-app';
 
   info: any;
+  isLoggedIn = false;
 
   constructor(private tokenService: TokenService, public router: Router) {
   }
@@ -21,9 +22,16 @@ export class AppComponent implements OnInit{
       username: this.tokenService.getUsername(),
       authorities: this.tokenService.getAuthorities()
     };
+
+    console.log('isLoggedIn in onInit()', this.isLoggedIn);
+    if(this.info.token){
+      this.isLoggedIn = true;
+    }
   }
 
   logOut() {
+    console.log('isLoggedIn in logOut()', this.isLoggedIn);
+    this.isLoggedIn = false;
     this.tokenService.signOut();
     this.router.navigate(['/login']);
   }

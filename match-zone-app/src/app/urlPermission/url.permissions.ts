@@ -9,7 +9,6 @@ export class UrlPermission implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = this.tokenService.getToken();
-    console.log(token);
     if (token) {
       return true;
     }

@@ -4,6 +4,7 @@ import {AuthenticationService} from "../../service/authentication.service";
 import {Router} from "@angular/router";
 import {Login} from "../../model/login";
 import {TokenService} from "../../service/token.service";
+import {AppComponent} from "../../app.component";
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
   private login: Login;
+
 
   constructor(private authService: AuthenticationService, private router: Router, private tokenService: TokenService) { }
 
@@ -47,7 +49,8 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenService.getAuthorities();
-        //this.reloadData();
+        this.reloadData();
+
       },
       error => {
         console.log(error);

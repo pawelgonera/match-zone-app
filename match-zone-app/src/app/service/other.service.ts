@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {Vote} from "../model/vote";
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +33,39 @@ export class OtherService {
   }
 
   getVote(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/vote/${id}`);
+    return this.http.get(`${this.baseUrl}/votes/${id}`);
+  }
+
+  getAllVotes(): Observable<any>{
+    return this.http.get(`${this.baseUrl}/votes`);
+  }
+
+  getCountVotes(id: number){
+    return this.http.get<number>(`${this.baseUrl}/votes/count/${id}`);
+  }
+
+  getSumOfVotes(id: number){
+    return this.http.get<number>(`${this.baseUrl}/votes/sum/${id}`);
+  }
+
+  getRatingInfo(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/votes/rating-info/${id}`);
+  }
+
+  addVote(id: number, vote: Vote): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/votes/${id}`, vote, httpOptions);
+  }
+
+  getVotesAuthors(id: number): Observable<any>{
+    return this.http.get(`${this.baseUrl}/votes/names/${id}`);
+  }
+
+  checkIfLoggedUserVoted(id: number, username: string){
+    return this.http.get(`${this.baseUrl}/votes/is-voted/${id}/${username}`);
   }
 
   updateVote(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/vote/${id}`, value);
+    return this.http.put(`${this.baseUrl}/votes/${id}`, value);
   }
 
 }

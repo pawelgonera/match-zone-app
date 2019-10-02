@@ -38,6 +38,7 @@ public class PersonalDetailsService {
         personalDetailsFound.setCity(personalDetails.getCity());
         personalDetailsFound.setCountry(personalDetails.getCountry());
         personalDetailsFound.setDateOfBirth(personalDetails.getDateOfBirth());
+        personalDetailsFound.setRating(personalDetails.getRating());
 
         return personalDetailsRepository.save(personalDetailsFound);
     }

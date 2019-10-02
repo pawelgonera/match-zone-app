@@ -12,6 +12,6 @@ export class User{
     timeZoneId: string;
     personalDetails: PersonalDetails;
     appearance: Appearance;
-    vote: Vote;
+    votes: Vote[];
 
 }

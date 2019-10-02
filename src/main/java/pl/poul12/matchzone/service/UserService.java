@@ -134,12 +134,9 @@ public class UserService {
         personalDetails.setUser(user);
         Appearance appearance = new Appearance();
         appearance.setUser(user);
-        Vote vote = new Vote();
-        vote.setUser(user);
 
         personalDetailsRepository.save(personalDetails);
         appearanceRepository.save(appearance);
-        voteRepository.save(vote);
 
         return user;
     }
