@@ -5,7 +5,8 @@
     <div class="col-sm-3 shadow-sm">
 
       <div class="container">
-        <form action="#">
+
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
 
           <h3 class="text-center border-bottom">Filters</h3>
 
@@ -14,7 +15,7 @@
           <p class="border-bottom"><b>Name</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="search" class="form-check-input" name="name">
+              <input type="search" class="form-check-input" name="name" ngModel>
             </label>
           </div>
 
@@ -23,12 +24,12 @@
           <p class="border-bottom"><b>Gender</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="gender" value="man"><small>Man</small>
+              <input type="radio" class="form-check-input" name="gender" ngModel value="MALE"><small>Man</small>
             </label>
           </div>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="gender" value="woman"><small>Woman</small>
+              <input type="radio" class="form-check-input" name="gender" ngModel value="FEMALE"><small>Woman</small>
             </label>
           </div>
 
@@ -37,12 +38,12 @@
           <p class="border-bottom"><b>Age</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" min="18" max="75" step="1" name="ageMin">
+              <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMin">
             </label>
           </div>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" min="18" max="75" step="1" name="ageMax">
+              <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMax">
             </label>
           </div>
 
@@ -51,15 +52,17 @@
           <p class="border-bottom"><b>City</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="search" class="form-check-input" name="city">
+              <input type="search" class="form-check-input" name="city" ngModel>
             </label>
           </div>
 
           <br><br>
-
-          <button type="submit" class="btn btn-success btn-block">Apply</button>
+          <input type="reset" class="btn btn-secondary" value="Reset">
+          <button type="submit" class="btn btn-success">Apply</button>
+          <br><br>
 
         </form>
+
       </div>
 
     </div>
@@ -76,7 +79,7 @@
                <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title">{{user.firstName}}</h5>
-                  <p>{{calculateAge(user.personalDetails)}} years old, {{user.personalDetails.city}}</p>
+                  <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
                   <small>{{user.appearance.about}}</small>
                   <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
                 </div>

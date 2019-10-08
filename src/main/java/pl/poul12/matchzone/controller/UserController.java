@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
 
 import pl.poul12.matchzone.model.User;
+import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.security.JwtProvider;
 import pl.poul12.matchzone.security.JwtResponse;
 import pl.poul12.matchzone.security.forms.LoginForm;
@@ -114,5 +115,11 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
+    @PostMapping("/users/filter")
+    public List<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
+
+        logger.error("Am in userController with: {}", filterForm);
+        return userService.filterUserList(filterForm);
+    }
 
 }

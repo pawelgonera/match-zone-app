@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Register} from "../model/register";
+import {Filter} from "../model/filter";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -34,5 +35,9 @@ export class UserService {
 
   getUsersList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
+  }
+
+  getFilteredUserList(filter: Filter): Observable<any> {
+    return this.http.post(`${this.baseUrl}/filter`, filter, httpOptions);
   }
 }

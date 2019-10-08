@@ -60,11 +60,4 @@ public class VoteController {
         return voteService.checkIfLoggedUserVoted(userId, usernameLogged);
     }
 
-    /*@PutMapping("/vote/{id}")
-    public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "id") Long userId, @Valid @RequestBody Vote vote) throws ResourceNotFoundException {
-
-        Vote updatedVote =  voteService.updateVote(userId, vote);
-
-        return ResponseEntity.ok(updatedVote);
-    }*/
 }

@@ -16,12 +16,13 @@ import javax.persistence.*;
 public class Appearance {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Eyes eyes;
     private HairColour hairColour;
     private Short height;
     private Physique physique;
+    @Column(length = 500)
     private String about;
     private String hobbies;
     @JsonBackReference
@@ -29,4 +30,17 @@ public class Appearance {
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     User user;
+
+    @Override
+    public String toString() {
+        return "Appearance{" +
+                "id=" + id +
+                ", eyes=" + eyes +
+                ", hairColour=" + hairColour +
+                ", height=" + height +
+                ", physique=" + physique +
+                ", about='" + about + '\'' +
+                ", hobbies='" + hobbies + '\'' +
+                '}';
+    }
 }

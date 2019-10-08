@@ -12,14 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.*;
 import pl.poul12.matchzone.model.enums.RoleName;
+import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.repository.*;
 import pl.poul12.matchzone.security.forms.RegisterForm;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -122,6 +123,54 @@ public class UserService {
         return response;
     }
 
+    public List<User> filterUserList(FilterForm filterForm) {
+
+        List<User> users = new ArrayList<>();
+
+        if (!filterForm.getName().isEmpty()) {
+            users = userRepository.findAllByFirstNameStartingWithIgnoreCase(filterForm.getName());
+        }
+
+        if (filterForm.getGender().ordinal() != 2) {
+            if (!filterForm.getName().isEmpty()) {
+                users = users.stream()
+                        .filter(user -> user.getPersonalDetails().getGender().equals(filterForm.getGender()))
+                        .collect(Collectors.toList());
+            } else {
+                users = userRepository.findAllByPersonalDetails_Gender(filterForm.getGender());
+            }
+        }
+
+        if (filterForm.getAgeMin() != 0 || filterForm.getAgeMax() != 0) {
+            if (filterForm.getAgeMax() == 0) {
+                filterForm.setAgeMax(filterForm.getAgeMin());
+            }
+
+            if (!filterForm.getName().isEmpty() || filterForm.getGender().ordinal() != 2) {
+                users = users.stream()
+                        .filter(user -> user.getPersonalDetails().getAge() > filterForm.getAgeMin() && user.getPersonalDetails().getAge() < filterForm.getAgeMax())
+                        .collect(Collectors.toList());
+            } else {
+                users = userRepository.findAllByPersonalDetails_AgeBetween(filterForm.getAgeMin(), filterForm.getAgeMax());
+            }
+        }
+
+        if (!filterForm.getCity().isEmpty()) {
+            if (!filterForm.getName().isEmpty() || filterForm.getGender().ordinal() != 2 || filterForm.getAgeMin() != 0 || filterForm.getAgeMax() != 0) {
+                users.forEach(user -> System.out.println(user.getPersonalDetails().getCity()));
+                users = users.stream()
+                        .filter(user -> user.getPersonalDetails().getCity().equals(filterForm.getCity()))
+                        .collect(Collectors.toList());
+            } else {
+                users = userRepository.findAllByPersonalDetails_City(filterForm.getCity());
+            }
+        }
+
+        logger.info("Value from all: {}", users.size());
+
+        return users;
+    }
+
     private User buildUser(RegisterForm registerUser){
 
         User user = new User();
@@ -131,6 +180,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(registerUser.getPassword()));
         PersonalDetails personalDetails = new PersonalDetails();
         personalDetails.setDateOfBirth(LocalDate.parse(registerUser.getDateOfBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        personalDetails.setAge(registerUser.getAge());
+        personalDetails.setGender(personalDetails.getGender());
         personalDetails.setUser(user);
         Appearance appearance = new Appearance();
         appearance.setUser(user);

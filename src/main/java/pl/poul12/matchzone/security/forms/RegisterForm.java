@@ -2,6 +2,7 @@ package pl.poul12.matchzone.security.forms;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.poul12.matchzone.model.enums.Gender;
 
 import java.util.Set;
 
@@ -35,5 +36,11 @@ public class RegisterForm {
 
     @NotBlank
     private String dateOfBirth;
+
+    @NotNull
+    private Integer age;
+
+    @NotNull
+    private Gender gender;
 
 }

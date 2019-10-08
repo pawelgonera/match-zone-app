@@ -31,6 +31,7 @@ public class PersonalDetailsService {
         PersonalDetails personalDetailsFound = personalDetailsRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("PersonalDetails not found for this id: " + userId));
 
+        personalDetailsFound.setGender(personalDetails.getGender());
         personalDetailsFound.setReligion(personalDetails.getReligion());
         personalDetailsFound.setOccupation(personalDetails.getOccupation());
         personalDetailsFound.setMaritalStatus(personalDetails.getMaritalStatus());

@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
 import {Register} from "../../model/register";
+import {UserDetailsComponent} from "../user-details/user-details.component";
 
 
 @Component({
@@ -19,8 +20,9 @@ export class CreateUserComponent implements OnInit {
   isSignedUp = false;
   isSignUpFailed = false;
   errorMessage = '';
+  age: number;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private userDetailsComponent: UserDetailsComponent) { }
 
   ngOnInit() {
 
@@ -35,7 +37,8 @@ export class CreateUserComponent implements OnInit {
       this.form.email,
       this.form.password,
       this.form.repeatedPassword,
-      this.form.dateOfBirth
+      this.form.dateOfBirth,
+      this.age = this.calculateAge(this.form.dateOfBirth)
       );
 
     this.userService.createUser(this.register)
@@ -50,6 +53,12 @@ export class CreateUserComponent implements OnInit {
         this.isSignUpFailed = true;
       }
     );
+  }
+
+  public calculateAge(dateOfBirth): number {
+
+    let timeDifference = Math.abs(Date.now() - new Date(dateOfBirth).getTime());
+    return Math.floor(timeDifference / (1000 * 3600 * 24) / 365.25);
   }
 
   onSubmit() {

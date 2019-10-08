@@ -142,6 +142,15 @@
                   </div>
                 </div>
                 <div class="form-group row">
+                  <label for="Gender" class="col-lg-3 col-form-label form-control-label">Gender</label>
+                  <div class="col-lg-9">
+                    <select id="Gender" class="form-control" size="0" [(ngModel)]="personalDetails.gender" name="gender">
+                      <option value="MALE">Male</option>
+                      <option value="FEMALE">Female</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
                   <label for="Country" class="col-lg-3 col-form-label form-control-label">Country</label>
                   <div class="col-lg-9">
                     <input class="form-control" id="Country" type="text" required [(ngModel)]="personalDetails.country" name="country">
@@ -244,11 +253,11 @@
                 </div>
                 <div class="form-group">
                   <label for="WriteAboutYourself">Write about yourself</label>
-                  <textarea class="form-control" id="WriteAboutYourself" rows="3" [(ngModel)]="appearance.about" name="about"></textarea>
+                  <textarea class="form-control" id="WriteAboutYourself" rows="3" [(ngModel)]="appearance.about" name="about" placeholder="Max 500 signs" [maxLength]="500"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="Hobbies">Hobbies</label>
-                  <textarea class="form-control" id="Hobbies" rows="3" [(ngModel)]="appearance.hobbies" name="hobbies"></textarea>
+                  <textarea class="form-control" id="Hobbies" rows="3" [(ngModel)]="appearance.hobbies" name="hobbies" placeholder="Max 256 signs" [maxLength]="256"></textarea>
                 </div>
                 <br><br>
 
@@ -271,29 +280,30 @@
                   <label for="TimeZone" class="col-lg-3 col-form-label form-control-label">Time Zone</label>
                   <div class="col-lg-9">
                     <select id="TimeZone" class="form-control" size="0" [(ngModel)]="user.timeZoneId" name="timeZoneId">
-                      <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                      <option value="Alaska">(GMT-09:00) Alaska</option>
-                      <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                      <option value="Arizona">(GMT-07:00) Arizona</option>
-                      <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                      <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                      <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                      <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                      <option value="Atlantic Standard Time (Canada)">(GMT-04:00) Atlantic Standard Time (Canada)</option>
-                      <option value="Argentina Time">(GMT-03:00) Argentina Time</option>
-                      <option value="Azores Time">(GMT-02:00) Azores Time</option>
+                      <option value="US/Hawaii">(GMT-10:00) Hawaii</option>
+                      <option value="US/Alaska">(GMT-09:00) Alaska</option>
+                      <option value="Canada/Pacific">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                      <option value="US/Arizona">(GMT-07:00) Arizona</option>
+                      <option value="US/Mountain">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                      <option value="US/Central">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                      <option value="Canada/Eastern">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                      <option value="US/East-Indiana">(GMT-05:00) Indiana (East)</option>
+                      <option value="Canada/Atlantic">(GMT-04:00) Atlantic Standard Time (Canada)</option>
+                      <option value="America/Argentina">(GMT-03:00) Argentina Time</option>
+                      <option value="Atlantic/Azores">(GMT-02:00) Azores Time</option>
                       <option value="West Africa Time">(GMT-01:00) West Africa Time</option>
-                      <option value="Central European Time">(GMT+01:00) Central European Time</option>
-                      <option value="Eastern European Time">(GMT+02:00) Eastern European Time (Kaliningrad)</option>
-                      <option value="Moscow Time">(GMT+03:00) Moscow Time</option>
-                      <option value="Caucasus Time">(GMT+04:00) Samara, Armenia, Azerbaidjan, Georgia, Mauritius Times</option>
+                      <option value="Etc/Greenwich">(GMT-00:00) Greenwich Time (ETC)</option>
+                      <option value="Europe/Warsaw" selected="selected">(GMT+01:00) Central European Time (Warsaw)</option>
+                      <option value="Europe/Kaliningrad">(GMT+02:00) Eastern European Time (Kaliningrad)</option>
+                      <option value="Europe/Moscow">(GMT+03:00) Moscow Time</option>
+                      <option value="Europe/Samara">(GMT+04:00) Samara, Armenia, Azerbaidjan, Georgia, Mauritius Times</option>
                       <option value="Pakistan Standard Time">(GMT+05:00) Pakistan Standard Time</option>
                       <option value="Bangladesh Standard Time">(GMT+06:00) Bangladesh Standard Time</option>
                       <option value="Christmas Island Time (Australia)">(GMT+07:00) Christmas Island Time (Australia)</option>
                       <option value="China Standard Time">(GMT+08:00) China Standard Time</option>
-                      <option value="Japan Standard Time">(GMT+09:00) Japan Standard Time</option>
+                      <option value="Japan">(GMT+09:00) Japan Standard Time</option>
                       <option value="East Australian Standard Time">(GMT+10:00) East Australian Standard Time</option>
-                      <option value="Sakhalin Time">(GMT+11:00) Sakhalin Time</option>
+                      <option value="Asia/Sakhalin">(GMT+11:00) Sakhalin Time</option>
                       <option value="New Zealand Standard Time">(GMT+12:00) New Zealand Standard Time</option>
                     </select>
                   </div>
@@ -347,7 +357,7 @@
 
         <div class="col-lg-4 order-lg-1 text-center">
           <img *ngIf="personalDetails.photo" src="data:image/png;base64,{{personalDetails.photo}}" class="mx-auto img-fluid img-circle d-block shadow" alt="avatar">
-          <h6 class="mt-2">{{user.firstName}}, {{calculateAge(personalDetails)}} years old</h6>
+          <h6 class="mt-2">{{user.firstName}}, {{personalDetails.age}} years old</h6>
 
           <br>
 

@@ -33,17 +33,12 @@ export class UserDetailsComponent implements OnInit{
   appearance: Appearance = new Appearance();
   vote: Vote = new Vote();
 
-  timeDifference: number;
-  age: number;
-
   selectedFiles: FileList;
   selectedFile: File = null;
 
   currentRate = 0;
 
   isVoted = false;
-  //countedVotes: number;
-  //sumOfVotes: number;
   rating: Rating = new Rating();
 
   username: string;
@@ -70,36 +65,6 @@ export class UserDetailsComponent implements OnInit{
     console.log('isVotedOut', this.isVoted);
 
     this.reloadData(this.id);
-  }
-
-  checkIfLoggedUserVoted(){
-
-    this.otherService.getVotesAuthors(this.id).pipe(filter(name => name.toString() === this.usernameFromToken.toString()))
-      .subscribe(name => {
-        this.username = name;
-        if(this.username.toString() === this.usernameFromToken)
-        {
-          console.log('if done');
-          this.isVoted = true;
-        }
-        console.log('username from usernames: ', this.username.toString(), this.isVoted);
-      });
-
-
-
-    //this.usernames.subscribe(names => console.log('names: ', names));
-
-    /*this.usernames.pipe(filter(name => name.toString() === this.usernameFromToken.toString()))
-      .subscribe(name => {
-        this.username = name;
-        if(this.username.toString() === this.usernameFromToken)
-        {
-          console.log('if done');
-          this.isVoted = true;
-        }
-        console.log('username from usernames: ', this.username.toString(), this.isVoted);
-      });*/
-
   }
 
   loadPersonalDetails(id){
@@ -182,12 +147,12 @@ export class UserDetailsComponent implements OnInit{
     this.reloadData(this.id);
   }
 
-  public calculateAge(personalDetails): number {
+  /*public calculateAge(personalDetails): number {
     this.timeDifference = Math.abs(Date.now() - new Date(personalDetails.dateOfBirth).getTime());
     this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
 
     return this.age;
-  }
+  }*/
 
   reloadData(id: number) {
     this.router.navigate(['profile', id]);

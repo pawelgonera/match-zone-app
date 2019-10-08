@@ -44,7 +44,7 @@
 
   <div class="container">
 
-    <ul class="list-unstyled list-inline text-center py-2">
+    <ul class="list-unstyled list-inline text-center py-2" *ngIf="!isLoggedIn; else loggedIn">
       <li class="list-inline-item">
         <h5 class="mb-1">Register for free</h5>
       </li>
@@ -52,6 +52,16 @@
         <a routerLink="register"  class="btn btn-outline-pink btn-rounded">Sign up!</a>
       </li>
     </ul>
+    <ng-template #loggedIn>
+      <ul class="list-unstyled list-inline text-center py-2">
+        <li>
+          <h5 class="mb-1">Welcome</h5>
+        </li>
+        <li>
+          <h6 class="mb-1">Find you match today !</h6>
+        </li>
+      </ul>
+    </ng-template>
 
   </div>
 
