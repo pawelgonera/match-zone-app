@@ -5,6 +5,7 @@ import {Component, OnInit} from "@angular/core";
 import { Router } from '@angular/router';
 import {NgForm} from "@angular/forms";
 import {Filter} from "../../model/filter";
+import {PageUser} from "../../model/page-user";
 
 @Component({
   selector: "app-user-list",
@@ -14,21 +15,22 @@ import {Filter} from "../../model/filter";
 export class UserListComponent implements OnInit {
 
   users: Observable<User[]>;
+  pageUser: PageUser;
+  selectedPage: number = 0;
   filter: Filter;
 
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {
 
-
-    this.reloadData();
+    this.getPageUser(0);
   }
 
   reloadData() {
     this.users = this.userService.getUsersList();
   }
 
-  onSubmit(form: NgForm){
+  onSubmit(form: NgForm, page: number){
 
     console.log(form.value);
 
@@ -37,6 +39,11 @@ export class UserListComponent implements OnInit {
     let ageMax = 0;
     let gender = 2;
     let city = '';
+    this.selectedPage = page;
+    this.pageUser.page = this.selectedPage;
+    this.pageUser.size = 6;
+    this.pageUser.direction = 'ASC';
+    this.pageUser.sort = 'firstName';
 
     if(form.value.name === null){
       name = '';
@@ -78,16 +85,31 @@ export class UserListComponent implements OnInit {
       gender,
       ageMin,
       ageMax,
-      city
+      city,
+      this.pageUser
     );
 
-    this.users = this.userService.getFilteredUserList(this.filter);
-      /*.subscribe( data => {
-        console.log('filter: ', data);
-        this.users = data;
-      }, error => {
-        console.log(error);
-      });*/
+    this.userService.getFilteredUserList(this.filter).subscribe(response => {
+      console.log('filtered pageUser', response);
+      this.pageUser = response
+    }, error => {
+      console.log('filtered pageable error: ', error);
+    });
+  }
+
+  getPageUser(page: number): void{
+    this.userService.getPageUser(page).subscribe(data => {
+      console.log("pageUser data: ", data);
+      this.pageUser = data;
+    }, error => {
+      console.log('pageable error: ', error);
+    })
+  }
+
+  onSelect(page: number): void{
+    console.log('selected page: ', page);
+    this.selectedPage = page;
+    this.getPageUser(page);
   }
 
   deleteUser(id: number) {

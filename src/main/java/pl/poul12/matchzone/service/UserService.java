@@ -2,6 +2,7 @@ package pl.poul12.matchzone.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,24 +32,31 @@ public class UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
+    private PagingUserRepository pagingUserRepository;
+
     private PersonalDetailsRepository personalDetailsRepository;
     private AppearanceRepository appearanceRepository;
-    private VoteRepository voteRepository;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsRepository personalDetailsRepository,
-                       AppearanceRepository appearanceRepository, VoteRepository voteRepository) {
+                       AppearanceRepository appearanceRepository, PagingUserRepository pagingUserRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.personalDetailsRepository = personalDetailsRepository;
         this.appearanceRepository = appearanceRepository;
-        this.voteRepository = voteRepository;
+        this.pagingUserRepository = pagingUserRepository;
     }
 
     public List<User> getAllUsers(){
 
         return userRepository.findAll();
+    }
+
+    public Page<User> getPageableListOfUsers(Pageable pageable){
+        Page<User> page = userRepository.findAll(pageable);
+        System.out.println("From ordinary page: content - " + page.getContent().size());
+        return userRepository.findAll(pageable);
     }
 
     public User createUser(RegisterForm registerUser){
@@ -123,52 +131,55 @@ public class UserService {
         return response;
     }
 
-    public List<User> filterUserList(FilterForm filterForm) {
+    public Page<User> filterUserList(FilterForm filterForm, Pageable pageable) {
 
-        List<User> users = new ArrayList<>();
+        boolean isNameIsEmpty = filterForm.getName().isEmpty();
+        boolean isGenderIsUndefined = filterForm.getGender().ordinal() == 2;
+        boolean isAgeIsZero = filterForm.getAgeMin() == 0 && filterForm.getAgeMax() == 0;
+        boolean isCityIsEmpty = filterForm.getCity().isEmpty();
 
-        if (!filterForm.getName().isEmpty()) {
-            users = userRepository.findAllByFirstNameStartingWithIgnoreCase(filterForm.getName());
+        Page<User> page = getPageableListOfUsers(pageable);
+
+        if (!isNameIsEmpty) {
+            page = pagingUserRepository.findAllByFirstNameStartingWithIgnoreCase(filterForm.getName(), pageable);
         }
-
-        if (filterForm.getGender().ordinal() != 2) {
-            if (!filterForm.getName().isEmpty()) {
-                users = users.stream()
-                        .filter(user -> user.getPersonalDetails().getGender().equals(filterForm.getGender()))
-                        .collect(Collectors.toList());
-            } else {
-                users = userRepository.findAllByPersonalDetails_Gender(filterForm.getGender());
+        System.out.println("FilterGender: " + filterForm.getGender());
+        if (!isGenderIsUndefined) {
+            if(isNameIsEmpty) {
+                page = pagingUserRepository.findAllByPersonalDetails_Gender(filterForm.getGender(), pageable);
+            }else {
+                page = new PageImpl<>(page.getContent().stream()
+                        .filter(user -> user.getPersonalDetails().getGender() == filterForm.getGender())
+                        .collect(Collectors.toList()),
+                        pageable, page.getContent().size());
             }
         }
-
-        if (filterForm.getAgeMin() != 0 || filterForm.getAgeMax() != 0) {
+        if (!isAgeIsZero) {
             if (filterForm.getAgeMax() == 0) {
                 filterForm.setAgeMax(filterForm.getAgeMin());
             }
-
-            if (!filterForm.getName().isEmpty() || filterForm.getGender().ordinal() != 2) {
-                users = users.stream()
-                        .filter(user -> user.getPersonalDetails().getAge() > filterForm.getAgeMin() && user.getPersonalDetails().getAge() < filterForm.getAgeMax())
-                        .collect(Collectors.toList());
-            } else {
-                users = userRepository.findAllByPersonalDetails_AgeBetween(filterForm.getAgeMin(), filterForm.getAgeMax());
+            if(isNameIsEmpty && isGenderIsUndefined) {
+                page = pagingUserRepository.findAllByPersonalDetails_AgeBetween(filterForm.getAgeMin(), filterForm.getAgeMax(), pageable);
+            }else {
+                page = new PageImpl<>(page.getContent().stream()
+                        .filter(user -> user.getPersonalDetails().getAge() >= filterForm.getAgeMin() && user.getPersonalDetails().getAge() <= filterForm.getAgeMax())
+                        .collect(Collectors.toList()),
+                        pageable, page.getContent().size());
             }
         }
 
-        if (!filterForm.getCity().isEmpty()) {
-            if (!filterForm.getName().isEmpty() || filterForm.getGender().ordinal() != 2 || filterForm.getAgeMin() != 0 || filterForm.getAgeMax() != 0) {
-                users.forEach(user -> System.out.println(user.getPersonalDetails().getCity()));
-                users = users.stream()
+        if (!isCityIsEmpty) {
+            if(isNameIsEmpty && isGenderIsUndefined && isAgeIsZero) {
+                page = pagingUserRepository.findAllByPersonalDetails_City(filterForm.getCity(), pageable);
+            }else {
+                page = new PageImpl<>(page.getContent().stream()
                         .filter(user -> user.getPersonalDetails().getCity().equals(filterForm.getCity()))
-                        .collect(Collectors.toList());
-            } else {
-                users = userRepository.findAllByPersonalDetails_City(filterForm.getCity());
+                        .collect(Collectors.toList()),
+                        pageable, page.getContent().size());
             }
         }
 
-        logger.info("Value from all: {}", users.size());
-
-        return users;
+        return page;
     }
 
     private User buildUser(RegisterForm registerUser){

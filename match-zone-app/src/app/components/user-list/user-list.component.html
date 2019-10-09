@@ -6,7 +6,7 @@
 
       <div class="container">
 
-        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f,0)">
 
           <h3 class="text-center border-bottom">Filters</h3>
 
@@ -71,9 +71,10 @@
 
       <div class="container">
 
-        <div class="row">
+        <div class="row" *ngIf="pageUser?.content">
 
-          <div class="col-sm-4" *ngFor="let user of users | async">
+          <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
+          <div class="col-sm-4" *ngFor="let user of pageUser.content">
             <a (click)="userDetails(user.id)">
               <div class="card shadow animated">
                <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
@@ -93,6 +94,13 @@
         </div>
 
       </div>
+
+
+      <nav aria-label="...">
+        <ul style="margin-left: 200px;margin-top:50px;" class="pagination"  *ngIf="pageUser?.content" >
+          <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onSubmit(f, i)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onSubmit(f, i)">{{i+1}}</a></li>
+        </ul>
+      </nav>
 
     </div>
 

@@ -3,6 +3,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Register} from "../model/register";
 import {Filter} from "../model/filter";
+import {PageUser} from "../model/page-user";
+import {map} from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,7 +39,11 @@ export class UserService {
     return this.http.get(`${this.baseUrl}`);
   }
 
-  getFilteredUserList(filter: Filter): Observable<any> {
-    return this.http.post(`${this.baseUrl}/filter`, filter, httpOptions);
+  getFilteredUserList(filter: Filter): Observable<PageUser> {
+    return this.http.post<PageUser>(`${this.baseUrl}/filter`, filter, httpOptions);
+  }
+
+  getPageUser(page: number): Observable<PageUser>{
+    return this.http.get<PageUser>(`${this.baseUrl}/list?page=${page}&size=6`);
   }
 }

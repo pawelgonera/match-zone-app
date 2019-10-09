@@ -3,6 +3,7 @@ package pl.poul12.matchzone.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,7 @@ import pl.poul12.matchzone.util.CustomErrorResponse;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -116,10 +118,21 @@ public class UserController {
     }
 
     @PostMapping("/users/filter")
-    public List<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
+    public Page<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
 
-        logger.error("Am in userController with: {}", filterForm);
-        return userService.filterUserList(filterForm);
+        System.out.println("FilterForm: " + filterForm);
+        Sort sort = new Sort(Sort.Direction.fromString(filterForm.getPageUser().getDirection()), filterForm.getPageUser().getSort());
+        Pageable pageable = PageRequest.of(filterForm.getPageUser().getPage(), filterForm.getPageUser().getSize(), sort);
+        System.out.println("pageable: " + pageable);
+
+        return userService.filterUserList(filterForm, pageable);
     }
 
+    @GetMapping("/users/list")
+    public Page<User> getUsersPage(@RequestParam("page") int page, @RequestParam("size") int size){
+
+        Sort sort = new Sort(Sort.Direction.ASC, "firstName");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return userService.getPageableListOfUsers(pageable);
+    }
 }

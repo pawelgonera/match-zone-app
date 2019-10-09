@@ -1,7 +1,7 @@
 INSERT INTO roles (id, name) VALUES (1, 'ADMIN');
 INSERT INTO roles (id, name) VALUES (2, 'USER');
 
-/* users data set - 25 */
+/* users data set - 50 */
 
 insert into users (id, email, first_name, password, time_zone_id, username) values (3, 'rbortolotti2@engadget.com', 'Rheba', '2d57386ad26d939a45e76313762b869ac964981e', 'Asia/Dushanbe', 'rgatesman2');
 insert into users (id, email, first_name, password, time_zone_id, username) values (4, 'cpaternoster3@ucla.edu', 'Cristie', '2d57386ad26d939a45e76313762b869ac964981e', 'Europe/Moscow', 'cfenkel3');
@@ -52,7 +52,7 @@ insert into users (id, email, first_name, password, time_zone_id, username) valu
 insert into users (id, email, first_name, password, time_zone_id, username) values (49, 'sfarnill1c@google.co.jp', 'Selina', '2d57386ad26d939a45e76313762b869ac964981e', 'Africa/Kinshasa', 'smorden1c');
 insert into users (id, email, first_name, password, time_zone_id, username) values (50, 'slochet1d@w3.org', 'Shawna', '2d57386ad26d939a45e76313762b869ac964981e', 'Asia/Shanghai', 'svallantine1d');
 
-/* personal details data set - 25 */
+/* personal details data set - 50 */
 
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (3, 38, 'Periyiáli', 'Greece', '1989-04-24', 'Technological Education Institute of Halkida, Euboea', 1, 2, 'Project Manager', null, 4.6, 2, 3);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (4, 25, 'Wilczyce', 'Poland', '1960-05-02', 'Academy of Economics in Poznan', 0, 3, 'Assistant Manager', null, 3.9, 5, 4);
@@ -103,7 +103,7 @@ insert into personal_details (id, age, city, country, date_of_birth, education, 
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (49, 45, 'Chuangwang', 'China', '1980-01-13', 'Tianjin Medical University', 1, 2, 'Operator', null, 1.9, 0, 49);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (50, 30, 'Pensacola', 'United States', '1950-04-29', 'The College of Insurance', 0, 3, 'Compensation Analyst', null, 2.3, 4, 50);
 
-/* appearance data set - 25 */
+/* appearance data set - 50 */
 
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (3, 'In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.', 0, 8, 179, 'Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.', 2, 3);
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (4, 'Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus.', 5, 5, 168, 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.', 6, 4);
