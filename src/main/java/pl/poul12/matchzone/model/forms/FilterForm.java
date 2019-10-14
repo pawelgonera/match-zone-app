@@ -24,6 +24,10 @@ public class FilterForm {
     private Integer ageMax;
     @NotNull
     private String city;
+    @NotNull
+    private Double ratingMin;
+    @NotNull
+    private Double ratingMax;
 
     private PageUser pageUser;
 }

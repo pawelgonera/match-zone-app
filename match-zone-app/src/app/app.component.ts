@@ -12,6 +12,7 @@ export class AppComponent implements OnInit{
 
   info: any;
   isLoggedIn = false;
+  username: string;
 
   constructor(private tokenService: TokenService, public router: Router) {
   }
@@ -22,6 +23,8 @@ export class AppComponent implements OnInit{
       username: this.tokenService.getUsername(),
       authorities: this.tokenService.getAuthorities()
     };
+
+    this.username = this.tokenService.getUsername();
 
     console.log('isLoggedIn in onInit()', this.isLoggedIn);
     if(this.info.token){

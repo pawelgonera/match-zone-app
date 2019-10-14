@@ -6,7 +6,7 @@
 
       <div class="container">
 
-        <form #f="ngForm" (ngSubmit)="onSubmit(f,0)">
+        <form #form="ngForm" (ngSubmit)="onSubmit(form, 0, sort)">
 
           <h3 class="text-center border-bottom">Filters</h3>
 
@@ -47,6 +47,18 @@
             </label>
           </div>
 
+          <p class="border-bottom"><b>Rating</b></p>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="number" class="form-control form-control-sm" ngModel min="1" max="6" step="0.25" name="ratingMin">
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="number" class="form-control form-control-sm" ngModel min="1" max="6" step="0.25" name="ratingMax">
+            </label>
+          </div>
+
           <br><br>
 
           <p class="border-bottom"><b>City</b></p>
@@ -70,6 +82,21 @@
     <div class="col-sm-9">
 
       <div class="container">
+
+        <div class="container">
+          <form #sort="ngForm" (change)="onSubmit(form, 0, sort)">
+          <select  class="selectpicker show-tick" title="Sort by" data-width="auto" ngModel name="select">
+            <option value="Asc-name" data-icon="fa fa-chevron-up">Ascending | First Name </option>
+            <option value="Desc-name" data-icon="fa fa-chevron-down">Descending | First Name </option>
+            <option value="Asc-age" data-icon="fa fa-chevron-up">Ascending | Age</option>
+            <option value="Desc-age" data-icon="fa fa-chevron-down">Descending | Age</option>
+            <option value="Asc-rating" data-icon="fa fa-chevron-up">Ascending | Rating</option>
+            <option value="Desc-rating" data-icon="fa fa-chevron-down">Descending | Rating</option>
+          </select>
+          </form>
+        </div>
+
+          <br><br><br>
 
         <div class="row" *ngIf="pageUser?.content">
 
@@ -98,7 +125,7 @@
 
       <nav aria-label="...">
         <ul style="margin-left: 200px;margin-top:50px;" class="pagination"  *ngIf="pageUser?.content" >
-          <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onSubmit(f, i)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onSubmit(f, i)">{{i+1}}</a></li>
+          <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onSubmit(form, i, sort)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onSubmit(form, i, sort)">{{i+1}}</a></li>
         </ul>
       </nav>
 

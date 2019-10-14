@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { UserService} from "../../service/user.service";
 import { User} from "../../model/user";
-import {Component, OnInit} from "@angular/core";
+import {Component, OnChanges, OnInit} from "@angular/core";
 import { Router } from '@angular/router';
 import {NgForm} from "@angular/forms";
 import {Filter} from "../../model/filter";
@@ -30,20 +30,54 @@ export class UserListComponent implements OnInit {
     this.users = this.userService.getUsersList();
   }
 
-  onSubmit(form: NgForm, page: number){
+  onSubmit(form: NgForm, page: number, sortOpt: NgForm){
 
     console.log(form.value);
 
     let name = '';
     let ageMin = 0;
     let ageMax = 0;
-    let gender = 2;
+    let gender = 0;
     let city = '';
-    this.selectedPage = page;
-    this.pageUser.page = this.selectedPage;
+    let ratingMin = 0;
+    let ratingMax = 0;
+    this.pageUser.page = page;
     this.pageUser.size = 6;
     this.pageUser.direction = 'ASC';
     this.pageUser.sort = 'firstName';
+
+    console.log('sortForm: ', sortOpt.value.select);
+
+    if(sortOpt.value.select === 'Asc-name'){
+      console.log('sortOpt: ', sortOpt.value);
+      this.pageUser.direction = 'ASC';
+      this.pageUser.sort = 'firstName';
+    }
+    if(sortOpt.value.select === 'Desc-name'){
+      console.log('sortOpt: ', sortOpt.value);
+      this.pageUser.direction = 'DESC';
+      this.pageUser.sort = 'firstName';
+    }
+    if(sortOpt.value.select === 'Asc-age'){
+      console.log('sortOpt: ', sortOpt.value);
+      this.pageUser.direction = 'ASC';
+      this.pageUser.sort = 'personalDetails.age';
+    }
+    if(sortOpt.value.select === 'Desc-age'){
+      console.log('sortOpt: ', sortOpt.value);
+      this.pageUser.direction = 'DESC';
+      this.pageUser.sort = 'personalDetails.age';
+    }
+    if(sortOpt.value.select === 'Asc-rating'){
+      console.log('sortOpt: ', sortOpt.value);
+      this.pageUser.direction = 'ASC';
+      this.pageUser.sort = 'personalDetails.rating';
+    }
+    if(sortOpt.value.select === 'Desc-rating'){
+      console.log('sortOpt: ', sortOpt.value);
+      this.pageUser.direction = 'DESC';
+      this.pageUser.sort = 'personalDetails.rating';
+    }
 
     if(form.value.name === null){
       name = '';
@@ -70,7 +104,7 @@ export class UserListComponent implements OnInit {
       gender = form.value.gender;
     }
     if(form.value.gender === null){
-      gender = 2;
+      gender = 0;
     }
 
     if(form.value.city === null){
@@ -80,18 +114,35 @@ export class UserListComponent implements OnInit {
       city = form.value.city;
     }
 
+    if(form.value.ratingMin === '' || form.value.ratingMin === null){
+      ratingMin = 0;
+    }
+    else {
+      ratingMin = form.value.ratingMin;
+    }
+
+    if(form.value.ratingMax === '' || form.value.ratingMax === null){
+      ratingMax = 0;
+    }
+    else {
+      ratingMax = form.value.ratingMax;
+    }
+
     this.filter = new Filter(
       name,
       gender,
       ageMin,
       ageMax,
       city,
+      ratingMin,
+      ratingMax,
       this.pageUser
     );
 
     this.userService.getFilteredUserList(this.filter).subscribe(response => {
       console.log('filtered pageUser', response);
-      this.pageUser = response
+      this.pageUser.content = response.pageList;
+      this.pageUser.totalPages = response.pageCount;
     }, error => {
       console.log('filtered pageable error: ', error);
     });
@@ -125,5 +176,6 @@ export class UserListComponent implements OnInit {
   userDetails(id: number){
     this.router.navigate(['profile', id]);
   }
+
 
 }

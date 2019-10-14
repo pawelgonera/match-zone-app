@@ -3,6 +3,7 @@ package pl.poul12.matchzone.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -118,14 +119,9 @@ public class UserController {
     }
 
     @PostMapping("/users/filter")
-    public Page<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
+    public PagedListHolder<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
 
-        System.out.println("FilterForm: " + filterForm);
-        Sort sort = new Sort(Sort.Direction.fromString(filterForm.getPageUser().getDirection()), filterForm.getPageUser().getSort());
-        Pageable pageable = PageRequest.of(filterForm.getPageUser().getPage(), filterForm.getPageUser().getSize(), sort);
-        System.out.println("pageable: " + pageable);
-
-        return userService.filterUserList(filterForm, pageable);
+        return userService.filterUserList(filterForm);
     }
 
     @GetMapping("/users/list")

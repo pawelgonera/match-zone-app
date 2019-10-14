@@ -9,11 +9,12 @@ import pl.poul12.matchzone.model.enums.Religion;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @NoArgsConstructor
 @Getter
 @Setter
-//@EqualsAndHashCode
+@EqualsAndHashCode
 @Entity
 @Table(name = "personal_details")
 public class PersonalDetails {

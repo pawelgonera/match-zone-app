@@ -5,6 +5,7 @@ import {Register} from "../model/register";
 import {Filter} from "../model/filter";
 import {PageUser} from "../model/page-user";
 import {map} from 'rxjs/operators';
+import {PagedListHolder} from "../model/paged-list-holder";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -39,8 +40,8 @@ export class UserService {
     return this.http.get(`${this.baseUrl}`);
   }
 
-  getFilteredUserList(filter: Filter): Observable<PageUser> {
-    return this.http.post<PageUser>(`${this.baseUrl}/filter`, filter, httpOptions);
+  getFilteredUserList(filter: Filter): Observable<PagedListHolder> {
+    return this.http.post<PagedListHolder>(`${this.baseUrl}/filter`, filter, httpOptions);
   }
 
   getPageUser(page: number): Observable<PageUser>{

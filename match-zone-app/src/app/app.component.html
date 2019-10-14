@@ -14,11 +14,24 @@
       <a class="nav-link" href="#">CONTACT</a>
     </li>
     <li class="nav-item" *ngIf="isLoggedIn; else loggedOut">
-      <a class="nav-link nav-link-custom" (click)="logOut()"><i class="fas fa-user mr-1"></i> LOG OUT</a>
+      <a class="nav-link nav-link-custom" (click)="logOut()"><i class="fa fa-user mr-1"></i> LOG OUT</a>
+      <!--<div class="dropdown">
+        <button class="nav-link nav-link-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user mr-1"></i>
+          {{username}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Log out</a>
+        </div>
+      </div>-->
+
     </li>
     <ng-template #loggedOut>
     <li >
-      <a class="nav-link nav-link-custom" routerLink="login"><i class="fas fa-user mr-1"></i> SIGN IN</a>
+      <a class="nav-link nav-link-custom" routerLink="login"><i class="fa fa-user mr-1"></i> SIGN IN</a>
     </li>
     </ng-template>
   </ul>

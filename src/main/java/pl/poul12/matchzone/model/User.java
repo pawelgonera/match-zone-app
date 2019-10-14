@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-//@EqualsAndHashCode
+@EqualsAndHashCode
 @Entity
 @Table(name = "users")
 @Scope("session")
@@ -43,9 +43,11 @@ public class User {
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //@EqualsAndHashCode.Exclude
     private Appearance appearance;
+    @EqualsAndHashCode.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Vote> votes;
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

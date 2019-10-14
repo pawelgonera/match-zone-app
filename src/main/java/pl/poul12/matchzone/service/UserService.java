@@ -2,6 +2,9 @@ package pl.poul12.matchzone.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.beans.support.SortDefinition;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +54,11 @@ public class UserService {
     public List<User> getAllUsers(){
 
         return userRepository.findAll();
+    }
+
+    public List<User> getAllUsersBySort(Sort sort){
+
+        return userRepository.findAll(sort);
     }
 
     public Page<User> getPageableListOfUsers(Pageable pageable){
@@ -131,55 +139,71 @@ public class UserService {
         return response;
     }
 
-    public Page<User> filterUserList(FilterForm filterForm, Pageable pageable) {
+    public PagedListHolder<User> filterUserList(FilterForm filterForm) {
 
         boolean isNameIsEmpty = filterForm.getName().isEmpty();
-        boolean isGenderIsUndefined = filterForm.getGender().ordinal() == 2;
+        boolean isGenderIsUndefined = filterForm.getGender().ordinal() == 0;
         boolean isAgeIsZero = filterForm.getAgeMin() == 0 && filterForm.getAgeMax() == 0;
         boolean isCityIsEmpty = filterForm.getCity().isEmpty();
+        boolean isRatingIsZero = filterForm.getRatingMin() == 0 && filterForm.getRatingMax() == 0;
 
-        Page<User> page = getPageableListOfUsers(pageable);
+        Sort sort = Sort.by(Sort.Direction.fromString(filterForm.getPageUser().getDirection()), filterForm.getPageUser().getSort());
+
+        List<User> users = getAllUsersBySort(sort);
 
         if (!isNameIsEmpty) {
-            page = pagingUserRepository.findAllByFirstNameStartingWithIgnoreCase(filterForm.getName(), pageable);
+            users = userRepository.findAllByFirstNameStartingWithIgnoreCase(filterForm.getName(), sort);
         }
-        System.out.println("FilterGender: " + filterForm.getGender());
+
         if (!isGenderIsUndefined) {
-            if(isNameIsEmpty) {
-                page = pagingUserRepository.findAllByPersonalDetails_Gender(filterForm.getGender(), pageable);
-            }else {
-                page = new PageImpl<>(page.getContent().stream()
+            if (isNameIsEmpty) {
+                users = userRepository.findAllByPersonalDetails_Gender(filterForm.getGender(), sort);
+            } else {
+                users = users.stream()
                         .filter(user -> user.getPersonalDetails().getGender() == filterForm.getGender())
-                        .collect(Collectors.toList()),
-                        pageable, page.getContent().size());
+                        .collect(Collectors.toList());
             }
         }
+
         if (!isAgeIsZero) {
             if (filterForm.getAgeMax() == 0) {
                 filterForm.setAgeMax(filterForm.getAgeMin());
             }
-            if(isNameIsEmpty && isGenderIsUndefined) {
-                page = pagingUserRepository.findAllByPersonalDetails_AgeBetween(filterForm.getAgeMin(), filterForm.getAgeMax(), pageable);
+
+            if (isNameIsEmpty && isGenderIsUndefined) {
+                users = userRepository.findAllByPersonalDetails_AgeBetween(filterForm.getAgeMin(), filterForm.getAgeMax(), sort);
             }else {
-                page = new PageImpl<>(page.getContent().stream()
+                users = users.stream()
                         .filter(user -> user.getPersonalDetails().getAge() >= filterForm.getAgeMin() && user.getPersonalDetails().getAge() <= filterForm.getAgeMax())
-                        .collect(Collectors.toList()),
-                        pageable, page.getContent().size());
+                        .collect(Collectors.toList());
+            }
+        }
+
+        if (!isRatingIsZero) {
+            if (isNameIsEmpty && isGenderIsUndefined && isAgeIsZero) {
+                users = userRepository.findAllByPersonalDetails_RatingBetween(filterForm.getRatingMin(), filterForm.getRatingMax(), sort);
+            }else {
+                users = users.stream()
+                        .filter(user -> user.getPersonalDetails().getRating() >= filterForm.getRatingMin() && user.getPersonalDetails().getRating() <= filterForm.getRatingMax())
+                        .collect(Collectors.toList());
             }
         }
 
         if (!isCityIsEmpty) {
-            if(isNameIsEmpty && isGenderIsUndefined && isAgeIsZero) {
-                page = pagingUserRepository.findAllByPersonalDetails_City(filterForm.getCity(), pageable);
+            if(isNameIsEmpty && isGenderIsUndefined && isAgeIsZero && isRatingIsZero) {
+                users = userRepository.findAllByPersonalDetails_City(filterForm.getCity(), sort);
             }else {
-                page = new PageImpl<>(page.getContent().stream()
+                users = users.stream()
                         .filter(user -> user.getPersonalDetails().getCity().equals(filterForm.getCity()))
-                        .collect(Collectors.toList()),
-                        pageable, page.getContent().size());
+                        .collect(Collectors.toList());
             }
         }
 
-        return page;
+        PagedListHolder<User> pagedListHolder = new PagedListHolder<>(users);
+        pagedListHolder.setPage(filterForm.getPageUser().getPage());
+        pagedListHolder.setPageSize(filterForm.getPageUser().getSize());
+
+        return pagedListHolder;
     }
 
     private User buildUser(RegisterForm registerUser){
