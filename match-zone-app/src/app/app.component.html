@@ -2,7 +2,7 @@
 
   <ul class="nav nav-tabs nav-justified py-1 shadow-sm">
     <li class="nav-item">
-      <a routerLink="users" class="nav-link" routerLinkActive="active">HOME</a>
+      <a routerLink="home" class="nav-link" routerLinkActive="active">HOME</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">STORY</a>
@@ -14,19 +14,18 @@
       <a class="nav-link" href="#">CONTACT</a>
     </li>
     <li class="nav-item" *ngIf="isLoggedIn; else loggedOut">
-      <a class="nav-link nav-link-custom" (click)="logOut()"><i class="fa fa-user mr-1"></i> LOG OUT</a>
-      <!--<div class="dropdown">
+      <div class="dropdown">
         <button class="nav-link nav-link-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-user mr-1"></i>
+          <i class="fas fa-user-circle"></i>
           {{username}}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Profile</a>
-          <a class="dropdown-item" href="#">Settings</a>
+          <a class="dropdown-item fa" (click)="userDetails(username)">&#xf2bd; Profile</a>
+          <a class="dropdown-item fas" href="#">&#xf4fe; Settings</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Log out</a>
+          <a class="dropdown-item fas" (click)="logOut()">&#xf35a; Log out</a>
         </div>
-      </div>-->
+      </div>
 
     </li>
     <ng-template #loggedOut>

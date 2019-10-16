@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { UserListComponent } from './components/user-list/user-list.component';
-import { UserUpdateComponent } from './user-update/user-update.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
@@ -18,6 +17,8 @@ import {UserService} from "./service/user.service";
 import {AuthenticationService} from "./service/authentication.service";
 import {TokenService} from "./service/token.service";
 import {OtherService} from "./service/other.service";
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +26,9 @@ import {OtherService} from "./service/other.service";
     CreateUserComponent,
     UserDetailsComponent,
     UserListComponent,
-    UserUpdateComponent,
     LoginComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +37,7 @@ import {OtherService} from "./service/other.service";
     NgbModule,
     RouterModule,
     AppRoutingModule,
+    AngularFontAwesomeModule,
   ],
   providers: [
     UserService,

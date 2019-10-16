@@ -1,6 +1,8 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TokenService} from "./service/token.service";
+
+import {User} from "./model/user";
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,8 @@ export class AppComponent implements OnInit{
   info: any;
   isLoggedIn = false;
   username: string;
+  user: User = new User();
+  id: number;
 
   constructor(private tokenService: TokenService, public router: Router) {
   }
@@ -30,6 +34,11 @@ export class AppComponent implements OnInit{
     if(this.info.token){
       this.isLoggedIn = true;
     }
+  }
+
+  userDetails(username: string){
+    console.log(username);
+    this.router.navigate(['profile', username]);
   }
 
   logOut() {

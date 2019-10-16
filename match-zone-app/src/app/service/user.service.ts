@@ -4,12 +4,15 @@ import { Observable } from 'rxjs';
 import {Register} from "../model/register";
 import {Filter} from "../model/filter";
 import {PageUser} from "../model/page-user";
-import {map} from 'rxjs/operators';
 import {PagedListHolder} from "../model/paged-list-holder";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
+/*const httpOptionsAccess = {
+  headers: new HttpHeaders({ 'Access-Control-Allow-Origin': 'http://localhost:4200' })
+};*/
 
 @Injectable({
   providedIn: 'root'
@@ -20,16 +23,20 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUser(id: number): Observable<any> {
+  /*getUser(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
+  }*/
+
+  getUser(username: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${username}`);
   }
 
   createUser(user: Register): Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/register`, user, httpOptions);
   }
 
-  updateUser(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/${id}`, value);
+  updateUser(username: string, value: any): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/${username}`, value);
   }
 
   deleteUser(id: number): Observable<any> {

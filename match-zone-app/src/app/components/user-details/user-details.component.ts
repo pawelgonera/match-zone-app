@@ -8,8 +8,6 @@ import {Appearance} from "../../model/appearance";
 import {Vote} from "../../model/vote";
 import {OtherService} from "../../service/other.service";
 import {TokenService} from "../../service/token.service";
-import { filter } from 'rxjs/operators';
-import {Observable} from 'rxjs/'
 import {Rating} from "../../model/rating";
 
 @Component({
@@ -41,6 +39,8 @@ export class UserDetailsComponent implements OnInit{
   isVoted = false;
   rating: Rating = new Rating();
 
+  isLogged = false;
+
   username: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService,
@@ -49,26 +49,30 @@ export class UserDetailsComponent implements OnInit{
 
   ngOnInit() {
 
-    this.id = this.route.snapshot.params['id'];
-
-    this.getUser();
-
+    this.username = this.route.snapshot.params['username'];
     this.usernameFromToken = this.tokenService.getUsername();
 
-    this.loadPersonalDetails(this.id);
-    this.loadAppearance(this.id);
-
-    this.otherService.checkIfLoggedUserVoted(this.id, this.usernameFromToken).subscribe((isvoted: boolean) => {
-      this.isVoted = isvoted;
+    this.otherService.checkIfLoggedUserVoted(this.username, this.usernameFromToken).subscribe((isVoted: boolean) => {
+      this.isVoted = isVoted;
       console.log('isVotedIn', this.isVoted);
     });
     console.log('isVotedOut', this.isVoted);
 
-    this.reloadData(this.id);
+    if(this.usernameFromToken) {
+      this.isLogged = true;
+    }
+
+    this.getAccess();
+
+    this.loadPersonalDetails(this.username);
+    this.loadAppearance(this.username);
+
+
+    this.reloadData(this.username);
   }
 
-  loadPersonalDetails(id){
-    return this.otherService.getPersonalDetails(id)
+  loadPersonalDetails(username: string){
+    return this.otherService.getPersonalDetails(username)
       .subscribe(data => {
           console.log('personalDetails: ', data);
           this.personalDetails = data;
@@ -76,8 +80,8 @@ export class UserDetailsComponent implements OnInit{
         error => console.log(error));
   }
 
-  loadAppearance(id){
-    return this.otherService.getAppearance(id)
+  loadAppearance(username: string){
+    return this.otherService.getAppearance(username)
       .subscribe(data => {
           console.log('appearance: ', data);
           this.appearance = data;
@@ -86,15 +90,14 @@ export class UserDetailsComponent implements OnInit{
   }
 
   update() {
-    this.id = this.route.snapshot.params['id'];
-    this.userService.getUser(this.id)
+    this.userService.getUser(this.usernameFromToken)
       .subscribe(data => {
         console.log('userToUpdate: ', data);
         this.user = data;
       }, error => console.log(error));
 
 
-    this.userService.updateUser(this.id, this.user)
+    this.userService.updateUser(this.username, this.user)
       .subscribe(data => {
         console.log('updatedUser: ', data);
         this.isChangeDataFailed = false;
@@ -104,13 +107,13 @@ export class UserDetailsComponent implements OnInit{
         this.isChangeDataFailed = true;
       });
 
-    this.otherService.updatePersonalDetails(this.id, this.personalDetails)
+    this.otherService.updatePersonalDetails(this.username, this.personalDetails)
       .subscribe(data => console.log('updatedPersonalDetails: ', data), error => console.log(error));
 
-    this.otherService.updateAppearance(this.id, this.appearance)
+    this.otherService.updateAppearance(this.username, this.appearance)
       .subscribe(data => console.log('updatedAppearance: ', data), error => console.log(error));
 
-    this.reloadData(this.id);
+    this.reloadData(this.username);
   }
 
   onSubmit() {
@@ -125,12 +128,11 @@ export class UserDetailsComponent implements OnInit{
   }
 
   onUpload(){
-    this.id = this.route.snapshot.params['id'];
     this.selectedFile = this.selectedFiles.item(0);
 
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile);
-    const req = new HttpRequest('POST', 'http://localhost:8080/match-zone/api/v1/users/' + this.id + '/change-avatar', formData, {
+    const req = new HttpRequest('POST', 'http://localhost:8080/match-zone/api/v1/users/' + this.username + '/change-avatar', formData, {
         reportProgress: true,
         responseType: 'text'
       }
@@ -144,27 +146,19 @@ export class UserDetailsComponent implements OnInit{
       }
     );
 
-    this.reloadData(this.id);
+    this.reloadData(this.username);
   }
 
-  /*public calculateAge(personalDetails): number {
-    this.timeDifference = Math.abs(Date.now() - new Date(personalDetails.dateOfBirth).getTime());
-    this.age = Math.floor(this.timeDifference / (1000 * 3600 * 24) / 365.25);
-
-    return this.age;
-  }*/
-
-  reloadData(id: number) {
-    this.router.navigate(['profile', id]);
+  reloadData(username: string) {
+    this.router.navigate(['profile', username]);
   }
 
   list(){
     this.router.navigate(['users']);
   }
 
-  getUser(){
-    this.id = this.route.snapshot.params['id'];
-    return this.userService.getUser(this.id)
+  getAccess(){
+    return this.userService.getUser(this.username)
       .subscribe(data => {
         this.user = data;
         this.usernameFromSnapshot = this.user.username;
@@ -183,14 +177,14 @@ export class UserDetailsComponent implements OnInit{
     vote.value = this.currentRate;
     vote.author = this.usernameFromToken;
 
-    this.otherService.addVote(this.id, vote)
+    this.otherService.addVote(this.username, vote)
       .subscribe(data => {
         console.log('addedVote: ', data);
       }, err => {
         console.log(err);
       });
 
-    this.otherService.getRatingInfo(this.id).subscribe( rating => {
+    this.otherService.getRatingInfo(this.username).subscribe( rating => {
       this.rating = rating;
       console.log('ratingInfo: ', rating);
 
@@ -198,11 +192,11 @@ export class UserDetailsComponent implements OnInit{
       this.rating.sumOfVotes += this.currentRate;
       this.personalDetails.rating = this.rating.sumOfVotes / this.rating.countedVotes;
 
-      this.otherService.updatePersonalDetails(this.id, this.personalDetails)
+      this.otherService.updatePersonalDetails(this.username, this.personalDetails)
         .subscribe(data => console.log('updatedPersonalDetailsForRating: ', data), error => console.log(error));
     }, error => console.log(error));
 
-    this.reloadData(this.id);
+    this.reloadData(this.username);
 
   }
 

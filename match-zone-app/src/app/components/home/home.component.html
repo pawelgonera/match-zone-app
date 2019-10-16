@@ -1,0 +1,83 @@
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-3 shadow-sm">
+
+      <div class="container">
+
+          <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+
+            <p class="border-bottom"><b>I am a</b></p>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="Iam" ><small>Man</small>
+              </label>
+            </div>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="Iam" ><small>Woman</small>
+              </label>
+            </div>
+
+            <br><br>
+
+            <p class="border-bottom"><b>Looking for</b></p>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="gender" ngModel value="FEMALE"><small>Woman</small>
+              </label>
+            </div>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="gender" ngModel value="MALE"><small>Man</small>
+              </label>
+            </div>
+
+            <br><br>
+
+            <p class="border-bottom"><b>Between</b></p>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMin">
+              </label>
+            </div>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMax">
+              </label>
+            </div>
+
+            <br><br>
+
+            <p class="border-bottom"><b>In</b></p>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="search" class="form-check-input" name="city" ngModel>
+              </label>
+            </div>
+
+            <br><br>
+
+            <button type="submit" class="btn btn-pink btn-block">Find your match</button>
+          </form>
+
+      </div>
+
+    </div>
+
+    <div class="col-sm-9">
+
+      <div class="container">
+
+        <div class="container">
+          <img src="https://www.youngisthan.in/wp-content/uploads/2018/02/dating.jpg" class="mx-auto d-block" style="width:100%" alt="">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

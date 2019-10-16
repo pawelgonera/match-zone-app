@@ -2,3 +2,7 @@
 .page-link{
   color: pink;
 }
+
+.custom-select{
+  width: 150px;
+}

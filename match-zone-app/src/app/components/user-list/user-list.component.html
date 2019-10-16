@@ -1,3 +1,5 @@
+<div *ngIf="isSubmitted">
+
 <div class="container">
 
   <div class="row">
@@ -6,7 +8,7 @@
 
       <div class="container">
 
-        <form #form="ngForm" (ngSubmit)="onSubmit(form, 0, sort)">
+        <form #form="ngForm" (ngSubmit)="onFilter(form, 0, sort)">
 
           <h3 class="text-center border-bottom">Filters</h3>
 
@@ -24,12 +26,12 @@
           <p class="border-bottom"><b>Gender</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="gender" ngModel value="MALE"><small>Man</small>
+              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" [value]="1" name="gender" ngModel value="MALE"><small>Man</small>
             </label>
           </div>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="gender" ngModel value="FEMALE"><small>Woman</small>
+              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" [value]="2" name="gender" ngModel value="FEMALE"><small>Woman</small>
             </label>
           </div>
 
@@ -38,12 +40,12 @@
           <p class="border-bottom"><b>Age</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMin">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMin" ngModel min="18" max="75" step="1" name="ageMin">
             </label>
           </div>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMax">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMax" ngModel min="18" max="75" step="1" name="ageMax">
             </label>
           </div>
 
@@ -75,34 +77,38 @@
 
         </form>
 
-      </div>
+      </div><!-- end of container -->
 
-    </div>
+    </div><!-- end of col-sm-3 -->
 
     <div class="col-sm-9">
 
       <div class="container">
 
         <div class="container">
-          <form #sort="ngForm" (change)="onSubmit(form, 0, sort)">
-          <select  class="selectpicker show-tick" title="Sort by" data-width="auto" ngModel name="select">
-            <option value="Asc-name" data-icon="fa fa-chevron-up">Ascending | First Name </option>
-            <option value="Desc-name" data-icon="fa fa-chevron-down">Descending | First Name </option>
-            <option value="Asc-age" data-icon="fa fa-chevron-up">Ascending | Age</option>
-            <option value="Desc-age" data-icon="fa fa-chevron-down">Descending | Age</option>
-            <option value="Asc-rating" data-icon="fa fa-chevron-up">Ascending | Rating</option>
-            <option value="Desc-rating" data-icon="fa fa-chevron-down">Descending | Rating</option>
-          </select>
+          <form #sort="ngForm" (change)="onFilter(form, 0, sort)">
+            <label for="select-picker"><b>Sort by</b></label>
+            <br>
+              <select id="select-picker" class="browser-default custom-select fas" ngModel name="select">
+                <option disabled selected class="fa">Sort by</option>
+                <option value="Asc-name" class="fa">&#xf15d; First Name</option>
+                <option value="Desc-name" class="fa">&#xf15e; First Name </option>
+                <option value="Asc-age" class="fa">&#xf162; Age</option>
+                <option value="Desc-age" class="fa">&#xf163; Age</option>
+                <option value="Asc-rating" class="fa">&#xf162; Rating</option>
+                <option value="Desc-rating" class="fa">&#xf163; Rating</option>
+              </select>
           </form>
         </div>
+          <hr>
 
-          <br><br><br>
+          <br><br>
 
         <div class="row" *ngIf="pageUser?.content">
 
           <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
           <div class="col-sm-4" *ngFor="let user of pageUser.content">
-            <a (click)="userDetails(user.id)">
+            <a (click)="userDetails(user.username)">
               <div class="card shadow animated">
                <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
                 <div class="card-body">
@@ -120,17 +126,97 @@
 
         </div>
 
-      </div>
+      </div><!-- end of container -->
 
 
       <nav aria-label="...">
         <ul style="margin-left: 200px;margin-top:50px;" class="pagination"  *ngIf="pageUser?.content" >
-          <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onSubmit(form, i, sort)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onSubmit(form, i, sort)">{{i+1}}</a></li>
+          <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onFilter(form, i, sort)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onFilter(form, i, sort)">{{i+1}}</a></li>
         </ul>
       </nav>
+
+    </div><!-- end of col-sm-9 -->
+
+  </div><!-- end of row -->
+
+</div><!-- end of container main -->
+
+</div><!-- end of ngIf -->
+
+
+
+
+<div *ngIf="!isSubmitted">
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-sm-3 shadow-sm">
+
+        <div class="container">
+
+          <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+
+            <p class="border-bottom"><b>I'm Looking for</b></p>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="gender" ngModel value="FEMALE"><small>Woman</small>
+              </label>
+            </div>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="gender" ngModel value="MALE"><small>Man</small>
+              </label>
+            </div>
+
+            <br><br>
+
+            <p class="border-bottom"><b>Between</b></p>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMin">
+              </label>
+            </div>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMax">
+              </label>
+            </div>
+
+            <br><br>
+
+            <p class="border-bottom"><b>In</b></p>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="search" class="form-check-input" name="city" ngModel>
+              </label>
+            </div>
+
+            <br><br>
+
+            <button type="submit" class="btn btn-pink btn-block">Find your match</button>
+          </form>
+
+        </div>
+
+      </div>
+
+      <div class="col-sm-9">
+
+        <div class="container">
+
+          <div class="container">
+            <img src="https://www.youngisthan.in/wp-content/uploads/2018/02/dating.jpg" class="mx-auto d-block" style="width:100%" alt="">
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
 </div>
+

@@ -1,11 +1,12 @@
 import { Observable } from "rxjs";
 import { UserService} from "../../service/user.service";
 import { User} from "../../model/user";
-import {Component, OnChanges, OnInit} from "@angular/core";
-import { Router } from '@angular/router';
+import {Component, OnInit} from "@angular/core";
+import {Router, RouterStateSnapshot} from '@angular/router';
 import {NgForm} from "@angular/forms";
 import {Filter} from "../../model/filter";
 import {PageUser} from "../../model/page-user";
+import {TokenService} from "../../service/token.service";
 
 @Component({
   selector: "app-user-list",
@@ -15,22 +16,37 @@ import {PageUser} from "../../model/page-user";
 export class UserListComponent implements OnInit {
 
   users: Observable<User[]>;
-  pageUser: PageUser;
+  pageUser: PageUser = new PageUser();
   selectedPage: number = 0;
   filter: Filter;
 
-  constructor(private userService: UserService, private router: Router) {}
+  user: User = new User();
+  usernameFromToken: string;
+  isSubmitted = false;
+  isLogged = false;
+
+  constructor(private userService: UserService, private router: Router, private tokenService: TokenService) {
+
+  }
 
   ngOnInit() {
 
-    this.getPageUser(0);
+    console.log('isSubmitted', this.isSubmitted);
+
+    this.usernameFromToken = this.tokenService.getUsername();
+    if(this.usernameFromToken){
+      this.isLogged = true;
+      this.getPageUser(0);
+    }
+
+    console.log('isLogged', this.isLogged);
   }
 
   reloadData() {
     this.users = this.userService.getUsersList();
   }
 
-  onSubmit(form: NgForm, page: number, sortOpt: NgForm){
+  onFilter(form: NgForm, page: number, sortOpt: NgForm){
 
     console.log(form.value);
 
@@ -148,6 +164,68 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  onSubmit(form: NgForm){
+
+    console.log(form.value);
+
+    let ageMin = 0;
+    let ageMax = 0;
+    let gender = 0;
+    let city = '';
+    this.pageUser.page = 0;
+    this.pageUser.size = 6;
+    this.pageUser.direction = 'ASC';
+    this.pageUser.sort = 'firstName';
+
+    if(form.value.ageMin === '' || form.value.ageMin === null){
+      ageMin = 0;
+    }
+    else {
+      ageMin = form.value.ageMin;
+    }
+
+    if(form.value.ageMax === '' || form.value.ageMax === null){
+      ageMax = 0;
+    }
+    else {
+      ageMax = form.value.ageMax;
+    }
+
+    if(form.value.gender !== ''){
+      gender = form.value.gender;
+    }
+    if(form.value.gender === null){
+      gender = 0;
+    }
+
+    if(form.value.city === null){
+      city = '';
+    }
+    else {
+      city = form.value.city;
+    }
+
+    this.filter = new Filter(
+      name,
+      gender,
+      ageMin,
+      ageMax,
+      city,
+      1,
+      6,
+      this.pageUser
+    );
+
+    this.userService.getFilteredUserList(this.filter).subscribe(response => {
+      console.log('filtered pageUser', response);
+      this.pageUser.content = response.pageList;
+      this.pageUser.totalPages = response.pageCount;
+      this.isSubmitted = true;
+    }, error => {
+      console.log('filtered pageable error: ', error);
+    });
+  }
+
   getPageUser(page: number): void{
     this.userService.getPageUser(page).subscribe(data => {
       console.log("pageUser data: ", data);
@@ -155,12 +233,6 @@ export class UserListComponent implements OnInit {
     }, error => {
       console.log('pageable error: ', error);
     })
-  }
-
-  onSelect(page: number): void{
-    console.log('selected page: ', page);
-    this.selectedPage = page;
-    this.getPageUser(page);
   }
 
   deleteUser(id: number) {
@@ -173,8 +245,8 @@ export class UserListComponent implements OnInit {
         error => console.log(error));
   }
 
-  userDetails(id: number){
-    this.router.navigate(['profile', id]);
+  userDetails(username: string){
+    this.router.navigate(['profile', username]);
   }
 
 

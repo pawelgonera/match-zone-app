@@ -16,20 +16,20 @@ export class OtherService {
 
   constructor(private http: HttpClient) { }
 
-  getPersonalDetails(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/personal/${id}`);
+  getPersonalDetails(username: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/personal/${username}`);
   }
 
-  updatePersonalDetails(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/personal/${id}`, value);
+  updatePersonalDetails(username: string, value: any): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/personal/${username}`, value);
   }
 
-  getAppearance(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/appearance/${id}`);
+  getAppearance(username: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/appearance/${username}`);
   }
 
-  updateAppearance(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/appearance/${id}`, value);
+  updateAppearance(username: string, value: any): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/appearance/${username}`, value);
   }
 
   getVote(id: number): Observable<any> {
@@ -48,20 +48,20 @@ export class OtherService {
     return this.http.get<number>(`${this.baseUrl}/votes/sum/${id}`);
   }
 
-  getRatingInfo(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/votes/rating-info/${id}`);
+  getRatingInfo(username: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/votes/rating-info/${username}`);
   }
 
-  addVote(id: number, vote: Vote): Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/votes/${id}`, vote, httpOptions);
+  addVote(username: string, vote: Vote): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/votes/${username}`, vote, httpOptions);
   }
 
   getVotesAuthors(id: number): Observable<any>{
     return this.http.get(`${this.baseUrl}/votes/names/${id}`);
   }
 
-  checkIfLoggedUserVoted(id: number, username: string){
-    return this.http.get(`${this.baseUrl}/votes/is-voted/${id}/${username}`);
+  checkIfLoggedUserVoted(username: string, usernameLogged: string){
+    return this.http.get(`${this.baseUrl}/votes/is-voted/${username}/${usernameLogged}`);
   }
 
   updateVote(id: number, value: any): Observable<Object> {
