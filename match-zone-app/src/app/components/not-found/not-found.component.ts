@@ -9,6 +9,8 @@ export class NotFoundComponent implements OnInit {
 
   constructor() { }
 
+  notFoundPath: any = "../assets/images/404-not-found.jpg";
+
   ngOnInit() {
   }
 

@@ -14,15 +14,6 @@
 
           <br>
 
-          <p class="border-bottom"><b>Name</b></p>
-          <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="search" class="form-check-input" name="name" ngModel>
-            </label>
-          </div>
-
-          <br><br>
-
           <p class="border-bottom"><b>Gender</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
@@ -86,20 +77,47 @@
       <div class="container">
 
         <div class="container">
+
           <form #sort="ngForm" (change)="onFilter(form, 0, sort)">
-            <label for="select-picker"><b>Sort by</b></label>
-            <br>
-              <select id="select-picker" class="browser-default custom-select fas" ngModel name="select">
-                <option disabled selected class="fa">Sort by</option>
-                <option value="Asc-name" class="fa">&#xf15d; First Name</option>
-                <option value="Desc-name" class="fa">&#xf15e; First Name </option>
-                <option value="Asc-age" class="fa">&#xf162; Age</option>
-                <option value="Desc-age" class="fa">&#xf163; Age</option>
-                <option value="Asc-rating" class="fa">&#xf162; Rating</option>
-                <option value="Desc-rating" class="fa">&#xf163; Rating</option>
-              </select>
+
+            <div class="row">
+
+              <div class="col-sm-4">
+
+              <br>
+
+                <mat-form-field>
+                  <mat-label>Sort by</mat-label>
+                  <mat-select [(value)]="select" ngModel name="select" (selectionChange)="onFilter(form, 0, sort)">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Asc-name" class="fa"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> First Name</mat-option>
+                    <mat-option value="Desc-name"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> First Name</mat-option>
+                    <mat-option value="Asc-age"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Age</mat-option>
+                    <mat-option value="Desc-age"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Age</mat-option>
+                    <mat-option value="Asc-rating"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Rating</mat-option>
+                    <mat-option value="Desc-rating"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Rating</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+
+              <div class="col-sm-4">
+
+              <p ><b>Search</b></p>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="search" class="form-check-input custom-search" name="name" ngModel placeholder="Search by names or usernames">
+                </label>
+              </div>
+
+              </div>
+
+            </div>
+
           </form>
+
         </div>
+
           <hr>
 
           <br><br>

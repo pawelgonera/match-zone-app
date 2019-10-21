@@ -38,17 +38,17 @@ public class VoteService {
         return voteRepository.findAll();
     }
 
-    public Vote createVote(Long userId, Vote vote) throws ResourceNotFoundException {
+    public Vote createVote(String username, Vote vote) throws ResourceNotFoundException {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User no found for this id: " + userId));
+        User user = userService.getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User no found for this username: " + username));
 
         vote.setUser(user);
 
         return voteRepository.save(vote);
     }
 
-    public Rating getRatingInfo(Long userId) throws ResourceNotFoundException {
-        User user = userService.getUserById(userId);
+    public Rating getRatingInfo(String username) throws ResourceNotFoundException {
+        User user = userService.getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User no found for this username: " + username));
         List<Vote> votes = voteRepository.findAllByUser(user);
 
         Long countedVotes = votes.stream()
@@ -65,23 +65,12 @@ public class VoteService {
         return rating;
     }
 
-    public Boolean checkIfLoggedUserVoted(Long userId, String usernameLogged) throws ResourceNotFoundException {
-        User user = userService.getUserById(userId);
+    public Boolean checkIfLoggedUserVoted(String  username, String usernameLogged) throws ResourceNotFoundException {
+        User user = userService.getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User no found for this username: " + username));
         List<Vote> votes = voteRepository.findAllByUser(user);
         return votes.stream()
                     .map(Vote::getAuthor)
                     .anyMatch(author -> author.equals(usernameLogged));
     }
 
-    /*public Vote updateVote(Long userId, Vote vote) throws ResourceNotFoundException {
-
-        Vote voteFound = voteRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Vote not found for this id: " + userId));
-
-        voteFound.setCountedVotes(vote.getCountedVotes());
-        voteFound.setRating(vote.getRating());
-        voteFound.setSumOfVotes(vote.getSumOfVotes());
-
-        return voteRepository.save(voteFound);
-    }*/
 }

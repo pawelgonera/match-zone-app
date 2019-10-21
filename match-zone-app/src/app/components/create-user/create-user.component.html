@@ -2,59 +2,69 @@
 
   <div class="row">
 
-    <div class="row">
       <div class="col-sm-6">
 
         <div class="container">
-          <img src="http://pluspng.com/img-png/pink-love-heart-png-hd-pink-heart-png-pic-3000.png" class="mx-auto d-block" style="width:100%">
+          <img [src]="pinkHeartPath" class="mx-auto d-block custom-image" alt="Pink Heart">
         </div>
 
       </div>
 
-      <div *ngIf="isSignedUp; else signupForm">
-        Your registration is successful. Please login!
-      </div>
-
-    <ng-template #signupForm>
       <div class="col-sm-6">
 
-        <div [hidden]="submitted" class="signup-form">
-          <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="signup-form">
+          <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
 
               <h2>Sign Up</h2>
               <p>It's free and only takes a minute.</p>
               <hr>
+
+              <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-danger">
+                <p class="text-center">Sign Up failed!</p>
+                <div *ngFor="let error of errorMessage.split('-'), let i = index">
+                  <p>{{i+1}}. {{error}}</p>
+                </div>
+
+              </div>
+
               <div class="form-group">
-                <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username" #username="ngModel" required />
+                <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username" #username="ngModel" required minlength="4" maxlength="20"/>
                 <div class="alert alert-danger" *ngIf="f.submitted && username.invalid">
-                  <div *ngIf="username.errors.required">UserName is required</div>
+                  <div *ngIf="username.errors.required">Username is required</div>
+                  <div *ngIf="username.errors.minlength">Username must be at least 4 characters</div>
+                  <div *ngIf="username.errors.maxlength">Username maximum length is 20 characters</div>
                 </div>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name="username" placeholder="First Name" [(ngModel)]="form.name" #name="ngModel" required />
+                <input type="text" class="form-control" name="username" placeholder="First Name" [(ngModel)]="form.name" #name="ngModel" required minlength="3" maxlength="20"/>
                 <div class="alert alert-danger" *ngIf="f.submitted && name.invalid">
                   <div *ngIf="name.errors.required">First Name is required</div>
+                  <div *ngIf="name.errors.minlength">Name must be at least 3 characters</div>
+                  <div *ngIf="name.errors.maxlength">Name maximum length is 20 characters</div>
                 </div>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name="email" placeholder="Email Address" [(ngModel)]="form.email" #email="ngModel" required email />
+                <input type="text" class="form-control" name="email" placeholder="Email Address" [(ngModel)]="form.email" #email="ngModel" required email maxlength="30"/>
                 <div class="alert alert-danger" *ngIf="f.submitted && email.invalid">
                   <div *ngIf="email.errors.required">Email is required</div>
                   <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                  <div *ngIf="email.errors.email">Email maximum length is 30 characters</div>
                 </div>
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password" #password="ngModel" required minlength="6" />
+                <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password" #password="ngModel" required minlength="6" maxlength="25" />
                 <div class="alert alert-danger" *ngIf="f.submitted && password.invalid">
                   <div *ngIf="password.errors.required">Password is required</div>
                   <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                  <div *ngIf="password.errors.maxlength">Password maximum length is 25 characters</div>
                 </div>
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" name="repeatedPassword" placeholder="Confirm Password" [(ngModel)]="form.repeatedPassword" #repeatedPassword="ngModel" required minlength="6" />
+                <input type="password" class="form-control" name="repeatedPassword" placeholder="Confirm Password" [(ngModel)]="form.repeatedPassword" #repeatedPassword="ngModel" required minlength="6" maxlength="25" />
                 <div class="alert alert-danger" *ngIf="f.submitted && repeatedPassword.invalid">
                   <div *ngIf="repeatedPassword.errors.required">Password is required</div>
                   <div *ngIf="repeatedPassword.errors.minlength">Password must be at least 6 characters</div>
+                  <div *ngIf="repeatedPassword.errors.maxlength">Password maximum length is 25 characters</div>
                 </div>
               </div>
               <label for="date_of_birth_id">Date of birth</label>
@@ -66,19 +76,15 @@
                 </div>
               </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
-                <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-danger">
-                  Signup failed!<br/>{{errorMessage}}
-                </div>
+                <button class="btn btn-primary btn-block btn-lg">Sign Up</button>
               </div>
 
           </form>
-          <div class="text-center">Already have an account? <a href="#">Login here</a></div>
+          <div class="text-center">Already have an account? <a routerLink="/login">Login here</a></div>
         </div>
 
-      </div>
-    </ng-template>
+      </div><!-- end of col-sm-6 -->
 
-    </div>
-  </div>
-</div>
+  </div><!-- end of row -->
+
+</div><!-- end of container main -->

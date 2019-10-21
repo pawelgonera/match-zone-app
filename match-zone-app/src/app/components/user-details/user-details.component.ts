@@ -180,6 +180,7 @@ export class UserDetailsComponent implements OnInit{
     this.otherService.addVote(this.username, vote)
       .subscribe(data => {
         console.log('addedVote: ', data);
+        this.isVoted = true;
       }, err => {
         console.log(err);
       });
@@ -193,7 +194,9 @@ export class UserDetailsComponent implements OnInit{
       this.personalDetails.rating = this.rating.sumOfVotes / this.rating.countedVotes;
 
       this.otherService.updatePersonalDetails(this.username, this.personalDetails)
-        .subscribe(data => console.log('updatedPersonalDetailsForRating: ', data), error => console.log(error));
+        .subscribe(data => {
+            console.log('updatedPersonalDetailsForRating: ', data)
+          }, error => console.log(error));
     }, error => console.log(error));
 
     this.reloadData(this.username);

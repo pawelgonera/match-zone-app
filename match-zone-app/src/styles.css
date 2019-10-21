@@ -2,7 +2,8 @@
 @import "~mdbootstrap/css/mdb.min.css";
 @import "~font-awesome/css/font-awesome.min.css";
 @import "~bootstrap-select/dist/css/bootstrap-select.min.css";
-@import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 .card:hover{
   transform: scale(1.1, 1.1);
@@ -12,4 +13,5 @@
   transition: 0.6s;
 }
 
+html, body { height: 100%; }
 

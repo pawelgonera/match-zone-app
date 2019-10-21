@@ -3,7 +3,6 @@ import { Router } from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
 import {Register} from "../../model/register";
-import {UserDetailsComponent} from "../user-details/user-details.component";
 
 
 @Component({
@@ -17,12 +16,13 @@ export class CreateUserComponent implements OnInit {
   submitted = false;
   form: any = {};
   register: Register;
-  isSignedUp = false;
   isSignUpFailed = false;
-  errorMessage = '';
+  errorMessage: string = '';
   age: number;
 
-  constructor(private userService: UserService, private router: Router, private userDetailsComponent: UserDetailsComponent) { }
+  pinkHeartPath: any = "../assets/images/pink-heart.png";
+
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
 
@@ -49,7 +49,7 @@ export class CreateUserComponent implements OnInit {
       },
       error => {
         console.log(error);
-        this.errorMessage = error.error.message;
+        this.errorMessage = error.error.errorMessage;
         this.isSignUpFailed = true;
       }
     );

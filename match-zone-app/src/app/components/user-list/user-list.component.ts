@@ -24,6 +24,7 @@ export class UserListComponent implements OnInit {
   usernameFromToken: string;
   isSubmitted = false;
   isLogged = false;
+  select;
 
   constructor(private userService: UserService, private router: Router, private tokenService: TokenService) {
 
@@ -63,6 +64,7 @@ export class UserListComponent implements OnInit {
     this.pageUser.sort = 'firstName';
 
     console.log('sortForm: ', sortOpt.value.select);
+    console.log('matSelect', this.select);
 
     if(sortOpt.value.select === 'Asc-name'){
       console.log('sortOpt: ', sortOpt.value);
@@ -95,11 +97,11 @@ export class UserListComponent implements OnInit {
       this.pageUser.sort = 'personalDetails.rating';
     }
 
-    if(form.value.name === null){
+    if(sortOpt.value.name === null){
       name = '';
     }
     else {
-      name = form.value.name;
+      name = sortOpt.value.name;
     }
 
     if(form.value.ageMin === '' || form.value.ageMin === null){

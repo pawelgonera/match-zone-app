@@ -6,3 +6,17 @@
 .custom-select{
   width: 150px;
 }
+
+.custom-search{
+  width: 300px;
+}
+
+.btn-custom{
+  background: #fe4182;
+  color: white;
+}
+
+
+.custom-option:hover{
+  background: #fe4182;
+}

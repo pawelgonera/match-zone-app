@@ -19,18 +19,18 @@ public class AppearanceController {
         this.appearanceService = appearanceService;
     }
 
-    @GetMapping("/appearance/{id}")
-    public ResponseEntity<Appearance> getAppearanceById(@PathVariable(value = "id") Long appearanceId) throws ResourceNotFoundException {
+    @GetMapping("/appearance/{username}")
+    public ResponseEntity<Appearance> getAppearance(@PathVariable(value = "username") String username) throws ResourceNotFoundException {
 
-        Appearance appearance = appearanceService.getAppearanceById(appearanceId);
+        Appearance appearance = appearanceService.getAppearance(username);
 
         return ResponseEntity.ok().body(appearance);
     }
 
-    @PutMapping("/appearance/{id}")
-    public ResponseEntity<?> updateAppearance(@PathVariable(value = "id") Long userId, @Valid @RequestBody Appearance appearance) throws ResourceNotFoundException {
+    @PutMapping("/appearance/{username}")
+    public ResponseEntity<?> updateAppearance(@PathVariable(value = "username") String username, @Valid @RequestBody Appearance appearance) throws ResourceNotFoundException {
 
-        Appearance appearanceDetails = appearanceService.updateAppearance(userId, appearance);
+        Appearance appearanceDetails = appearanceService.updateAppearance(username, appearance);
 
         return ResponseEntity.ok(appearanceDetails);
     }

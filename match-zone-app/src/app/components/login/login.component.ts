@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   roles: string[] = [];
   private login: Login;
 
+  pinkHeartPath: any = "../assets/images/pink-heart.png";
 
   constructor(private authService: AuthenticationService, private router: Router, private tokenService: TokenService) { }
 

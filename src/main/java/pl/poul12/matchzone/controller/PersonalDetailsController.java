@@ -19,18 +19,18 @@ public class PersonalDetailsController {
         this.personalDetailsService = personalDetailsService;
     }
 
-    @GetMapping("/personal/{id}")
-    public ResponseEntity<PersonalDetails> getPersonalDetailsById(@PathVariable(value = "id") Long personalDetailsId) throws ResourceNotFoundException {
+    @GetMapping("/personal/{username}")
+    public ResponseEntity<PersonalDetails> getPersonalDetails(@PathVariable(value = "username") String username) throws ResourceNotFoundException {
 
-        PersonalDetails personalDetails = personalDetailsService.getPersonalDetailsById(personalDetailsId);
+        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(username);
 
         return ResponseEntity.ok().body(personalDetails);
     }
 
-    @PutMapping("/personal/{id}")
-    public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "id") Long userId, @Valid @RequestBody PersonalDetails personalDetails) throws ResourceNotFoundException {
+    @PutMapping("/personal/{username}")
+    public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "username") String username, @Valid @RequestBody PersonalDetails personalDetails) throws ResourceNotFoundException {
 
-        PersonalDetails updatedPersonalDetails =  personalDetailsService.updatePersonalDetails(userId, personalDetails);
+        PersonalDetails updatedPersonalDetails =  personalDetailsService.updatePersonalDetails(username, personalDetails);
 
         return ResponseEntity.ok(updatedPersonalDetails);
     }

@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
@@ -28,7 +30,6 @@ import pl.poul12.matchzone.util.CustomErrorResponse;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -53,25 +54,25 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
+    @GetMapping("/users/{username}")
+    public ResponseEntity<User> getUser(@PathVariable(value = "username") String username) {
 
-        User user = userService.getUserById(userId);
+        User user = userService.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
 
         return ResponseEntity.ok().body(user);
     }
 
     @PostMapping("/users/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterForm register) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterForm register, Errors errors) {
 
-        if(userService.getUserByUsername(register.getUsername()).isPresent()){
-            logger.error("User with username: {} already exist", register.getUsername());
-            return new ResponseEntity<>(new CustomErrorResponse("User with username " + register.getUsername() + "already exist "), HttpStatus.CONFLICT);
-        }
+        StringBuilder sb = new StringBuilder();
+        errors.getAllErrors().forEach(error -> sb.append(error.getDefaultMessage())
+                                                 .append("-"));
 
-        if(userService.getUserByEmail(register.getEmail()).isPresent()){
-            logger.error("User with email: {} already exist", register.getEmail());
-            return new ResponseEntity<>(new CustomErrorResponse("User with email " + register.getEmail() + "already exist "), HttpStatus.CONFLICT);
+        sb.delete(sb.length()-1, sb.length());
+
+        if(errors.hasErrors()){
+            return new ResponseEntity<>(new CustomErrorResponse(sb.toString()), HttpStatus.BAD_REQUEST);
         }
 
         userService.createUser(register);
@@ -99,16 +100,16 @@ public class UserController {
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
 
-    @PostMapping("/users/{id}/change-avatar")
-    public ResponseEntity<String> changeAvatar(@PathVariable(value = "id") Long userId, @RequestParam("file")MultipartFile file) throws ResourceNotFoundException {
+    @PostMapping("/users/{username}/change-avatar")
+    public ResponseEntity<String> changeAvatar(@PathVariable(value = "username") String username, @RequestParam("file")MultipartFile file) throws ResourceNotFoundException {
 
-        return userService.savePhoto(userId, file);
+        return userService.savePhoto(username, file);
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long userId, @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+    @PutMapping("/users/{username}")
+    public ResponseEntity<User> updateUser(@PathVariable(value = "username") String username, @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
 
-        final User updatedUser = userService.updateUser(userId, userDetails);
+        final User updatedUser = userService.updateUser(username, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 

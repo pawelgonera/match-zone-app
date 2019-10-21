@@ -1,0 +1,34 @@
+.col-sm-5{
+  margin-top:80px;
+  margin-left:100px;
+  color: grey;
+}
+
+.custom-image{
+  width: 250px;
+  height:250px;
+}
+
+.col-sm-10{
+  margin-top:40px;
+  margin-left:100px;
+}
+
+.col-sm-4{
+  margin-top:50px;
+  margin-left: 50px;
+  color: grey;
+}
+
+.custom-font-medium{
+  font-size:40px;
+}
+
+.custom-font-large{
+  font-size:100px;
+}
+
+.col-sm-10{
+  margin-top:40px;
+  margin-left:100px;
+}

@@ -39,25 +39,25 @@ public class VoteController {
         return voteService.getAll();
     }
 
-    @PostMapping("/votes/{id}")
-    public ResponseEntity<?> addVote(@PathVariable(value = "id") Long userId, @RequestBody Vote vote) throws ResourceNotFoundException {
+    @PostMapping("/votes/{username}")
+    public ResponseEntity<?> addVote(@PathVariable(value = "username") String username, @RequestBody Vote vote) throws ResourceNotFoundException {
 
-        voteService.createVote(userId, vote);
+        voteService.createVote(username, vote);
 
         return new ResponseEntity<>(new CustomErrorResponse("Vote created successfully"), HttpStatus.OK);
     }
 
-    @GetMapping("/votes/rating-info/{id}")
-    public ResponseEntity<Rating> getRatingInfo(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
-        Rating rating = voteService.getRatingInfo(userId);
+    @GetMapping("/votes/rating-info/{username}")
+    public ResponseEntity<Rating> getRatingInfo(@PathVariable(value = "username") String username) throws ResourceNotFoundException {
+        Rating rating = voteService.getRatingInfo(username);
         return ResponseEntity.ok().body(rating);
     }
 
-    @GetMapping("/votes/is-voted/{id}/{username}")
-    public Boolean checkIfLoggedUserVoted(@PathVariable(value = "id") Long userId, @PathVariable(value = "username") String usernameLogged) throws ResourceNotFoundException {
-        Boolean isVoted = voteService.checkIfLoggedUserVoted(userId, usernameLogged);
+    @GetMapping("/votes/is-voted/{username}/{usernameLogged}")
+    public Boolean checkIfLoggedUserVoted(@PathVariable(value = "username") String username, @PathVariable(value = "usernameLogged") String usernameLogged) throws ResourceNotFoundException {
+        Boolean isVoted = voteService.checkIfLoggedUserVoted(username, usernameLogged);
         logger.info("IsVoted: {}", isVoted);
-        return voteService.checkIfLoggedUserVoted(userId, usernameLogged);
+        return voteService.checkIfLoggedUserVoted(username, usernameLogged);
     }
 
 }

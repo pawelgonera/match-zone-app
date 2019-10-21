@@ -7,11 +7,11 @@ export class Register{
   role: string[];
   password: string;
   repeatedPassword: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   age: number;
   gender: Gender;
 
-  constructor(username: string, name: string, email: string, password: string, repeatedPassword: string, dateOfBirth: string, age: number) {
+  constructor(username: string, name: string, email: string, password: string, repeatedPassword: string, dateOfBirth: Date, age: number) {
     this.username = username;
     this.name = name;
     this.email = email;

@@ -102,11 +102,11 @@ public class UserService {
         return userRepository.findUserByEmail(email);
     }
 
-    public ResponseEntity<String> savePhoto(Long id, MultipartFile file) throws ResourceNotFoundException {
+    public ResponseEntity<String> savePhoto(String username, MultipartFile file) throws ResourceNotFoundException {
 
-        User user = getUserById(id);
+        User user = getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found for this username: " + username));
         PersonalDetails personalDetails = personalDetailsRepository.findByUserId(user.getId()).orElseThrow(
-                () -> new ResourceNotFoundException("PersonalDetails not found for this id: " + id)
+                () -> new ResourceNotFoundException("PersonalDetails not found for this id: " + user.getId())
         );
 
         try {
@@ -120,9 +120,9 @@ public class UserService {
         }
     }
 
-    public User updateUser(Long id, User user) throws ResourceNotFoundException {
+    public User updateUser(String username, User user) throws ResourceNotFoundException {
 
-        User userFound = getUserById(id);
+        User userFound = getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("PersonalDetails not found for this username: " + username));
 
         User userUpdated = updateUser(userFound, user);
 
@@ -214,7 +214,8 @@ public class UserService {
         user.setEmail(registerUser.getEmail());
         user.setPassword(passwordEncoder.encode(registerUser.getPassword()));
         PersonalDetails personalDetails = new PersonalDetails();
-        personalDetails.setDateOfBirth(LocalDate.parse(registerUser.getDateOfBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        personalDetails.setDateOfBirth(registerUser.getDateOfBirth());
+        //personalDetails.setDateOfBirth(LocalDate.parse(registerUser.getDateOfBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         personalDetails.setAge(registerUser.getAge());
         personalDetails.setGender(personalDetails.getGender());
         personalDetails.setUser(user);

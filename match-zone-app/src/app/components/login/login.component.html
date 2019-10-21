@@ -31,7 +31,8 @@
             <div class="form-group">
               <button class="btn btn-pink btn-block">Sign In</button>
               <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
-                Login failed: {{errorMessage}}
+                <p class="text-center">Login failed!</p>
+                {{errorMessage}}
               </div>
             </div>
           </form>
@@ -44,7 +45,7 @@
     <div class="col-sm-6">
 
       <div class="container">
-        <img src="http://pluspng.com/img-png/pink-love-heart-png-hd-pink-heart-png-pic-3000.png" class="mx-auto d-block" style="width:100%">
+        <img [src]="pinkHeartPath" class="mx-auto d-block custom-image" alt="Pink Heart">
       </div>
 
     </div>
