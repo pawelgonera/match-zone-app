@@ -26,3 +26,12 @@
 .nav-link{
   color: black;
 }
+
+.container{
+
+}
+
+.page-footer{
+  flex-shrink: 0;
+  flex-grow: 0;
+}

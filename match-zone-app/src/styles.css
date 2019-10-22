@@ -5,6 +5,16 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-content {
+  flex: 1;
+}
+
 .card:hover{
   transform: scale(1.1, 1.1);
 }
@@ -13,5 +23,17 @@
   transition: 0.6s;
 }
 
-html, body { height: 100%; }
+html{
+  height: 100%;
+}
 
+body {
+  margin:0;
+  padding:0;
+  height:100%;
+}
+
+.container {
+  min-height:100%;
+  position:relative;
+}

@@ -15,6 +15,9 @@
             <li class="nav-item">
               <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
             </li>
+            <li class="nav-item">
+              <a href="" data-target="#gallery" data-toggle="tab" class="nav-link">Gallery</a>
+            </li>
             <li class="nav-item" *ngIf="allowAccess">
               <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
             </li>
@@ -66,7 +69,8 @@
             </div><!-- end of tab-pane -->
 
             <div class="tab-pane" id="messages">
-              <div class="alert alert-info alert-dismissable">
+
+              <!--<div class="alert alert-info alert-dismissable">
                 <a class="panel-close" data-dismiss="alert"> This is an <strong>.alert</strong>. Use this to show important messages to the user.</a><button class="btn btn-danger">x</button>
               </div>
 
@@ -84,42 +88,18 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
 
-              <div class="card mb-3 shadow-sm" style="max-width:700px; max-height: 160px">
-                <div class="row no-gutters">
-                  <div class="col-md-2">
-                    <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=beautiful-blur-blurred-background-733872.jpg&fm=jpg" class="card-img" alt="...">
-                    <p  class="text-center"><small><b>Margarita</b></small></p>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <p class="card-text"><small>Hey, You looks stunning.</small></p>
-                      <hr>
-                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card mb-3 shadow-sm" style="max-width:700px; max-height: 160px">
-                <div class="row no-gutters">
-                  <div class="col-md-2">
-                    <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=beautiful-blur-blurred-background-733872.jpg&fm=jpg" class="card-img" alt="...">
-                    <p  class="text-center"><small><b>Margarita</b></small></p>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <p class="card-text"><small>Hey, You looks stunning. I want to spend some time with You, send me a PM.</small></p>
-                      <hr>
-                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              <p class="text-center">Coming soon</p>
 
             </div>
+
+            <div class="tab-pane" id="gallery">
+
+              <p class="text-center">Coming soon</p>
+
+            </div>
+
             <div class="tab-pane" id="edit">
               <form (ngSubmit)="onSubmit()">
                 <h4 class="text-center">Personal details</h4>

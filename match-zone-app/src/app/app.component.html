@@ -35,26 +35,21 @@
     </ng-template>
   </ul>
 
+  <br>
+
+    <div class="p-4 mb-4 rounded">
+      <h2 class="text-center h2-title"><strong>Find your soulmate</strong></h2>
+    </div>
+
+  <br>
+
+  <router-outlet></router-outlet>
+
+  <br><br>
+
 </div>
-
-<br>
-
-<div class="container">
-  <div class="p-4 mb-4 rounded">
-    <h2 class="text-center h2-title"><strong>Find your soulmate</strong></h2>
-  </div>
-</div>
-
-<br>
-
-<router-outlet></router-outlet>
-
-<br><br>
-
 
 <footer class="page-footer font-small unique-color-dark pt-4">
-
-  <div class="container">
 
     <ul class="list-unstyled list-inline text-center py-2" *ngIf="!isLoggedIn; else loggedIn">
       <li class="list-inline-item">
@@ -75,8 +70,6 @@
       </ul>
     </ng-template>
 
-  </div>
-
   <h5>Attributions</h5>
   <a href="https://www.freepngimg.com/png/37323-pink-heart">Pink Heart FreePNGImg.com</a>
   <br>
@@ -89,4 +82,3 @@
   </div>
 
 </footer>
-

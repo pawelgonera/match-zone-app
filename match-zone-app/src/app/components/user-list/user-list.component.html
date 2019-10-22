@@ -1,12 +1,14 @@
+<div class="container">
+
 <div *ngIf="isSubmitted">
 
-<div class="container">
+<!--<div class="container">-->
 
   <div class="row">
 
     <div class="col-sm-3 shadow-sm">
 
-      <div class="container">
+      <!--<div class="container">-->
 
         <form #form="ngForm" (ngSubmit)="onFilter(form, 0, sort)">
 
@@ -68,15 +70,15 @@
 
         </form>
 
-      </div><!-- end of container -->
+      <!--</div>--><!-- end of container -->
 
     </div><!-- end of col-sm-3 -->
 
     <div class="col-sm-9">
 
-      <div class="container">
+      <!--<div class="container">-->
 
-        <div class="container">
+        <!--<div class="container">-->
 
           <form #sort="ngForm" (change)="onFilter(form, 0, sort)">
 
@@ -115,48 +117,50 @@
 
           </form>
 
-        </div>
+        <!--</div>-->
 
           <hr>
 
           <br><br>
 
-        <div class="row" *ngIf="pageUser?.content">
+          <div class="row" *ngIf="pageUser?.content">
 
-          <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
-          <div class="col-sm-4" *ngFor="let user of pageUser.content">
-            <a (click)="userDetails(user.username)">
-              <div class="card shadow animated">
-               <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">{{user.firstName}}</h5>
-                  <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
-                  <small>{{user.appearance.about}}</small>
-                  <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
+            <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
+            <div class="col-sm-4" *ngFor="let user of pageUser.content">
+              <a (click)="userDetails(user.username)">
+                <div class="card shadow animated">
+                 <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title">{{user.firstName}}</h5>
+                    <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
+                    <small>{{user.appearance.about}}</small>
+                    <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
+                  </div>
+                  <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                  </div>
                 </div>
-                <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-              </div>
-            </a>
+              </a>
+            </div>
+
           </div>
 
-        </div>
-
-      </div><!-- end of container -->
+      <!--</div>--><!-- end of container -->
 
 
-      <nav aria-label="...">
-        <ul style="margin-left: 200px;margin-top:50px;" class="pagination"  *ngIf="pageUser?.content" >
-          <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onFilter(form, i, sort)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onFilter(form, i, sort)">{{i+1}}</a></li>
-        </ul>
-      </nav>
+          <nav aria-label="...">
+            <ul style="margin-left: 200px;margin-top:50px;" class="pagination"  *ngIf="pageUser?.content" >
+              <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onFilter(form, i, sort)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onFilter(form, i, sort)">{{i+1}}</a></li>
+            </ul>
+          </nav>
+
+        <!--</div>-->
 
     </div><!-- end of col-sm-9 -->
 
   </div><!-- end of row -->
 
-</div><!-- end of container main -->
+<!--</div>--><!-- end of container main -->
 
 </div><!-- end of ngIf -->
 
@@ -165,13 +169,13 @@
 
 <div *ngIf="!isSubmitted">
 
-  <div class="container">
+  <!--<div class="container">-->
 
     <div class="row">
 
       <div class="col-sm-3 shadow-sm">
 
-        <div class="container">
+        <!--<div class="container">-->
 
           <form #form="ngForm" (ngSubmit)="onSubmit(form)">
 
@@ -215,25 +219,26 @@
             <button type="submit" class="btn btn-pink btn-block">Find your match</button>
           </form>
 
-        </div>
+        <!--</div>-->
 
       </div>
 
       <div class="col-sm-9">
 
-        <div class="container">
+        <!--<div class="container">-->
 
-          <div class="container">
+
             <img src="https://www.youngisthan.in/wp-content/uploads/2018/02/dating.jpg" class="mx-auto d-block" style="width:100%" alt="">
-          </div>
 
-        </div>
+
+        <!--</div>-->
 
       </div>
 
     </div>
 
-  </div>
+  <!--</div>-->
 
 </div>
 
+</div>
