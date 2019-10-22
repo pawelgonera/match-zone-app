@@ -36,7 +36,7 @@ export class UserDetailsComponent implements OnInit{
 
   currentRate = 0;
 
-  isVoted = false;
+  isVoted = true;
   rating: Rating = new Rating();
 
   isLogged = false;

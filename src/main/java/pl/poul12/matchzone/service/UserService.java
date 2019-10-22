@@ -19,7 +19,10 @@ import pl.poul12.matchzone.model.enums.RoleName;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.repository.*;
 import pl.poul12.matchzone.security.forms.RegisterForm;
+import pl.poul12.matchzone.util.CustomErrorResponse;
+import pl.poul12.matchzone.util.MailSender;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,24 +34,23 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-
-    private PagingUserRepository pagingUserRepository;
 
     private PersonalDetailsRepository personalDetailsRepository;
     private AppearanceRepository appearanceRepository;
 
+    private MailSender mailSender;
+
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsRepository personalDetailsRepository,
-                       AppearanceRepository appearanceRepository, PagingUserRepository pagingUserRepository) {
+                       AppearanceRepository appearanceRepository, MailSender mailSender) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.personalDetailsRepository = personalDetailsRepository;
         this.appearanceRepository = appearanceRepository;
-        this.pagingUserRepository = pagingUserRepository;
+        this.mailSender = mailSender;
     }
 
     public List<User> getAllUsers(){
@@ -100,6 +102,25 @@ public class UserService {
     public Optional<User> getUserByEmail(String email) throws UsernameNotFoundException {
 
         return userRepository.findUserByEmail(email);
+    }
+
+    public ResponseEntity<?> resetPassword(String email) {
+
+        String hashedText = passwordEncoder.encode(email);
+        String newPassword = hashedText.substring(hashedText.length() - 12);
+
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found for this email: " + email));
+
+        try {
+            mailSender.sendEmail(email, newPassword);
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).body("Password has been changed successfully");
+
+        }catch (MessagingException | ResourceNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new CustomErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<String> savePhoto(String username, MultipartFile file) throws ResourceNotFoundException {

@@ -69,7 +69,7 @@ public class UserController {
         errors.getAllErrors().forEach(error -> sb.append(error.getDefaultMessage())
                                                  .append("-"));
 
-        sb.delete(sb.length()-1, sb.length());
+        //sb.delete(sb.length()-1, sb.length());
 
         if(errors.hasErrors()){
             return new ResponseEntity<>(new CustomErrorResponse(sb.toString()), HttpStatus.BAD_REQUEST);
@@ -98,6 +98,11 @@ public class UserController {
         logger.info("End of login controller");
 
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+    }
+
+    @PostMapping("users/reset-pass")
+    public ResponseEntity<?> resetPassword(@RequestParam String email){
+        return userService.resetPassword(email);
     }
 
     @PostMapping("/users/{username}/change-avatar")

@@ -1,0 +1,43 @@
+<div class="container">
+
+  <div *ngIf="isLoggedIn; else loggedOut">
+    Witamy
+  </div>
+
+  <ng-template #loggedOut>
+
+      <div class="col-sm-12">
+
+        <div class="signup-form">
+          <form name="form-signin" (ngSubmit)="f.form.valid && resetPass()" #f="ngForm">
+            <h2>Reset your password</h2>
+            <hr>
+            <div class="form-group">
+              <input type="text" class="form-control" name="email" placeholder="Please enter your email" [(ngModel)]="email" required />
+              <!--<div *ngIf="f.submitted && email.invalid">
+                <div *ngIf="email.errors.required">Please enter your email</div>
+              </div>-->
+            </div>
+            <div class="form-group">
+              <button class="btn btn-success btn-block">Reset Password</button>
+              <div *ngIf="f.submitted && isResetFailed" class="alert alert-danger">
+                <div *ngIf="isResetFailed">
+                  <p class="text-center">Reset failed!</p>
+                  <p class="text-center">{{errorMessage}}</p>
+                </div>
+              </div>
+              <div *ngIf="f.submitted && !isResetFailed" class="alert alert-success">
+                <p class="text-center">A new password has been sent</p>
+                <p class="text-center">Check your mail and login <a [routerLink]="['/login']" >here</a></p>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+
+  </ng-template>
+
+</div>
+

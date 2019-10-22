@@ -377,10 +377,13 @@
 
           </div>
 
-          <div *ngIf="isLogged && !isVoted; else beforeVote">
+          <div *ngIf="!allowAccess">
             <h3>Rate</h3>
             <hr>
-            <h1>{{personalDetails.rating | number: '1.1-1'}}</h1>
+            <h1>{{personalDetails.rating  | number: '1.1-1'}}</h1>
+          </div>
+
+          <div *ngIf="isLogged && !isVoted && !allowAccess">
             <ngb-rating [(rate)]="currentRate" max="6" >
               <ng-template let-fill="fill" let-index="index" >
                   <span class="star" [class.filled]="fill === 100"
@@ -392,12 +395,6 @@
             <button type="button" class="btn btn-success" (click)="onVote(vote)">Vote</button>
             <pre class="text-right">Rate: <b> {{vote.value}} </b></pre>
           </div>
-
-          <ng-template #beforeVote>
-            <h3>Rate</h3>
-            <hr>
-            <h1>{{personalDetails.rating  | number: '1.1-1'}}</h1>
-          </ng-template>
 
         </div><!-- end of col-lg-4 -->
 

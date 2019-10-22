@@ -10,10 +10,6 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
-/*const httpOptionsAccess = {
-  headers: new HttpHeaders({ 'Access-Control-Allow-Origin': 'http://localhost:4200' })
-};*/
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,10 +18,6 @@ export class UserService {
   private baseUrl = 'http://localhost:8080/match-zone/api/v1/users';
 
   constructor(private http: HttpClient) { }
-
-  /*getUser(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
-  }*/
 
   getUser(username: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${username}`);

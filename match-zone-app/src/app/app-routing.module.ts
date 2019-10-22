@@ -7,6 +7,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {UrlPermission} from "./urlPermission/url.permissions";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
 import {ComingSoonComponent} from "./components/coming-soon/coming-soon.component";
+import {ResetPassComponent} from "./reset-pass/reset-pass.component";
 
 const routes: Routes = [
   { path: '', component: UserListComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'register', component: CreateUserComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile/:username', component: UserDetailsComponent },//, canActivate: [UrlPermission]},
+  { path: 'reset-pass', component: ResetPassComponent},
   { path: 'not-found', component: NotFoundComponent },
   { path: 'coming-soon', component: ComingSoonComponent},
   { path: '**', redirectTo: '/not-found' }

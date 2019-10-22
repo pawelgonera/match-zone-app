@@ -32,22 +32,6 @@ export class OtherService {
     return this.http.put(`${this.baseUrl}/appearance/${username}`, value);
   }
 
-  getVote(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/votes/${id}`);
-  }
-
-  getAllVotes(): Observable<any>{
-    return this.http.get(`${this.baseUrl}/votes`);
-  }
-
-  getCountVotes(id: number){
-    return this.http.get<number>(`${this.baseUrl}/votes/count/${id}`);
-  }
-
-  getSumOfVotes(id: number){
-    return this.http.get<number>(`${this.baseUrl}/votes/sum/${id}`);
-  }
-
   getRatingInfo(username: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/votes/rating-info/${username}`);
   }
@@ -56,16 +40,12 @@ export class OtherService {
     return this.http.post<string>(`${this.baseUrl}/votes/${username}`, vote, httpOptions);
   }
 
-  getVotesAuthors(id: number): Observable<any>{
-    return this.http.get(`${this.baseUrl}/votes/names/${id}`);
-  }
-
   checkIfLoggedUserVoted(username: string, usernameLogged: string){
     return this.http.get(`${this.baseUrl}/votes/is-voted/${username}/${usernameLogged}`);
   }
 
-  updateVote(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/votes/${id}`, value);
+  resetPassword(formData: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/users/reset-pass`, formData, {reportProgress: true, responseType: 'text'});
   }
 
 }

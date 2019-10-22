@@ -20,6 +20,10 @@ export class CreateUserComponent implements OnInit {
   errorMessage: string = '';
   age: number;
 
+
+  minDate = new Date(new Date().getFullYear() - 75, new Date().getMonth(), new Date().getDay());
+  maxDate = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDay());
+
   pinkHeartPath: any = "../assets/images/pink-heart.png";
 
   constructor(private userService: UserService, private router: Router) { }
@@ -29,7 +33,9 @@ export class CreateUserComponent implements OnInit {
   }
 
   save() {
-    console.log(this.form);
+    console.log('form', this.form);
+    console.log('minDate', this.minDate);
+    console.log('maxDate', this.maxDate);
 
     this.register = new Register(
       this.form.username,

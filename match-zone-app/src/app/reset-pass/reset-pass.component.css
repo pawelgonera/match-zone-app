@@ -14,9 +14,6 @@
   padding: 30px;
 }
 .signup-form h2 {
-  color: #333;
-  font-weight: bold;
-  margin-top: 0;
   text-align: center;
 }
 
@@ -33,6 +30,7 @@
   font-weight: bold;
   background: #e6407d;
   border: none;
+  align-content: center;
   min-width: 140px;
 }
 
@@ -41,7 +39,7 @@
   outline: none !important;
 }
 
-.btn-pink {
+.btn-danger {
   color: white;
   line-height: 40px;
   transition: all 0.3s ease 0s;
@@ -54,8 +52,4 @@
 
 .btn-outline-pink{
   border-radius: 40px;
-}
-
-.custom-image{
-  width:100%
 }

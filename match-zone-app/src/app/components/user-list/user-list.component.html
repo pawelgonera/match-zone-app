@@ -88,7 +88,7 @@
 
                 <mat-form-field>
                   <mat-label>Sort by</mat-label>
-                  <mat-select [(value)]="select" ngModel name="select" (selectionChange)="onFilter(form, 0, sort)">
+                  <mat-select ngModel name="select" (selectionChange)="onFilter(form, 0, sort)">
                     <mat-option>None</mat-option>
                     <mat-option value="Asc-name" class="fa"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> First Name</mat-option>
                     <mat-option value="Desc-name"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> First Name</mat-option>
@@ -103,12 +103,11 @@
 
               <div class="col-sm-4">
 
-              <p ><b>Search</b></p>
-              <div class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="search" class="form-check-input custom-search" name="name" ngModel placeholder="Search by names or usernames">
-                </label>
-              </div>
+                <br>
+
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Search by names or usernames"  matInput name="name" ngModel >
+                </mat-form-field>
 
               </div>
 

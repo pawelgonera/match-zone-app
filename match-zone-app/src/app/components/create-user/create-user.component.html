@@ -67,14 +67,22 @@
                   <div *ngIf="repeatedPassword.errors.maxlength">Password maximum length is 25 characters</div>
                 </div>
               </div>
-              <label for="date_of_birth_id">Date of birth</label>
+              <!--<label for="date_of_birth_id">Date of birth</label>
               <div class="form-group">
-                <!--<input type="date" class="form-control" id="date_of_birth_id" name="dateOfBirth" required [value]="register.dateOfBirth | date:'yyyy-MM-dd'"   (input)="register.dateOfBirth=parseDate($event.target.value)">-->
+                <input type="date" class="form-control" id="date_of_birth_id" name="dateOfBirth" required [value]="register.dateOfBirth | date:'yyyy-MM-dd'"   (input)="register.dateOfBirth=parseDate($event.target.value)">
                 <input type="date" class="form-control" id="date_of_birth_id" name="dateOfBirth" [(ngModel)]="form.dateOfBirth" #dateOfBirth="ngModel" required />
                 <div class="alert alert-danger" *ngIf="f.submitted && dateOfBirth.invalid">
                   <div *ngIf="dateOfBirth.errors.required">Date of Birth is required</div>
                 </div>
-              </div>
+              </div>-->
+
+              <mat-form-field class="example-full-width" color="danger">
+                <mat-label>Date of birth</mat-label>
+                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="dd/mm/yyyy"  [(ngModel)]="form.dateOfBirth" name="dateOfBirth" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle >
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
               <div class="form-group">
                 <button class="btn btn-primary btn-block btn-lg">Sign Up</button>
               </div>

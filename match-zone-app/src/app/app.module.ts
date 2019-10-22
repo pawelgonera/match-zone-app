@@ -21,6 +21,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComingSoonComponent } from './components/coming-soon/coming-soon.component';
+import {MatNativeDateModule} from "@angular/material";
+import {ResetPassComponent} from "./reset-pass/reset-pass.component";
 
 //Angular Material Components
 import {MatCheckboxModule} from '@angular/material';
@@ -64,6 +66,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     NotFoundComponent,
     HomeComponent,
     ComingSoonComponent,
+    ResetPassComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,6 +108,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatNativeDateModule
   ],
   providers: [
     UserService,

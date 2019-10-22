@@ -20,3 +20,7 @@
 .custom-option:hover{
   background: #fe4182;
 }
+
+.example-full-width{
+  width: 250px;
+}
