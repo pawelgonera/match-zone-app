@@ -60,7 +60,7 @@ export class UserListComponent implements OnInit {
     let ratingMin = 0;
     let ratingMax = 0;
     this.pageUser.page = page;
-    this.pageUser.size = 6;
+    this.pageUser.size = 12;
     this.pageUser.direction = 'ASC';
     this.pageUser.sort = 'firstName';
 
@@ -175,7 +175,7 @@ export class UserListComponent implements OnInit {
     let gender = 0;
     let city = '';
     this.pageUser.page = 0;
-    this.pageUser.size = 6;
+    this.pageUser.size = 12;
     this.pageUser.direction = 'ASC';
     this.pageUser.sort = 'firstName';
 

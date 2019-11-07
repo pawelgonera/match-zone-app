@@ -44,6 +44,6 @@ export class UserService {
   }
 
   getPageUser(page: number): Observable<PageUser>{
-    return this.http.get<PageUser>(`${this.baseUrl}/list?page=${page}&size=6`);
+    return this.http.get<PageUser>(`${this.baseUrl}/list?page=${page}&size=12`);
   }
 }

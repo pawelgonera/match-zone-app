@@ -14,7 +14,7 @@
 }
 
 .h2-title{
-  color:#e84681;
+  color: #db406d;
 }
 
 .nav-link-custom{
@@ -27,11 +27,17 @@
   color: black;
 }
 
-.container{
-
-}
 
 .page-footer{
   flex-shrink: 0;
   flex-grow: 0;
+}
+
+.custom-container{
+  min-height:75%;
+}
+
+.jumbotron{
+  /*background: #dd3e74;*/
+  background: #1c2331;
 }

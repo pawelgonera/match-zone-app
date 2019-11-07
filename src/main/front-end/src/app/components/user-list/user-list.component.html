@@ -119,6 +119,20 @@
 
         <!--</div>-->
 
+          <div>
+            <form #page="ngForm" (change)="getPage(page); onFilter(form, index, sort)">
+
+              <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
+
+              <mat-form-field class="custom-width text-center">
+                <input type="number" matInput name="page" ngModel [value]="index" min="0" [max]="pageUser.totalPages">
+              </mat-form-field>
+
+              <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Next</button>
+
+            </form>
+          </div>
+
           <hr>
 
           <br><br>
@@ -145,6 +159,8 @@
 
           </div>
 
+      <br><br>
+
       <!--</div>--><!-- end of container -->
 
       <!--
@@ -158,13 +174,13 @@
       <div>
         <form #page="ngForm" (change)="getPage(page); onFilter(form, index, sort)">
 
-        <button class="btn btn-primary" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
+        <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
 
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="custom-width text-center">
             <input type="number" matInput name="page" ngModel [value]="index" min="0" [max]="pageUser.totalPages">
           </mat-form-field>
 
-        <button class="btn btn-primary" (click)="incrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Next</button>
+        <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Next</button>
 
         </form>
       </div>

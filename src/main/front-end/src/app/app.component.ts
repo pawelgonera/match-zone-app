@@ -18,6 +18,8 @@ export class AppComponent implements OnInit{
   user: User = new User();
   id: number;
 
+  logo: any = "../assets/images/logo.png";
+
   constructor(private tokenService: TokenService, public router: Router) {
   }
 
