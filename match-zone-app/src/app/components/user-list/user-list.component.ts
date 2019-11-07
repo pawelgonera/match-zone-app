@@ -25,6 +25,8 @@ export class UserListComponent implements OnInit {
   isSubmitted = false;
   isLogged = false;
 
+  index: number = 0;
+
   constructor(private userService: UserService, private router: Router, private tokenService: TokenService) {
 
   }
@@ -233,6 +235,23 @@ export class UserListComponent implements OnInit {
     }, error => {
       console.log('pageable error: ', error);
     })
+  }
+
+  incrementPage(){
+    if(this.pageUser.page < this.pageUser.totalPages){
+      this.index++;
+    }
+  }
+
+  decrementPage() {
+    if (this.index > 0){
+      this.index--;
+    }
+  }
+
+  getPage(page: NgForm){
+    console.log("page from form: ", page.value.page);
+    this.index = page.value.page;
   }
 
   deleteUser(id: number) {

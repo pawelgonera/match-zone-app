@@ -108,7 +108,7 @@
                 <br>
 
                 <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Search by names or usernames"  matInput name="name" ngModel >
+                  <input type="text" placeholder="Search by names or usernames" matInput name="name" ngModel >
                 </mat-form-field>
 
               </div>
@@ -147,12 +147,27 @@
 
       <!--</div>--><!-- end of container -->
 
-
+      <!--
           <nav aria-label="...">
             <ul style="margin-left: 200px;margin-top:50px;" class="pagination"  *ngIf="pageUser?.content" >
               <li *ngFor="let page of ' '.repeat(pageUser.totalPages).split(''), let i = index " (click)="onFilter(form, i, sort)" [class.active]="i === selectedPage" class="page-item"><a class="page-link" (click)="onFilter(form, i, sort)">{{i+1}}</a></li>
             </ul>
           </nav>
+      -->
+
+      <div>
+        <form #page="ngForm" (change)="getPage(page); onFilter(form, index, sort)">
+
+        <button class="btn btn-primary" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
+
+          <mat-form-field class="example-full-width">
+            <input type="number" matInput name="page" ngModel [value]="index" min="0" [max]="pageUser.totalPages">
+          </mat-form-field>
+
+        <button class="btn btn-primary" (click)="incrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Next</button>
+
+        </form>
+      </div>
 
         <!--</div>-->
 

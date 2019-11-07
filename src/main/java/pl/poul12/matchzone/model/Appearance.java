@@ -24,6 +24,7 @@ public class Appearance {
     private Physique physique;
     @Column(length = 500)
     private String about;
+    @Column(length = 500)
     private String hobbies;
     @JsonBackReference
     @OneToOne(cascade = CascadeType.ALL)
