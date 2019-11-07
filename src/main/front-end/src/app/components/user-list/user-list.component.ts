@@ -49,7 +49,6 @@ export class UserListComponent implements OnInit {
   }
 
   onFilter(form: NgForm, page: number, sortOpt: NgForm){
-
     console.log(form.value);
 
     let name = '';
@@ -164,6 +163,8 @@ export class UserListComponent implements OnInit {
     }, error => {
       console.log('filtered pageable error: ', error);
     });
+
+    window.scroll(0,0);
   }
 
   onSubmit(form: NgForm){

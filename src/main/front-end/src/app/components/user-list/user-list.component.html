@@ -119,8 +119,8 @@
 
         <!--</div>-->
 
-          <div>
-            <form #page="ngForm" (change)="getPage(page); onFilter(form, index, sort)">
+          <div class="text-right">
+            <form #pageUpper="ngForm" (change)="getPage(pageUpper); onFilter(form, index, sort)">
 
               <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
 
@@ -161,6 +161,7 @@
 
       <br><br>
 
+      <hr>
       <!--</div>--><!-- end of container -->
 
       <!--
@@ -171,8 +172,8 @@
           </nav>
       -->
 
-      <div>
-        <form #page="ngForm" (change)="getPage(page); onFilter(form, index, sort)">
+      <div class="text-right">
+        <form #pageLower="ngForm" (change)="getPage(pageLower); onFilter(form, index, sort)">
 
         <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
 
@@ -184,6 +185,8 @@
 
         </form>
       </div>
+
+      <br>
 
         <!--</div>-->
 
