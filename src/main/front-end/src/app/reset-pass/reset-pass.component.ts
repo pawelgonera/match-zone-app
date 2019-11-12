@@ -13,7 +13,7 @@ export class ResetPassComponent implements OnInit {
   constructor(private router: Router, private tokenService: TokenService, private otherService: OtherService) { }
   isLoggedIn = false;
   email: string;
-  isResetFailed = false;
+  isResetFailed = true;
   errorMessage = '';
 
   ngOnInit() {

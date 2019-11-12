@@ -1,0 +1,1 @@
+insert into users(id, email, first_name, time_zone_id, username) values (1, 'mail1@g.com', 'Pablo', 'Europe/Warsaw', 'Pablito01');

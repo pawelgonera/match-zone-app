@@ -10,7 +10,7 @@
 
       <!--<div class="container">-->
 
-        <form #form="ngForm" (ngSubmit)="onFilter(form, 0, sort)">
+        <form #form="ngForm" (ngSubmit)="onFilter(form, index, sort)">
 
           <h3 class="text-center border-bottom">Filters</h3>
 
@@ -90,7 +90,7 @@
 
                 <mat-form-field>
                   <mat-label>Sort by</mat-label>
-                  <mat-select ngModel name="select" (selectionChange)="onFilter(form, 0, sort)">
+                  <mat-select ngModel name="select" (selectionChange)="onFilter(form, index, sort)">
                     <mat-option>None</mat-option>
                     <mat-option value="Asc-name" class="fa"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> First Name</mat-option>
                     <mat-option value="Desc-name"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> First Name</mat-option>
