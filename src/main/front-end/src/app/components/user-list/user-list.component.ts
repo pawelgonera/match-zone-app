@@ -59,6 +59,7 @@ export class UserListComponent implements OnInit {
     let ratingMin = 0;
     let ratingMax = 0;
     this.pageUser.page = page;
+    this.index = page;
     this.pageUser.size = 12;
     this.pageUser.direction = 'ASC';
     this.pageUser.sort = 'firstName';

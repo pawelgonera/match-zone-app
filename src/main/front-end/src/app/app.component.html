@@ -25,14 +25,14 @@
         <li class="nav-item" *ngIf="isLoggedIn; else loggedOut">
           <div class="dropdown">
             <button class="nav-link nav-link-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-user-circle"></i>
+              <i class="fa fa-user"></i>
               {{username}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item fa" (click)="userDetails(username)">&#xf2bd; Profile</a>
-              <a class="dropdown-item fas" routerLink="coming-soon">&#xf4fe; Settings</a>
+              <a class="dropdown-item fa" (click)="userDetails(username)"><mat-icon class="fa fa-user"></mat-icon> Profile</a>
+              <a class="dropdown-item fas" routerLink="coming-soon"><mat-icon class="fa fa-cog"></mat-icon > Settings</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item fas" (click)="logOut()">&#xf35a; Log out</a>
+              <a class="dropdown-item fas" (click)="logOut()"><mat-icon class="fa fa-sign-out"></mat-icon > Log out</a>
             </div>
           </div>
 
