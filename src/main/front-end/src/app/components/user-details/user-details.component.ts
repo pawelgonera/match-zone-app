@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
-import {HttpClient, HttpRequest, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpEventType, HttpResponse} from "@angular/common/http";
 import {PersonalDetails} from "../../model/personal-details";
 import {Appearance} from "../../model/appearance";
 import {Vote} from "../../model/vote";
@@ -33,6 +33,8 @@ export class UserDetailsComponent implements OnInit{
 
   selectedFiles: FileList;
   selectedFile: File = null;
+  fileUploadProgress: string = null;
+  fileErrorMessage: string;
 
   currentRate = 0;
 
@@ -132,19 +134,25 @@ export class UserDetailsComponent implements OnInit{
 
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile);
-    const req = new HttpRequest('POST', 'http://localhost:8080/match-zone/api/v1/users/' + this.username + '/change-avatar', formData, {
-        reportProgress: true,
-        responseType: 'text'
-      }
-    );
+    this.fileUploadProgress = '0%';
 
-    this.http.request(req).subscribe(
-      event=>{
-        if(event instanceof HttpResponse){
-          console.log('File is completely uploaded!')
-        }
+    this.http.post('http://localhost:8080/match-zone/api/v1/users/' + this.username + '/change-avatar', formData, {
+        reportProgress: true,
+        observe: 'events'
       }
-    );
+    ).subscribe(events => {
+        if(events.type === HttpEventType.UploadProgress){
+          this.fileUploadProgress = Math.round(events.loaded / events.total * 100) + '%';
+
+        }else if(events.type === HttpEventType.Response){
+          this.fileUploadProgress = '';
+          console.log(events.body);
+          console.log('File is completely uploaded!');
+        }
+    },error => {
+      this.fileErrorMessage = error.error.errorMessage;
+      console.log("file error", this.fileErrorMessage);
+    });
 
     this.reloadData(this.username);
   }
