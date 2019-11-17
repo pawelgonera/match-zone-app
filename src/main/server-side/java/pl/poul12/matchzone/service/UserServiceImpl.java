@@ -2,13 +2,11 @@ package pl.poul12.matchzone.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PagedListHolder;
-import org.springframework.beans.support.SortDefinition;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,13 +22,15 @@ import pl.poul12.matchzone.util.MailSender;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
+    private final static Long MAX_FILE_SIZE = 10_000_000L;
+    private static String IS_IMAGE_TYPE = Pattern.compile("image.+").pattern();
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -71,35 +71,43 @@ public class UserService {
 
     public User createUser(RegisterForm registerUser){
 
+        System.out.println("registerUser: " + registerUser);
+
         User user = buildUser(registerUser);
 
+        System.out.println("User: " + user);
+
         Set<String> strRoles = registerUser.getRole();
+        System.out.println("registerUser (role): " + registerUser.getRole());
 
         Set<Role> roles = new HashSet<>();
         for(String role : strRoles) {
-            Role roleFound = roleRepository.findByName(RoleName.valueOf(role.toUpperCase())).orElseThrow(() -> new RuntimeException("Not found any role!"));
+            Role roleFound = roleRepository.findByName(RoleName.valueOf(role.toUpperCase())).orElseThrow(() -> new ResourceNotFoundException("Not found any role!"));
             roles.add(roleFound);
         }
 
+        System.out.println("roleFound: " + roles);
+
         user.setRoles(roles);
+
+        System.out.println("User ready: " + user);
 
         return userRepository.save(user);
     }
 
-    public User getUserById(Long id) throws ResourceNotFoundException {
+    public User getUserById(Long id){
 
         Optional<User> userFound = userRepository.findById(id);
 
-        return userFound.orElseThrow(() -> new ResourceNotFoundException("User not found for this id: " + id)
-        );
+        return userFound.orElseThrow(() -> new ResourceNotFoundException("User not found for this id: " + id));
     }
 
-    public Optional<User> getUserByUsername(String username) throws UsernameNotFoundException {
+    public Optional<User> getUserByUsername(String username){
 
         return userRepository.findUserByUsername(username);
     }
 
-    public Optional<User> getUserByEmail(String email) throws UsernameNotFoundException {
+    public Optional<User> getUserByEmail(String email){
 
         return userRepository.findUserByEmail(email);
     }
@@ -109,7 +117,7 @@ public class UserService {
         String hashedText = passwordEncoder.encode(email);
         String newPassword = hashedText.substring(hashedText.length() - 12);
 
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found for this email: " + email));
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found for this email: " + email));
 
         try {
             mailSender.sendEmail(email, newPassword);
@@ -117,13 +125,13 @@ public class UserService {
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.OK).body("Password has been changed successfully");
 
-        }catch (MessagingException | ResourceNotFoundException e){
+        }catch (MessagingException e){
             e.printStackTrace();
             return new ResponseEntity<>(new CustomErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public ResponseEntity<String> savePhoto(String username, MultipartFile file) throws ResourceNotFoundException {
+    public ResponseEntity<?> savePhoto(String username, MultipartFile file){
 
         User user = getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found for this username: " + username));
         PersonalDetails personalDetails = personalDetailsRepository.findByUserId(user.getId()).orElseThrow(
@@ -131,6 +139,18 @@ public class UserService {
         );
 
         try {
+
+            System.out.println(file.getSize());
+            System.out.println(file.getContentType());
+            if(file.getSize() > MAX_FILE_SIZE)
+            {
+                return new ResponseEntity<>(new CustomErrorResponse("File size is too large, maximum size is 10 MB"), HttpStatus.BAD_REQUEST);
+            }
+
+            if(!Objects.requireNonNull(file.getContentType()).matches(IS_IMAGE_TYPE)){
+                return new ResponseEntity<>(new CustomErrorResponse("Media type not required, it must be an image type"), HttpStatus.BAD_REQUEST);
+            }
+
             personalDetails.setPhoto(file.getBytes());
             personalDetailsRepository.save(personalDetails);
             logger.info("Photo uploaded");
@@ -141,7 +161,7 @@ public class UserService {
         }
     }
 
-    public User updateUser(String username, User user) throws ResourceNotFoundException {
+    public User updateUser(String username, User user) {
 
         User userFound = getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("PersonalDetails not found for this username: " + username));
 
@@ -150,7 +170,7 @@ public class UserService {
         return userRepository.save(userUpdated);
     }
 
-    public Map<String, Boolean> deleteUser(Long id) throws ResourceNotFoundException {
+    public Map<String, Boolean> deleteUser(Long id) {
 
         User user = getUserById(id);
 
@@ -236,7 +256,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(registerUser.getPassword()));
         PersonalDetails personalDetails = new PersonalDetails();
         personalDetails.setDateOfBirth(registerUser.getDateOfBirth());
-        //personalDetails.setDateOfBirth(LocalDate.parse(registerUser.getDateOfBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         personalDetails.setAge(registerUser.getAge());
         personalDetails.setGender(personalDetails.getGender());
         personalDetails.setUser(user);
