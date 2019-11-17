@@ -11,17 +11,17 @@ import pl.poul12.matchzone.security.UserPrinciple;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UserDetailsServiceImpl(UserService userService) {
-        this.userService = userService;
+    public UserDetailsServiceImpl(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
 
-        User userDetails = userService.getUserByUsername(username).orElseThrow( () -> new UsernameNotFoundException("Username not found: " + username));
+        User userDetails = userServiceImpl.getUserByUsername(username);
         System.out.println("userdetails" + userDetails.getUsername() + " : " + userDetails.getPassword());
         return UserPrinciple.build(userDetails);
     }

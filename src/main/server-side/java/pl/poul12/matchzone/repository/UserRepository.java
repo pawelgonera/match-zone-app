@@ -13,17 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByUsername(String username);
     Optional<User> findUserByEmail(String email);
 
-    List<User> findAllByFirstNameStartingWithIgnoreCase(String firstName);
-    List<User> findAllByPersonalDetails_Gender(Gender gender);
-    List<User> findAllByPersonalDetails_AgeBetween(Integer ageMin, Integer ageMax);
-    List<User> findAllByPersonalDetails_RatingBetween(Double ratingMin, Double ratingMax);
-    List<User> findAllByPersonalDetails_City(String city);
-
     List<User> findAllByFirstNameStartingWithIgnoreCase(String firstName, Sort sort);
     List<User> findAllByPersonalDetails_Gender(Gender gender, Sort sort);
     List<User> findAllByPersonalDetails_AgeBetween(Integer ageMin, Integer ageMax, Sort sort);
     List<User> findAllByPersonalDetails_RatingBetween(Double ratingMin, Double ratingMax, Sort sort);
     List<User> findAllByPersonalDetails_City(String city, Sort sort);
-    //List<User> findAllByFirstNameStartingWithIgnoreCaseOrPersonalDetails_GenderOrPersonalDetails_AgeBetweenOrPersonalDetails_City(
-            //String firstName, Gender gender,Integer ageMin, Integer ageMax, String city);
 }

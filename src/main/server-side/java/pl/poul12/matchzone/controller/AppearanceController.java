@@ -20,7 +20,7 @@ public class AppearanceController {
     }
 
     @GetMapping("/appearance/{username}")
-    public ResponseEntity<Appearance> getAppearance(@PathVariable(value = "username") String username) throws ResourceNotFoundException {
+    public ResponseEntity<Appearance> getAppearance(@PathVariable(value = "username") String username) {
 
         Appearance appearance = appearanceService.getAppearance(username);
 
@@ -28,7 +28,7 @@ public class AppearanceController {
     }
 
     @PutMapping("/appearance/{username}")
-    public ResponseEntity<?> updateAppearance(@PathVariable(value = "username") String username, @Valid @RequestBody Appearance appearance) throws ResourceNotFoundException {
+    public ResponseEntity<?> updateAppearance(@PathVariable(value = "username") String username, @Valid @RequestBody Appearance appearance) {
 
         Appearance appearanceDetails = appearanceService.updateAppearance(username, appearance);
 

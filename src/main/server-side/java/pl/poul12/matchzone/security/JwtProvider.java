@@ -25,9 +25,7 @@ public class JwtProvider {
 
     @Transactional
     public String generateJwtToken(Authentication authentication) {
-        logger.info("Iam in JwtProvider1");
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
-        logger.info("Iam in JwtProvider2");
 
         return Jwts.builder()
                         .setSubject((userPrincipal.getUsername()))
@@ -39,7 +37,6 @@ public class JwtProvider {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            System.out.println("Iam in validateJwtToken");
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
@@ -58,7 +55,6 @@ public class JwtProvider {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        logger.info("Iam in getUserNameFromJwtToken");
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

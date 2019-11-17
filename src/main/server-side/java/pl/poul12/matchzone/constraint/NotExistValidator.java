@@ -1,18 +1,18 @@
 package pl.poul12.matchzone.constraint;
 
-import pl.poul12.matchzone.service.UserService;
+import pl.poul12.matchzone.service.UserServiceImpl;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class NotExistValidator implements ConstraintValidator<NotExist, String> {
 
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     private FieldName fieldName;
 
-    public NotExistValidator(UserService userService) {
-        this.userService = userService;
+    public NotExistValidator(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
@@ -26,9 +26,9 @@ public class NotExistValidator implements ConstraintValidator<NotExist, String> 
 
        switch (fieldName){
            case USERNAME:
-               return !userService.getUserByUsername(value).isPresent();
+               return userServiceImpl.getUserByUsername(value) != null;
            case EMAIL:
-               return !userService.getUserByEmail(value).isPresent();
+               return userServiceImpl.getUserByEmail(value) != null;
        }
 
        return false;

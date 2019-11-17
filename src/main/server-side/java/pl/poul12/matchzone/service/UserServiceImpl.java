@@ -6,7 +6,6 @@ import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,12 +26,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService{
 
-    private final static Long MAX_FILE_SIZE = 10_000_000L;
-    private static String IS_IMAGE_TYPE = Pattern.compile("image.+").pattern();
+    //private final static Long MAX_FILE_SIZE = 10_000_000L;
+    //private static String IS_IMAGE_TYPE = Pattern.compile("image.+").pattern();
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -44,8 +43,8 @@ public class UserService {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsRepository personalDetailsRepository,
-                       AppearanceRepository appearanceRepository, MailSender mailSender) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsRepository personalDetailsRepository,
+                           AppearanceRepository appearanceRepository, MailSender mailSender) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.personalDetailsRepository = personalDetailsRepository;
@@ -69,16 +68,15 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public User createUser(RegisterForm registerUser){
+    public User saveUser(User user){
+        return userRepository.save(user);
+    }
 
-        System.out.println("registerUser: " + registerUser);
+    public User createUser(RegisterForm registerUser){
 
         User user = buildUser(registerUser);
 
-        System.out.println("User: " + user);
-
         Set<String> strRoles = registerUser.getRole();
-        System.out.println("registerUser (role): " + registerUser.getRole());
 
         Set<Role> roles = new HashSet<>();
         for(String role : strRoles) {
@@ -86,33 +84,27 @@ public class UserService {
             roles.add(roleFound);
         }
 
-        System.out.println("roleFound: " + roles);
-
         user.setRoles(roles);
-
-        System.out.println("User ready: " + user);
 
         return userRepository.save(user);
     }
 
     public User getUserById(Long id){
 
-        Optional<User> userFound = userRepository.findById(id);
-
-        return userFound.orElseThrow(() -> new ResourceNotFoundException("User not found for this id: " + id));
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found for this id: " + id));
     }
 
-    public Optional<User> getUserByUsername(String username){
+    public User getUserByUsername(String username){
 
-        return userRepository.findUserByUsername(username);
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found for this username: " + username));
     }
 
-    public Optional<User> getUserByEmail(String email){
+    public User getUserByEmail(String email){
 
-        return userRepository.findUserByEmail(email);
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found for this email: " + email));
     }
 
-    public ResponseEntity<?> resetPassword(String email) {
+    /*public ResponseEntity<?> resetPassword(String email) {
 
         String hashedText = passwordEncoder.encode(email);
         String newPassword = hashedText.substring(hashedText.length() - 12);
@@ -129,9 +121,9 @@ public class UserService {
             e.printStackTrace();
             return new ResponseEntity<>(new CustomErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-    }
+    }*/
 
-    public ResponseEntity<?> savePhoto(String username, MultipartFile file){
+   /* public ResponseEntity<?> savePhoto(String username, MultipartFile file){
 
         User user = getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found for this username: " + username));
         PersonalDetails personalDetails = personalDetailsRepository.findByUserId(user.getId()).orElseThrow(
@@ -147,7 +139,7 @@ public class UserService {
                 return new ResponseEntity<>(new CustomErrorResponse("File size is too large, maximum size is 10 MB"), HttpStatus.BAD_REQUEST);
             }
 
-            if(!Objects.requireNonNull(file.getContentType()).matches(IS_IMAGE_TYPE)){
+            if(!file.getContentType().matches(IS_IMAGE_TYPE)){
                 return new ResponseEntity<>(new CustomErrorResponse("Media type not required, it must be an image type"), HttpStatus.BAD_REQUEST);
             }
 
@@ -159,11 +151,11 @@ public class UserService {
             logger.error("Something went wrong with your file: {}", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Something went wrong with your file" + file.getOriginalFilename());
         }
-    }
+    }*/
 
     public User updateUser(String username, User user) {
 
-        User userFound = getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("PersonalDetails not found for this username: " + username));
+        User userFound = getUserByUsername(username);
 
         User userUpdated = updateUser(userFound, user);
 

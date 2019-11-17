@@ -1,6 +1,8 @@
 INSERT INTO roles (id, name) VALUES (1, 'ADMIN');
 INSERT INTO roles (id, name) VALUES (2, 'USER');
 
+CREATE INDEX index_users ON users(first_name, username);
+
 /* users data set - 50 */
 
 insert into users (id, email, first_name, password, time_zone_id, username) values (3, 'nmorison2@gnu.org', 'Nero', '3635640e9e8a431ce78524376996e6191942866e', 'Asia/Manila', 'nvern2');
@@ -1004,8 +1006,8 @@ insert into users (id, email, first_name, password, time_zone_id, username) valu
 
 /* personal details data set - 50 */
 
-insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (1, 19, 'Chrysó', 'Greece', '1970-03-12', 'Technological Education Institute of Mesologgi', 1, 1, 'Compensation Analyst', null, 2.9, 3, 1);
-insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (2, 39, 'Jawatiwa', 'Indonesia', '1992-11-12', 'Universitas Cenderawasih', 1, 0, 'Structural Engineer', null, 4.3, 4, 2);
+CREATE INDEX index_personal_details ON personal_details(age, city, gender, rating);
+
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (3, 22, 'Salas', 'Peru', '1969-08-07', 'Universidad Nacional Agraria La Molina', 1, 1, 'Computer Systems Analyst I', null, 1.3, 3, 3);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (4, 32, 'Haljala', 'Estonia', '1984-08-14', 'Estonian University of Life Sciences', 2, 0, 'Executive Secretary', null, 1.6, 1, 4);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (5, 20, 'Santo André', 'Brazil', '1946-01-13', 'Universidade Vale do Rio Doce', 1, 4, 'Editor', null, 4.4, 4, 5);

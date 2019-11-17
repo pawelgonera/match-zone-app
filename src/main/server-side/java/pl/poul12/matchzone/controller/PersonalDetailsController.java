@@ -20,7 +20,7 @@ public class PersonalDetailsController {
     }
 
     @GetMapping("/personal/{username}")
-    public ResponseEntity<PersonalDetails> getPersonalDetails(@PathVariable(value = "username") String username) throws ResourceNotFoundException {
+    public ResponseEntity<PersonalDetails> getPersonalDetails(@PathVariable(value = "username") String username) {
 
         PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(username);
 
@@ -28,7 +28,7 @@ public class PersonalDetailsController {
     }
 
     @PutMapping("/personal/{username}")
-    public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "username") String username, @Valid @RequestBody PersonalDetails personalDetails) throws ResourceNotFoundException {
+    public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "username") String username, @Valid @RequestBody PersonalDetails personalDetails) {
 
         PersonalDetails updatedPersonalDetails =  personalDetailsService.updatePersonalDetails(username, personalDetails);
 

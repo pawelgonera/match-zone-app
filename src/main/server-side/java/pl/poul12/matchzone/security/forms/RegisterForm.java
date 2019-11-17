@@ -2,6 +2,7 @@ package pl.poul12.matchzone.security.forms;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import pl.poul12.matchzone.constraint.FieldName;
 import pl.poul12.matchzone.constraint.Match;
 import pl.poul12.matchzone.constraint.NotExist;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 import javax.validation.constraints.*;
 
+@ToString
 @Setter
 @Getter
 @Match(firstField = "password", secondField = "repeatedPassword", message = "Passwords must be the same")

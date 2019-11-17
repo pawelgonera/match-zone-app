@@ -10,22 +10,21 @@ import pl.poul12.matchzone.repository.VoteRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class VoteService {
 
     private VoteRepository voteRepository;
     private UserRepository userRepository;
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
-    public VoteService(VoteRepository voteRepository, UserRepository userRepository, UserService userService) {
+    public VoteService(VoteRepository voteRepository, UserRepository userRepository, UserServiceImpl userServiceImpl) {
         this.voteRepository = voteRepository;
         this.userRepository = userRepository;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
-    public Vote getVoteById(Long id) throws ResourceNotFoundException {
+    public Vote getVoteById(Long id)  {
 
         Optional<Vote> voteFound = voteRepository.findById(id);
 
@@ -38,17 +37,17 @@ public class VoteService {
         return voteRepository.findAll();
     }
 
-    public Vote createVote(String username, Vote vote) throws ResourceNotFoundException {
+    public Vote createVote(String username, Vote vote){
 
-        User user = userService.getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User no found for this username: " + username));
+        User user = userServiceImpl.getUserByUsername(username);
 
         vote.setUser(user);
 
         return voteRepository.save(vote);
     }
 
-    public Rating getRatingInfo(String username) throws ResourceNotFoundException {
-        User user = userService.getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User no found for this username: " + username));
+    public Rating getRatingInfo(String username) {
+        User user = userServiceImpl.getUserByUsername(username);
         List<Vote> votes = voteRepository.findAllByUser(user);
 
         Long countedVotes = votes.stream()
@@ -65,8 +64,8 @@ public class VoteService {
         return rating;
     }
 
-    public Boolean checkIfLoggedUserVoted(String  username, String usernameLogged) throws ResourceNotFoundException {
-        User user = userService.getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User no found for this username: " + username));
+    public Boolean checkIfLoggedUserVoted(String  username, String usernameLogged) {
+        User user = userServiceImpl.getUserByUsername(username);
         List<Vote> votes = voteRepository.findAllByUser(user);
         return votes.stream()
                     .map(Vote::getAuthor)

@@ -26,7 +26,7 @@ public class VoteController {
     }
 
     @GetMapping("/votes/{id}")
-    public ResponseEntity<Vote> getVoteById(@PathVariable(value = "id") Long voteId) throws ResourceNotFoundException {
+    public ResponseEntity<Vote> getVoteById(@PathVariable(value = "id") Long voteId) {
 
         Vote vote = voteService.getVoteById(voteId);
 
@@ -40,7 +40,7 @@ public class VoteController {
     }
 
     @PostMapping("/votes/{username}")
-    public ResponseEntity<?> addVote(@PathVariable(value = "username") String username, @RequestBody Vote vote) throws ResourceNotFoundException {
+    public ResponseEntity<?> addVote(@PathVariable(value = "username") String username, @RequestBody Vote vote) {
 
         voteService.createVote(username, vote);
 
@@ -48,13 +48,13 @@ public class VoteController {
     }
 
     @GetMapping("/votes/rating-info/{username}")
-    public ResponseEntity<Rating> getRatingInfo(@PathVariable(value = "username") String username) throws ResourceNotFoundException {
+    public ResponseEntity<Rating> getRatingInfo(@PathVariable(value = "username") String username) {
         Rating rating = voteService.getRatingInfo(username);
         return ResponseEntity.ok().body(rating);
     }
 
     @GetMapping("/votes/is-voted/{username}/{usernameLogged}")
-    public Boolean checkIfLoggedUserVoted(@PathVariable(value = "username") String username, @PathVariable(value = "usernameLogged") String usernameLogged) throws ResourceNotFoundException {
+    public Boolean checkIfLoggedUserVoted(@PathVariable(value = "username") String username, @PathVariable(value = "usernameLogged") String usernameLogged) {
         Boolean isVoted = voteService.checkIfLoggedUserVoted(username, usernameLogged);
         logger.info("IsVoted: {}", isVoted);
         return voteService.checkIfLoggedUserVoted(username, usernameLogged);

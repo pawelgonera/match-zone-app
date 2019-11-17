@@ -37,11 +37,9 @@ public class User {
     private String timeZoneId;
     @JsonManagedReference
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@EqualsAndHashCode.Exclude
     private PersonalDetails personalDetails;
     @JsonManagedReference
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@EqualsAndHashCode.Exclude
     private Appearance appearance;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference

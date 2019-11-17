@@ -5,7 +5,6 @@ import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.Appearance;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.repository.AppearanceRepository;
-import pl.poul12.matchzone.repository.UserRepository;
 
 import java.util.Optional;
 
@@ -13,14 +12,14 @@ import java.util.Optional;
 public class AppearanceService {
 
     private AppearanceRepository appearanceRepository;
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
-    public AppearanceService(AppearanceRepository appearanceRepository, UserService userService) {
+    public AppearanceService(AppearanceRepository appearanceRepository, UserServiceImpl userServiceImpl) {
         this.appearanceRepository = appearanceRepository;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
-    public Appearance getAppearance(String username) throws ResourceNotFoundException {
+    public Appearance getAppearance(String username) {
 
         Long userId = getUserId(username);
 
@@ -30,7 +29,7 @@ public class AppearanceService {
         );
     }
 
-    public Appearance updateAppearance(String username, Appearance appearance) throws ResourceNotFoundException {
+    public Appearance updateAppearance(String username, Appearance appearance) {
 
         Long userId = getUserId(username);
 
@@ -47,8 +46,8 @@ public class AppearanceService {
         return appearanceRepository.save(appearanceFound);
     }
 
-    private Long getUserId(String username) throws ResourceNotFoundException {
-        User user = userService.getUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Appearance not found for this username: " + username));
+    private Long getUserId(String username) {
+        User user = userServiceImpl.getUserByUsername(username);
         return user.getId();
     }
 }

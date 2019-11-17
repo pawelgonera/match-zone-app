@@ -61,7 +61,7 @@ public class MailSender
         {
             e.printStackTrace();
             logger.error(e.getMessage());
-            throw new MessagingException();
+            throw new MessagingException(e.getMessage());
         }
     }
 
