@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.poul12.matchzone.exception.ResourceNotFoundException;
 
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
@@ -28,7 +27,6 @@ import pl.poul12.matchzone.security.forms.LoginForm;
 import pl.poul12.matchzone.security.forms.RegisterForm;
 import pl.poul12.matchzone.service.PersonalDetailsService;
 import pl.poul12.matchzone.service.UserService;
-import pl.poul12.matchzone.service.UserServiceImpl;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 import pl.poul12.matchzone.util.MailSender;
 

@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.Vote;
-import pl.poul12.matchzone.service.VoteService;
+import pl.poul12.matchzone.service.VoteServiceImpl;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 
 import java.util.List;
@@ -19,9 +18,9 @@ public class VoteController {
 
     private static final Logger logger = LoggerFactory.getLogger(VoteController.class);
 
-    private VoteService voteService;
+    private VoteServiceImpl voteService;
 
-    public VoteController(VoteService voteService) {
+    public VoteController(VoteServiceImpl voteService) {
         this.voteService = voteService;
     }
 

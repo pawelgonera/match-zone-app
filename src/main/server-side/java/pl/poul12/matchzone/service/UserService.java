@@ -30,10 +30,6 @@ public interface UserService {
 
     User getUserByEmail(String email);
 
-    //ResponseEntity<?> resetPassword(String email);
-
-    //ResponseEntity<?> savePhoto(String username, MultipartFile file);
-
     User updateUser(String username, User user);
 
     Map<String, Boolean> deleteUser(Long id);

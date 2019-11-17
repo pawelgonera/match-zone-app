@@ -11,17 +11,17 @@ import pl.poul12.matchzone.security.UserPrinciple;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @Autowired
-    public UserDetailsServiceImpl(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
 
-        User userDetails = userServiceImpl.getUserByUsername(username);
+        User userDetails = userService.getUserByUsername(username);
         System.out.println("userdetails" + userDetails.getUsername() + " : " + userDetails.getPassword());
         return UserPrinciple.build(userDetails);
     }

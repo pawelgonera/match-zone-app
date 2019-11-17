@@ -2,9 +2,8 @@ package pl.poul12.matchzone.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.PersonalDetails;
-import pl.poul12.matchzone.service.PersonalDetailsService;
+import pl.poul12.matchzone.service.PersonalDetailsServiceImpl;
 
 import javax.validation.Valid;
 
@@ -13,9 +12,9 @@ import javax.validation.Valid;
 @RequestMapping("api/v1")
 public class PersonalDetailsController {
 
-    private PersonalDetailsService personalDetailsService;
+    private PersonalDetailsServiceImpl personalDetailsService;
 
-    public PersonalDetailsController(PersonalDetailsService personalDetailsService) {
+    public PersonalDetailsController(PersonalDetailsServiceImpl personalDetailsService) {
         this.personalDetailsService = personalDetailsService;
     }
 

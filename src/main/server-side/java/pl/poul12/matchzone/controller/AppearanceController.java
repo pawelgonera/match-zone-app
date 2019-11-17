@@ -2,9 +2,8 @@ package pl.poul12.matchzone.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.Appearance;
-import pl.poul12.matchzone.service.AppearanceService;
+import pl.poul12.matchzone.service.AppearanceServiceImpl;
 
 import javax.validation.Valid;
 
@@ -13,9 +12,9 @@ import javax.validation.Valid;
 @RequestMapping("api/v1")
 public class AppearanceController {
 
-    private AppearanceService appearanceService;
+    private AppearanceServiceImpl appearanceService;
 
-    public AppearanceController(AppearanceService appearanceService) {
+    public AppearanceController(AppearanceServiceImpl appearanceService) {
         this.appearanceService = appearanceService;
     }
 
