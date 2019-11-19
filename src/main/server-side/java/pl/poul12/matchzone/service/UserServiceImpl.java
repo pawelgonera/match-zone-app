@@ -13,9 +13,9 @@ import pl.poul12.matchzone.model.enums.RoleName;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.repository.*;
 import pl.poul12.matchzone.security.forms.RegisterForm;
+import pl.poul12.matchzone.service.filter.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -112,6 +112,7 @@ public class UserServiceImpl implements UserService{
 
     public PagedListHolder<User> filterUserList(FilterForm filterForm) {
 
+
         boolean isNameIsEmpty = filterForm.getName().isEmpty();
         boolean isGenderIsUndefined = filterForm.getGender().ordinal() == 0;
         boolean isAgeIsZero = filterForm.getAgeMin() == 0 && filterForm.getAgeMax() == 0;
@@ -122,52 +123,9 @@ public class UserServiceImpl implements UserService{
 
         List<User> users = getAllUsersBySort(sort);
 
-        if (!isNameIsEmpty) {
-            users = userRepository.findAllByFirstNameStartingWithIgnoreCase(filterForm.getName(), sort);
-        }
-
-        if (!isGenderIsUndefined) {
-            if (isNameIsEmpty) {
-                users = userRepository.findAllByPersonalDetails_Gender(filterForm.getGender(), sort);
-            } else {
-                users = users.stream()
-                        .filter(user -> user.getPersonalDetails().getGender() == filterForm.getGender())
-                        .collect(Collectors.toList());
-            }
-        }
-
-        if (!isAgeIsZero) {
-            if (filterForm.getAgeMax() == 0) {
-                filterForm.setAgeMax(filterForm.getAgeMin());
-            }
-
-            if (isNameIsEmpty && isGenderIsUndefined) {
-                users = userRepository.findAllByPersonalDetails_AgeBetween(filterForm.getAgeMin(), filterForm.getAgeMax(), sort);
-            }else {
-                users = users.stream()
-                        .filter(user -> user.getPersonalDetails().getAge() >= filterForm.getAgeMin() && user.getPersonalDetails().getAge() <= filterForm.getAgeMax())
-                        .collect(Collectors.toList());
-            }
-        }
-
-        if (!isRatingIsZero) {
-            if (isNameIsEmpty && isGenderIsUndefined && isAgeIsZero) {
-                users = userRepository.findAllByPersonalDetails_RatingBetween(filterForm.getRatingMin(), filterForm.getRatingMax(), sort);
-            }else {
-                users = users.stream()
-                        .filter(user -> user.getPersonalDetails().getRating() >= filterForm.getRatingMin() && user.getPersonalDetails().getRating() <= filterForm.getRatingMax())
-                        .collect(Collectors.toList());
-            }
-        }
-
-        if (!isCityIsEmpty) {
-            if(isNameIsEmpty && isGenderIsUndefined && isAgeIsZero && isRatingIsZero) {
-                users = userRepository.findAllByPersonalDetails_City(filterForm.getCity(), sort);
-            }else {
-                users = users.stream()
-                        .filter(user -> user.getPersonalDetails().getCity().equals(filterForm.getCity()))
-                        .collect(Collectors.toList());
-            }
+        AndFilter searchCriteria = new AndFilter(new FilterByName(), new FilterByGender(), new FilterByAge(), new FilterByRating(), new FilterByCity());
+        if(!isNameIsEmpty || !isGenderIsUndefined || !isAgeIsZero || !isCityIsEmpty || !isRatingIsZero) {
+            users = searchCriteria.filterUsers(users, filterForm, sort);
         }
 
         PagedListHolder<User> pagedListHolder = new PagedListHolder<>(users);

@@ -84,8 +84,6 @@ public class UserController {
         errors.getAllErrors().forEach(error -> sb.append(error.getDefaultMessage())
                                                  .append("-"));
 
-        //sb.delete(sb.length()-1, sb.length());
-
         if(errors.hasErrors()){
             return new ResponseEntity<>(new CustomErrorResponse(sb.toString()), HttpStatus.BAD_REQUEST);
         }else{
@@ -137,8 +135,6 @@ public class UserController {
 
         try {
 
-            System.out.println(file.getSize());
-            System.out.println(file.getContentType());
             if(file.getSize() > MAX_FILE_SIZE)
             {
                 return new ResponseEntity<>(new CustomErrorResponse("File size is too large, maximum size is 10 MB"), HttpStatus.BAD_REQUEST);

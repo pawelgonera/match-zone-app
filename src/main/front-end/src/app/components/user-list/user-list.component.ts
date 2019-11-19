@@ -122,7 +122,7 @@ export class UserListComponent implements OnInit {
       gender = form.value.gender;
     }
     if(form.value.gender === null){
-      gender = 0;
+      gender = 1;
     }
 
     if(form.value.city === null){
@@ -215,8 +215,8 @@ export class UserListComponent implements OnInit {
       ageMin,
       ageMax,
       city,
-      1,
-      6,
+      0,
+      0,
       this.pageUser
     );
 

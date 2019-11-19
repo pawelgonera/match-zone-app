@@ -4,13 +4,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.poul12.matchzone.config.ConfigBeans;
+import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.Role;
 import pl.poul12.matchzone.model.User;
+import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.enums.RoleName;
+import pl.poul12.matchzone.model.forms.FilterForm;
+import pl.poul12.matchzone.model.forms.PageUser;
 import pl.poul12.matchzone.repository.RoleRepository;
 import pl.poul12.matchzone.repository.UserRepository;
 import pl.poul12.matchzone.security.forms.RegisterForm;
@@ -27,6 +33,7 @@ import static org.mockito.Mockito.*;
 @Import(ConfigBeans.class)
 public class UserServiceImplTest {
 
+    private final static Sort DEFAULT_SORT = Sort.by(Sort.DEFAULT_DIRECTION, "firstName");
     private static final User USER_TEST = new User();
 
     @Autowired
@@ -167,5 +174,63 @@ public class UserServiceImplTest {
 
     @Test
     public void filterUserList() {
+
+        //given
+        FilterForm filterFormTest = getFilterFormTest();
+
+        final int sizeOfTestedFilteredList = 5;
+
+        List<User> userListTest = getUserListTest();
+        doReturn(userListTest).when(userRepository).findAll(DEFAULT_SORT);
+
+        //when
+
+        final PagedListHolder<User> pagedListHolder = userService.filterUserList(filterFormTest);
+
+        //then
+
+        assertEquals(sizeOfTestedFilteredList, pagedListHolder.getSource().size());
+
+    }
+
+    private FilterForm getFilterFormTest(){
+        FilterForm filterFormTest = new FilterForm();
+        filterFormTest.setName("name");
+        filterFormTest.setGender(Gender.MALE);
+        filterFormTest.setAgeMin(20);
+        filterFormTest.setAgeMax(30);
+        filterFormTest.setRatingMin(2.5);
+        filterFormTest.setRatingMax(4.5);
+        filterFormTest.setCity("city");
+        filterFormTest.setPageUser(new PageUser());
+        filterFormTest.getPageUser().setPage(0);
+        filterFormTest.getPageUser().setSize(12);
+        filterFormTest.getPageUser().setDirection("ASC");
+        filterFormTest.getPageUser().setSort("firstName");
+
+        return filterFormTest;
+    }
+
+    private List<User> getUserListTest(){
+        List<User> userList = new ArrayList<>();
+
+        for(long i = 1; i <= 10; i++){
+            User user = new User();
+            user.setId(i);
+            user.setFirstName("Name" + i);
+            PersonalDetails personalDetails = new PersonalDetails();
+            if(i > 5) {
+                personalDetails.setGender(Gender.MALE);
+            }else {
+                personalDetails.setGender(Gender.FEMALE);
+            }
+            personalDetails.setAge(18 + (int)i);
+            personalDetails.setRating(2.0 + (0.1 * i));
+            personalDetails.setCity("City" + i);
+            user.setPersonalDetails(personalDetails);
+            userList.add(user);
+        }
+
+        return userList;
     }
 }
