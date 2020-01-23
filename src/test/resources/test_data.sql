@@ -1,4 +1,4 @@
-insert into users(id, email, firstName, password, timeZoneId, username) values (1, 'mail01@g.com', 'pass01', 'PABLO01', 'Europe/Warsaw', 'Pablito01');
+insert into users(id, email, firstName, password, timeZoneId, username) values (1, 'mail01@g.com', 'pass01', 'Pablo01', 'Europe/Warsaw', 'Pablito01');
 insert into users(id, email, firstName, password, timeZoneId, username) values (2, 'mail02@g.com', 'pass02', 'Pablo02', 'Europe/Warsaw', 'Pablito02');
 insert into users(id, email, firstName, password, timeZoneId, username) values (3, 'mail03@g.com', 'pass03', 'Pablo03', 'Europe/Warsaw', 'Pablito03');
 insert into users(id, email, firstName, password, timeZoneId, username) values (4, 'mail04@g.com', 'pass04', 'Pablo04', 'Europe/Warsaw', 'Pablito04');

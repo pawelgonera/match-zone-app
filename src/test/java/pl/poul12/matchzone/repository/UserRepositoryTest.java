@@ -1,5 +1,6 @@
 package pl.poul12.matchzone.repository;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ public class UserRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void shouldGetAllUsersByFirstNameStartingWithIgnoreCase() {
         //given
         String firstNameTest = "pablo";

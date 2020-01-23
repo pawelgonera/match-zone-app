@@ -24,6 +24,76 @@ As dating service, in this app you can register new user and fill your profile w
 You can search other registered users, browse their profile and gives them rate star. You can filter the displayed list of users by gender, age,
 rating, location and you can sort it.
 
+### How to lunch project
+Clone this repo
+```
+git clone https://github.com/pawelgonera/match-zone-app
+```
+
+You must have tomcat server and maven installed, change settings in two files
+
+In maven directory
+```
+[maven-home-directory]/conf/settings.xml
+```
+add this in servers section
+```
+<server>
+  <id>TomcatServer</id>
+  <username>tomcat</username>
+  <password>password</password>
+</server>
+```
+
+In tomcat directory
+```
+[tomcat-home-directory]/conf/tomcat-users.xml
+```
+Replace all tomcat user setting to (remove comment tags)
+```
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<user username="tomcat" password="password" roles="manager-gui,manager-script"/>
+```
+
+And run server - go to directory where tomcat is installed
+```
+cd [tomcat-home-directory]/bin/startup
+```
+
+Back to main directory of the project and deploy war file on tomcat using maven
+```
+mvn tomcat7:deploy
+```
+
+Now you need to run the front-end, for this you will have to install node.js and npm
+
+Install Angular CLI
+```
+npm install -g @angular/cli
+```
+
+Go to front-end folder in the project
+```
+cd [your-project-directory]/match-zone-app/src/main/front-end/
+```
+
+And install Bootstrap and JQuery
+```
+npm install bootstrap jquery --save
+```
+
+Run Angular client
+```
+ng serve
+```
+
+Go to url
+```
+http://localhost:4200/
+```
+
+
 #### Coming soon for features and content
 * gallery for user profile
 * comments and messages in user profile
