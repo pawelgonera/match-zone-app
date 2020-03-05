@@ -1,5 +1,6 @@
 package pl.poul12.matchzone.constraint;
 
+import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.service.UserServiceImpl;
 
 import javax.validation.ConstraintValidator;
@@ -23,12 +24,21 @@ public class NotExistValidator implements ConstraintValidator<NotExist, String> 
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-
        switch (fieldName){
            case USERNAME:
-               return userServiceImpl.getUserByUsername(value) != null;
+               try{
+                   userServiceImpl.getUserByUsername(value);
+                   return false;
+               }catch (ResourceNotFoundException e){
+                   return true;
+               }
            case EMAIL:
-               return userServiceImpl.getUserByEmail(value) != null;
+               try{
+                   userServiceImpl.getUserByEmail(value);
+                   return false;
+               }catch (ResourceNotFoundException e){
+                   return true;
+               }
        }
 
        return false;

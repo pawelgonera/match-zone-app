@@ -1,13 +1,13 @@
-insert into users(id, email, firstName, password, timeZoneId, username) values (1, 'mail01@g.com', 'pass01', 'Pablo01', 'Europe/Warsaw', 'Pablito01');
-insert into users(id, email, firstName, password, timeZoneId, username) values (2, 'mail02@g.com', 'pass02', 'Pablo02', 'Europe/Warsaw', 'Pablito02');
-insert into users(id, email, firstName, password, timeZoneId, username) values (3, 'mail03@g.com', 'pass03', 'Pablo03', 'Europe/Warsaw', 'Pablito03');
-insert into users(id, email, firstName, password, timeZoneId, username) values (4, 'mail04@g.com', 'pass04', 'Pablo04', 'Europe/Warsaw', 'Pablito04');
-insert into users(id, email, firstName, password, timeZoneId, username) values (5, 'mail05@g.com', 'pass05', 'Pablo05', 'Europe/Warsaw', 'Pablito05');
-insert into users(id, email, firstName, password, timeZoneId, username) values (6, 'mail06@g.com', 'pass06', 'Pablo06', 'Europe/Warsaw', 'Pablito06');
-insert into users(id, email, firstName, password, timeZoneId, username) values (7, 'mail07@g.com', 'pass07', 'Pablo07', 'Europe/Warsaw', 'Pablito07');
-insert into users(id, email, firstName, password, timeZoneId, username) values (8, 'mail08@g.com', 'pass08', 'Pablo08', 'Europe/Warsaw', 'Pablito08');
-insert into users(id, email, firstName, password, timeZoneId, username) values (9, 'mail09@g.com', 'pass09', 'Pablo09', 'Europe/Warsaw', 'Pablito09');
-insert into users(id, email, firstName, password, timeZoneId, username) values (10, 'mail10@g.com', 'pass10', 'Pablo10', 'Europe/Warsaw', 'Pablito10');
+insert into users(id, email, firstName, password, timeZoneId, username) values (1, 'mail01@g.com', 'Pablo01', 'pass01', 'Europe/Warsaw', 'Pablito01');
+insert into users(id, email, firstName, password, timeZoneId, username) values (2, 'mail02@g.com', 'Pablo02', 'pass02', 'Europe/Warsaw', 'Pablito02');
+insert into users(id, email, firstName, password, timeZoneId, username) values (3, 'mail03@g.com', 'Pablo03', 'pass03', 'Europe/Warsaw', 'Pablito03');
+insert into users(id, email, firstName, password, timeZoneId, username) values (4, 'mail04@g.com', 'Pablo04', 'pass04', 'Europe/Warsaw', 'Pablito04');
+insert into users(id, email, firstName, password, timeZoneId, username) values (5, 'mail05@g.com', 'Pablo05', 'pass05', 'Europe/Warsaw', 'Pablito05');
+insert into users(id, email, firstName, password, timeZoneId, username) values (6, 'mail06@g.com', 'Pablo06', 'pass06', 'Europe/Warsaw', 'Pablito06');
+insert into users(id, email, firstName, password, timeZoneId, username) values (7, 'mail07@g.com', 'Pablo07', 'pass07', 'Europe/Warsaw', 'Pablito07');
+insert into users(id, email, firstName, password, timeZoneId, username) values (8, 'mail08@g.com', 'Pablo08', 'pass08', 'Europe/Warsaw', 'Pablito08');
+insert into users(id, email, firstName, password, timeZoneId, username) values (9, 'mail09@g.com', 'Pablo09', 'pass09', 'Europe/Warsaw', 'Pablito09');
+insert into users(id, email, firstName, password, timeZoneId, username) values (10, 'mail10@g.com', 'Pablo10', 'pass10', 'Europe/Warsaw', 'Pablito10');
 
 insert into personal_details (id, age, city, country, dateOfBirth, education, gender, maritalStatus, occupation, photo, rating, religion, user_id) values (1, 18, 'London', 'Country01', '2000-01-01', 'University01', 1, 1, 'Job01', null, 1.1, 1, 1);
 insert into personal_details (id, age, city, country, dateOfBirth, education, gender, maritalStatus, occupation, photo, rating, religion, user_id) values (2, 19, 'Berlin', 'Country02', '2000-01-02', 'University02', 2, 1, 'Job02', null, 2.2, 1, 2);

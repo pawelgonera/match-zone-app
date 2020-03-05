@@ -52,8 +52,8 @@ export class UserListComponent implements OnInit {
     console.log(form.value);
 
     let name = '';
-    let ageMin = 0;
-    let ageMax = 0;
+    let ageMin = 18;
+    let ageMax = 75;
     let gender = 0;
     let city = '';
     let ratingMin = 0;
@@ -105,14 +105,14 @@ export class UserListComponent implements OnInit {
     }
 
     if(form.value.ageMin === '' || form.value.ageMin === null){
-      ageMin = 0;
+      ageMin = 18;
     }
     else {
       ageMin = form.value.ageMin;
     }
 
     if(form.value.ageMax === '' || form.value.ageMax === null){
-      ageMax = 0;
+      ageMax = 75;
     }
     else {
       ageMax = form.value.ageMax;
@@ -122,7 +122,7 @@ export class UserListComponent implements OnInit {
       gender = form.value.gender;
     }
     if(form.value.gender === null){
-      gender = 1;
+      gender = 0;
     }
 
     if(form.value.city === null){

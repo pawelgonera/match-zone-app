@@ -54,7 +54,7 @@ export class CreateUserComponent implements OnInit {
         this.isSignUpFailed = false;
       },
       error => {
-        console.log(error);
+        console.log('ERROR', error);
         this.errorMessage = error.error.errorMessage;
         this.isSignUpFailed = true;
       }

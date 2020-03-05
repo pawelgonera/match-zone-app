@@ -12,10 +12,4 @@ public class CustomErrorResponse {
         return errorMessage;
     }
 
-    /*@Override
-    public String toString() {
-        return "CustomErrorResponse{" +
-                "errorMessage='" + errorMessage + '\'' +
-                '}';
-    }*/
 }

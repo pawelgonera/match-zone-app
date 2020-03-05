@@ -84,8 +84,15 @@ public class UserController {
         errors.getAllErrors().forEach(error -> sb.append(error.getDefaultMessage())
                                                  .append("-"));
 
+        String error;
+        if(sb.toString().isEmpty()){
+            error = sb.toString();
+        }else {
+            error = sb.toString().substring(0, sb.length()-1);
+        }
+
         if(errors.hasErrors()){
-            return new ResponseEntity<>(new CustomErrorResponse(sb.toString()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new CustomErrorResponse(error), HttpStatus.BAD_REQUEST);
         }else{
             userService.createUser(register);
             return new ResponseEntity<>(new CustomErrorResponse("User registered successfully!"), HttpStatus.OK);
@@ -170,6 +177,12 @@ public class UserController {
 
     @PostMapping("/users/filter")
     public PagedListHolder<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
+
+        System.out.println("filterForm from controller: name - " + filterForm.getName() + " gender - " + filterForm.getGender() + " ageMin - " + filterForm.getAgeMin() + " ageMax - " + filterForm.getAgeMax() + " ratingMin - " + filterForm.getRatingMin() + " ratingMax - " + filterForm.getRatingMax() + " city - " + filterForm.getCity());
+        logger.debug("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
+        logger.info("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
+        logger.error("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
+
 
         return userService.filterUserList(filterForm);
     }

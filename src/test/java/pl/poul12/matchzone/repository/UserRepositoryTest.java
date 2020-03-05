@@ -59,7 +59,6 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @Ignore
     public void shouldGetAllUsersByFirstNameStartingWithIgnoreCase() {
         //given
         String firstNameTest = "pablo";

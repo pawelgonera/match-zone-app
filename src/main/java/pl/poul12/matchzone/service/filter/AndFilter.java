@@ -4,6 +4,7 @@ import org.springframework.data.domain.Sort;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.forms.FilterForm;
 
+import java.util.Collections;
 import java.util.List;
 
 public class AndFilter implements Filter {
@@ -23,6 +24,9 @@ public class AndFilter implements Filter {
             if(!filteredUsers.isEmpty()) {
                 users = filter.filterUsers(users, filterForm, sort);
             }
+            /*else {
+                return Collections.emptyList();
+            }*/
         }
 
         return users;

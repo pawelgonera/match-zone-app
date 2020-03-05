@@ -76,17 +76,14 @@ public class UserServiceImpl implements UserService{
     }
 
     public User getUserById(Long id){
-
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found for this id: " + id));
     }
 
-    public User getUserByUsername(String username){
-
+    public User getUserByUsername(String username) throws ResourceNotFoundException{
         return userRepository.findUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found for this username: " + username));
     }
 
-    public User getUserByEmail(String email){
-
+    public User getUserByEmail(String email) throws ResourceNotFoundException{
         return userRepository.findUserByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found for this email: " + email));
     }
 
@@ -112,6 +109,9 @@ public class UserServiceImpl implements UserService{
 
     public PagedListHolder<User> filterUserList(FilterForm filterForm) {
 
+        logger.debug("filterForm from service: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
+        logger.info("filterForm from service: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
+        logger.error("filterForm from service: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
 
         boolean isNameIsEmpty = filterForm.getName().isEmpty();
         boolean isGenderIsUndefined = filterForm.getGender().ordinal() == 0;
@@ -142,6 +142,7 @@ public class UserServiceImpl implements UserService{
         user.setFirstName(registerUser.getName());
         user.setEmail(registerUser.getEmail());
         user.setPassword(passwordEncoder.encode(registerUser.getPassword()));
+        user.setTimeZoneId(TimeZone.getDefault().getID());
         PersonalDetails personalDetails = new PersonalDetails();
         personalDetails.setDateOfBirth(registerUser.getDateOfBirth());
         personalDetails.setAge(registerUser.getAge());

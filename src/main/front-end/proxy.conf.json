@@ -1,6 +1,6 @@
 {
   "/api/v1/users": {
-    "target": "http://localhost:8080/match-zone/",
+    "target": "http://localhost:8081/match-zone/",
     "secure": false
   }
 }
