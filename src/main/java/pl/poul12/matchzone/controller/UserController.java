@@ -178,11 +178,7 @@ public class UserController {
     @PostMapping("/users/filter")
     public PagedListHolder<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
 
-        System.out.println("filterForm from controller: name - " + filterForm.getName() + " gender - " + filterForm.getGender() + " ageMin - " + filterForm.getAgeMin() + " ageMax - " + filterForm.getAgeMax() + " ratingMin - " + filterForm.getRatingMin() + " ratingMax - " + filterForm.getRatingMax() + " city - " + filterForm.getCity());
-        logger.debug("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
         logger.info("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
-        logger.error("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
-
 
         return userService.filterUserList(filterForm);
     }

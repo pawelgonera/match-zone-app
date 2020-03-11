@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.*;
+import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.enums.RoleName;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.repository.*;
@@ -109,24 +110,24 @@ public class UserServiceImpl implements UserService{
 
     public PagedListHolder<User> filterUserList(FilterForm filterForm) {
 
-        logger.debug("filterForm from service: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
         logger.info("filterForm from service: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
-        logger.error("filterForm from service: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
 
         boolean isNameIsEmpty = filterForm.getName().isEmpty();
         boolean isGenderIsUndefined = filterForm.getGender().ordinal() == 0;
         boolean isAgeIsZero = filterForm.getAgeMin() == 0 && filterForm.getAgeMax() == 0;
-        boolean isCityIsEmpty = filterForm.getCity().isEmpty();
         boolean isRatingIsZero = filterForm.getRatingMin() == 0 && filterForm.getRatingMax() == 0;
+        boolean isCityIsEmpty = filterForm.getCity().isEmpty();
 
         Sort sort = Sort.by(Sort.Direction.fromString(filterForm.getPageUser().getDirection()), filterForm.getPageUser().getSort());
 
         List<User> users = getAllUsersBySort(sort);
 
         AndFilter searchCriteria = new AndFilter(new FilterByName(), new FilterByGender(), new FilterByAge(), new FilterByRating(), new FilterByCity());
-        if(!isNameIsEmpty || !isGenderIsUndefined || !isAgeIsZero || !isCityIsEmpty || !isRatingIsZero) {
+        if(!isNameIsEmpty || !isGenderIsUndefined || !isAgeIsZero || !isRatingIsZero || !isCityIsEmpty) {
             users = searchCriteria.filterUsers(users, filterForm, sort);
         }
+
+        logger.info("users after all filtering: {}", users.size());
 
         PagedListHolder<User> pagedListHolder = new PagedListHolder<>(users);
         pagedListHolder.setPage(filterForm.getPageUser().getPage());
@@ -146,7 +147,9 @@ public class UserServiceImpl implements UserService{
         PersonalDetails personalDetails = new PersonalDetails();
         personalDetails.setDateOfBirth(registerUser.getDateOfBirth());
         personalDetails.setAge(registerUser.getAge());
-        personalDetails.setGender(personalDetails.getGender());
+        personalDetails.setCity(registerUser.getCity());
+        personalDetails.setGender(registerUser.getGender());
+        personalDetails.setRating(1.0);
         personalDetails.setUser(user);
         Appearance appearance = new Appearance();
         appearance.setUser(user);

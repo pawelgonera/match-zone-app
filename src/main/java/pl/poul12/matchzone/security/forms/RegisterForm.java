@@ -45,6 +45,12 @@ public class RegisterForm implements Serializable {
     private String repeatedPassword;
 
     @NotNull
+    private String city;
+
+    @NotNull
+    private Gender gender;
+
+    @NotNull
     @Past(message = "Date must be in past")
     private LocalDate dateOfBirth;
 
@@ -52,8 +58,4 @@ public class RegisterForm implements Serializable {
     @Min(value = 18, message = "Age must not be less than 18")
     @Max(value = 75, message = "Age must not be greater than 75")
     private Integer age;
-
-    @NotNull
-    private Gender gender;
-
 }

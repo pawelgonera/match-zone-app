@@ -34,6 +34,7 @@ export class CreateUserComponent implements OnInit {
 
   save() {
     console.log('form', this.form);
+    console.log('form-gender', this.form.gender);
     console.log('minDate', this.minDate);
     console.log('maxDate', this.maxDate);
 
@@ -43,13 +44,15 @@ export class CreateUserComponent implements OnInit {
       this.form.email,
       this.form.password,
       this.form.repeatedPassword,
+      this.form.city,
+      this.form.gender,
       this.form.dateOfBirth,
       this.age = this.calculateAge(this.form.dateOfBirth)
       );
 
     this.userService.createUser(this.register)
       .subscribe(data => {
-        console.log(data);
+        console.log('savedRegister', data);
         this.router.navigate(['./login']);
         this.isSignUpFailed = false;
       },

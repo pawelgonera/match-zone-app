@@ -33,24 +33,24 @@
           <p class="border-bottom"><b>Age</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMin" ngModel min="18" max="75" step="1" name="ageMin">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMin" min="18" max="75" step="1" name="ageMin" value="18">
             </label>
           </div>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMax" ngModel min="18" max="75" step="1" name="ageMax">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMax" ngModel min="18" max="75" step="1" name="ageMax" value="75">
             </label>
           </div>
 
           <p class="border-bottom"><b>Rating</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" ngModel min="1" max="6" step="0.25" name="ratingMin" >
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ratingMin" ngModel min="1" max="6" step="0.25" name="ratingMin" >
             </label>
           </div>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" ngModel min="1" max="6" step="0.25" name="ratingMax" >
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ratingMax" ngModel min="1" max="6" step="0.25" name="ratingMax" >
             </label>
           </div>
 
@@ -59,7 +59,7 @@
           <p class="border-bottom"><b>City</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="search" class="form-check-input" name="city" ngModel>
+              <input type="search" class="form-check-input" name="city" [(ngModel)]="filter.city" ngModel>
             </label>
           </div>
 
@@ -108,7 +108,7 @@
                 <br>
 
                 <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Search by names or usernames" matInput name="name" ngModel >
+                  <input type="text" placeholder="Search by name" matInput name="name" ngModel >
                 </mat-form-field>
 
               </div>

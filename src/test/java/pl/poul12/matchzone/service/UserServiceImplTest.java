@@ -174,25 +174,22 @@ public class UserServiceImplTest {
     }
 
     @Test
-    @Ignore
     public void filterUserList() {
 
         //given
         FilterForm filterFormTest = getFilterFormTest();
         System.out.println(filterFormTest);
-        final int sizeOfTestedFilteredList = 5;
+        final int sizeOfTestedFilteredList = 2;
 
         List<User> userListTest = getUserListTest();
         System.out.println(userListTest);
         doReturn(userListTest).when(userRepository).findAll(DEFAULT_SORT);
 
         //when
-
         final PagedListHolder<User> pagedListHolder = userService.filterUserList(filterFormTest);
         System.out.println(pagedListHolder.getPageList());
 
         //then
-
         assertEquals(sizeOfTestedFilteredList, pagedListHolder.getSource().size());
 
     }
@@ -200,11 +197,11 @@ public class UserServiceImplTest {
     private FilterForm getFilterFormTest(){
         FilterForm filterFormTest = new FilterForm();
         filterFormTest.setName("");
-        filterFormTest.setGender(Gender.UNDEFINED);
-        filterFormTest.setAgeMin(18);
-        filterFormTest.setAgeMax(19);
-        filterFormTest.setRatingMin(0.0);
-        filterFormTest.setRatingMax(0.0);
+        filterFormTest.setGender(Gender.MALE);
+        filterFormTest.setAgeMin(24);
+        filterFormTest.setAgeMax(26);
+        filterFormTest.setRatingMin(2.5);
+        filterFormTest.setRatingMax(2.7);
         filterFormTest.setCity("");
         filterFormTest.setPageUser(new PageUser());
         filterFormTest.getPageUser().setPage(0);

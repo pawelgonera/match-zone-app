@@ -67,6 +67,23 @@
                   <div *ngIf="repeatedPassword.errors.maxlength">Password maximum length is 25 characters</div>
                 </div>
               </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="city" placeholder="City" [(ngModel)]="form.city" #city="ngModel" required minlength="4" maxlength="35"/>
+                <div class="alert alert-danger" *ngIf="f.submitted && city.invalid">
+                  <div *ngIf="city.errors.required">City is required</div>
+                  <div *ngIf="city.errors.minlength">City must be at least 4 characters</div>
+                  <div *ngIf="city.errors.maxlength">City maximum length is 20 characters</div>
+                </div>
+              </div>
+
+              <mat-form-field>
+                <mat-label>Gender</mat-label>
+                <mat-select name="gender" [(ngModel)]="form.gender">
+
+                  <mat-option [value]="1" value="MALE">Male</mat-option>
+                  <mat-option [value]="2" value="FEMALE">Female</mat-option>
+                </mat-select>
+              </mat-form-field>
 
               <mat-form-field class="example-full-width" color="danger">
                 <mat-label>Date of birth</mat-label>

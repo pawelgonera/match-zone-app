@@ -11,8 +11,12 @@ public class FilterByGender implements Filter {
 
     @Override
     public List<User> filterUsers(List<User> users, FilterForm filterForm, Sort sort) {
-        return users.stream()
+        if (filterForm.getGender().ordinal() == 0) {
+            return users;
+        } else {
+            return users.stream()
                     .filter(user -> user.getPersonalDetails().getGender() == filterForm.getGender())
                     .collect(Collectors.toList());
         }
+    }
 }

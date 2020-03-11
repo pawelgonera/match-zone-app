@@ -56,8 +56,8 @@ export class UserListComponent implements OnInit {
     let ageMax = 75;
     let gender = 0;
     let city = '';
-    let ratingMin = 0;
-    let ratingMax = 0;
+    let ratingMin = 1;
+    let ratingMax = 6;
     this.pageUser.page = page;
     this.index = page;
     this.pageUser.size = 12;
@@ -104,14 +104,14 @@ export class UserListComponent implements OnInit {
       name = sortOpt.value.name;
     }
 
-    if(form.value.ageMin === '' || form.value.ageMin === null){
+    if(form.value.ageMin === '' || form.value.ageMin === null || form.value.ageMin === 0){
       ageMin = 18;
     }
     else {
       ageMin = form.value.ageMin;
     }
 
-    if(form.value.ageMax === '' || form.value.ageMax === null){
+    if(form.value.ageMax === '' || form.value.ageMax === null || form.value.ageMax === 0){
       ageMax = 75;
     }
     else {
@@ -132,15 +132,15 @@ export class UserListComponent implements OnInit {
       city = form.value.city;
     }
 
-    if(form.value.ratingMin === '' || form.value.ratingMin === null){
-      ratingMin = 0;
+    if(form.value.ratingMin === '' || form.value.ratingMin === null || form.value.ratingMin === 0){
+      ratingMin = 1;
     }
     else {
       ratingMin = form.value.ratingMin;
     }
 
-    if(form.value.ratingMax === '' || form.value.ratingMax === null){
-      ratingMax = 0;
+    if(form.value.ratingMax === '' || form.value.ratingMax === null || form.value.ratingMax === 0){
+      ratingMax = 6;
     }
     else {
       ratingMax = form.value.ratingMax;
@@ -172,8 +172,8 @@ export class UserListComponent implements OnInit {
 
     console.log(form.value);
 
-    let ageMin = 0;
-    let ageMax = 0;
+    let ageMin = 18;
+    let ageMax = 75;
     let gender = 0;
     let city = '';
     this.pageUser.page = 0;
