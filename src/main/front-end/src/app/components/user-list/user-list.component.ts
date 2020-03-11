@@ -25,6 +25,8 @@ export class UserListComponent implements OnInit {
   isSubmitted = false;
   isLogged = false;
 
+  isReadyToDisplay = false;
+
   index: number = 0;
 
   constructor(private userService: UserService, private router: Router, private tokenService: TokenService) {
@@ -38,7 +40,7 @@ export class UserListComponent implements OnInit {
     this.usernameFromToken = this.tokenService.getUsername();
     if(this.usernameFromToken){
       this.isLogged = true;
-      this.getPageUser(0);
+      //this.getPageUser(0);
     }
 
     console.log('isLogged', this.isLogged);
@@ -49,6 +51,8 @@ export class UserListComponent implements OnInit {
   }
 
   onFilter(form: NgForm, page: number, sortOpt: NgForm){
+    this.isReadyToDisplay = false;
+
     console.log(form.value);
 
     let name = '';
@@ -161,6 +165,7 @@ export class UserListComponent implements OnInit {
       console.log('filtered pageUser', response);
       this.pageUser.content = response.pageList;
       this.pageUser.totalPages = response.pageCount;
+      this.isReadyToDisplay = true;
     }, error => {
       console.log('filtered pageable error: ', error);
     });
@@ -169,7 +174,7 @@ export class UserListComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
-
+    this.isReadyToDisplay = false;
     console.log(form.value);
 
     let ageMin = 18;
@@ -225,18 +230,27 @@ export class UserListComponent implements OnInit {
       this.pageUser.content = response.pageList;
       this.pageUser.totalPages = response.pageCount;
       this.isSubmitted = true;
+      this.isReadyToDisplay = true;
     }, error => {
       console.log('filtered pageable error: ', error);
     });
   }
 
-  getPageUser(page: number): void{
+  /*getPageUser(page: number): void{
     this.userService.getPageUser(page).subscribe(data => {
       console.log("pageUser data: ", data);
       this.pageUser = data;
     }, error => {
       console.log('pageable error: ', error);
     })
+  }*/
+
+  isFirstPage(page: number){
+    return page == 0;
+  }
+
+  isLastPage(page: number){
+    return page == this.pageUser.totalPages-1;
   }
 
   incrementPage(){

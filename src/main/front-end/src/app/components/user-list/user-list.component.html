@@ -122,13 +122,16 @@
           <div class="text-right">
             <form #pageUpper="ngForm" (change)="getPage(pageUpper); onFilter(form, index, sort)">
 
-              <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
+              <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [disabled]="isFirstPage(index)">Previous</button>
 
               <mat-form-field class="custom-width text-center">
-                <input type="number" matInput name="page" ngModel [value]="index" min="0" [max]="pageUser.totalPages">
+                <input type="text" matInput name="page" [(ngModel)]="index" min="0" max="pageUser.totalPages">/
+              </mat-form-field>
+              <mat-form-field class="custom-width text-center">
+                <input type="text" matInput  [value]="pageUser.totalPages-1" readonly>
               </mat-form-field>
 
-              <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Next</button>
+              <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [disabled]="isLastPage(index)" >Next</button>
 
             </form>
           </div>
@@ -137,27 +140,40 @@
 
           <br><br>
 
-          <div class="row" *ngIf="pageUser?.content">
 
-            <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
-            <div class="col-sm-4" *ngFor="let user of pageUser.content">
-              <a (click)="userDetails(user.username)">
-                <div class="card shadow animated">
-                 <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
-                  <div class="card-body">
-                    <h5 class="card-title">{{user.firstName}}</h5>
-                    <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
-                    <small>{{user.appearance.about}}</small>
-                    <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
-                  </div>
-                  <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                  </div>
-                </div>
-              </a>
+          <div class="text-center" *ngIf="!isReadyToDisplay">
 
-              <br>
-              <br>
+            <!--<mat-progress-spinner class="text-right" color="accent" mode="indeterminate"></mat-progress-spinner>-->
+            <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+
+          </div>
+
+
+          <div *ngIf="isReadyToDisplay">
+
+            <div class="row" *ngIf="pageUser?.content">
+
+              <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
+              <div class="col-sm-4" *ngFor="let user of pageUser.content">
+                <a (click)="userDetails(user.username)">
+                  <div class="card shadow animated">
+                   <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title">{{user.firstName}}</h5>
+                      <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
+                      <small>{{user.appearance.about}}</small>
+                      <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                  </div>
+                </a>
+
+                <br>
+                <br>
+
+              </div>
 
             </div>
 
@@ -179,13 +195,16 @@
       <div class="text-right">
         <form #pageLower="ngForm" (change)="getPage(pageLower); onFilter(form, index, sort)">
 
-        <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Previous</button>
+        <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [disabled]="isFirstPage(index)" >Previous</button>
 
           <mat-form-field class="custom-width text-center">
-            <input type="number" matInput name="page" ngModel [value]="index" min="0" [max]="pageUser.totalPages">
+            <input type="text" matInput name="page" [(ngModel)]="index" min="0" max="pageUser.totalPages">/
+          </mat-form-field>
+          <mat-form-field class="custom-width text-center">
+            <input type="text" matInput  [value]="pageUser.totalPages-1" readonly>
           </mat-form-field>
 
-        <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [class.active]="index === selectedPage" >Next</button>
+          <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [disabled]="isLastPage(index)" >Next</button>
 
         </form>
       </div>
