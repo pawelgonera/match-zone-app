@@ -112,20 +112,20 @@ public class UserServiceImpl implements UserService{
 
         logger.info("filterForm from service: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
 
-        boolean isNameIsEmpty = filterForm.getName().isEmpty();
+        /*boolean isNameIsEmpty = filterForm.getName().isEmpty();
         boolean isGenderIsUndefined = filterForm.getGender().ordinal() == 0;
         boolean isAgeIsZero = filterForm.getAgeMin() == 0 && filterForm.getAgeMax() == 0;
         boolean isRatingIsZero = filterForm.getRatingMin() == 0 && filterForm.getRatingMax() == 0;
-        boolean isCityIsEmpty = filterForm.getCity().isEmpty();
+        boolean isCityIsEmpty = filterForm.getCity().isEmpty();*/
 
         Sort sort = Sort.by(Sort.Direction.fromString(filterForm.getPageUser().getDirection()), filterForm.getPageUser().getSort());
 
         List<User> users = getAllUsersBySort(sort);
 
         AndFilter searchCriteria = new AndFilter(new FilterByName(), new FilterByGender(), new FilterByAge(), new FilterByRating(), new FilterByCity());
-        if(!isNameIsEmpty || !isGenderIsUndefined || !isAgeIsZero || !isRatingIsZero || !isCityIsEmpty) {
+        //if(!isNameIsEmpty || !isGenderIsUndefined || !isAgeIsZero || !isRatingIsZero || !isCityIsEmpty) {
             users = searchCriteria.filterUsers(users, filterForm, sort);
-        }
+        //}
 
         logger.info("users after all filtering: {}", users.size());
 

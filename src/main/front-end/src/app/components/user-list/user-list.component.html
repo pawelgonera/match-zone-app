@@ -15,51 +15,47 @@
           <br>
 
           <p class="border-bottom"><b>Gender</b></p>
-          <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" name="gender" ngModel value="MALE"><small>Man</small>
-            </label>
-          </div>
-          <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" name="gender" ngModel value="FEMALE"><small>Woman</small>
-            </label>
-          </div>
-
-          <br><br>
+          <mat-radio-group aria-label="Select gender" [(ngModel)]="filter.gender" name="gender">
+            <div class="form-check-inline">
+             <mat-radio-button value="MALE">Man</mat-radio-button>
+            </div>
+            <div class="form-check-inline">
+              <mat-radio-button value="FEMALE">Female</mat-radio-button>
+            </div>
+          </mat-radio-group>
 
           <p class="border-bottom"><b>Age</b></p>
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMin" min="18" max="75" step="1" name="ageMin" value="18">
-            </label>
+          <mat-form-field class="custom-width">
+            <mat-label>from</mat-label>
+            <input type="number" matInput name="ageMin" [(ngModel)]="filter.ageMin" min="18" max="75" >
+          </mat-form-field>
           </div>
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ageMax" ngModel min="18" max="75" step="1" name="ageMax" value="75">
-            </label>
+          <mat-form-field class="custom-width">
+            <mat-label>to</mat-label>
+            <input type="number" matInput name="ageMax" [(ngModel)]="filter.ageMax" min="18" max="75" >
+          </mat-form-field>
           </div>
 
           <p class="border-bottom"><b>Rating</b></p>
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ratingMin" ngModel min="1" max="6" step="0.25" name="ratingMin" >
-            </label>
+            <mat-form-field class="custom-width">
+              <mat-label>from</mat-label>
+              <input type="number" matInput name="ratingMin" [(ngModel)]="filter.ratingMin" min="1" max="6" step="0.25" >
+            </mat-form-field>
           </div>
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="number" class="form-control form-control-sm" [(ngModel)]="filter.ratingMax" ngModel min="1" max="6" step="0.25" name="ratingMax" >
-            </label>
+            <mat-form-field class="custom-width">
+              <mat-label>to</mat-label>
+              <input type="number" matInput name="ratingMax" [(ngModel)]="filter.ratingMax" min="1" max="6" step="0.25" >
+            </mat-form-field>
           </div>
-
-          <br><br>
 
           <p class="border-bottom"><b>City</b></p>
-          <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="search" class="form-check-input" name="city" [(ngModel)]="filter.city" ngModel>
-            </label>
-          </div>
+          <mat-form-field class="example-full-width">
+            <input type="text" placeholder="Search by city" matInput name="city" [(ngModel)]="filter.city" >
+          </mat-form-field>
 
           <br><br>
           <input type="reset" class="btn btn-secondary" value="Reset">
