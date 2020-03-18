@@ -5,6 +5,7 @@ import {Register} from "../model/register";
 import {Filter} from "../model/filter";
 import {PageUser} from "../model/page-user";
 import {PagedListHolder} from "../model/paged-list-holder";
+import {Gender} from "../model/enum/gender";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,6 +38,10 @@ export class UserService {
 
   getUsersList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
+  }
+
+  getFilteredUsers(name: string, gender: Gender, ageMin: number, ageMax: number, city: string): Observable<PagedListHolder> {
+    return this.http.get<PagedListHolder>(`${this.baseUrl}/filter?name=${name}&gender=${gender}&ageMin=${ageMin}&ageMax=${ageMax}&city=${city}`);
   }
 
   getFilteredUserList(filter: Filter): Observable<PagedListHolder> {

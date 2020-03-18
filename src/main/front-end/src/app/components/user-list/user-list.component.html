@@ -1,7 +1,5 @@
 <div class="container">
 
-<div *ngIf="isSubmitted">
-
 <!--<div class="container">-->
 
   <div class="row">
@@ -19,12 +17,12 @@
           <p class="border-bottom"><b>Gender</b></p>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" [value]="1" name="gender" ngModel value="MALE"><small>Man</small>
+              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" name="gender" ngModel value="MALE"><small>Man</small>
             </label>
           </div>
           <div class="form-check-inline">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" [value]="2" name="gender" ngModel value="FEMALE"><small>Woman</small>
+              <input type="radio" class="form-check-input" [(ngModel)]="filter.gender" name="gender" ngModel value="FEMALE"><small>Woman</small>
             </label>
           </div>
 
@@ -90,14 +88,14 @@
 
                 <mat-form-field>
                   <mat-label>Sort by</mat-label>
-                  <mat-select ngModel name="select" (selectionChange)="onFilter(form, index, sort)">
+                  <mat-select ngModel [(ngModel)]="sortParam" name="sortParam"  (selectionChange)="onFilter(form, index, sort)">
                     <mat-option>None</mat-option>
-                    <mat-option value="Asc-name" class="fa"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> First Name</mat-option>
-                    <mat-option value="Desc-name"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> First Name</mat-option>
-                    <mat-option value="Asc-age"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Age</mat-option>
-                    <mat-option value="Desc-age"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Age</mat-option>
-                    <mat-option value="Asc-rating"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Rating</mat-option>
-                    <mat-option value="Desc-rating"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Rating</mat-option>
+                    <mat-option value="firstName_ASC" ><mat-icon class="fa fa-sort-amount-asc"></mat-icon> First Name</mat-option>
+                    <mat-option value="firstName_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> First Name</mat-option>
+                    <mat-option value="age_ASC"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Age</mat-option>
+                    <mat-option value="age_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Age</mat-option>
+                    <mat-option value="rating_ASC"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Rating</mat-option>
+                    <mat-option value="rating_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Rating</mat-option>
                   </mat-select>
                 </mat-form-field>
 
@@ -108,7 +106,7 @@
                 <br>
 
                 <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Search by name" matInput name="name" ngModel >
+                  <input type="text" placeholder="Search by name" matInput name="name" [(ngModel)]="filter.name" >
                 </mat-form-field>
 
               </div>
@@ -219,83 +217,5 @@
 
 <!--</div>--><!-- end of container main -->
 
-</div><!-- end of ngIf -->
-
-
-
-
-<div *ngIf="!isSubmitted">
-
-  <!--<div class="container">-->
-
-    <div class="row">
-
-      <div class="col-sm-3 shadow-sm">
-
-        <!--<div class="container">-->
-
-          <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-
-            <p class="border-bottom"><b>I'm Looking for</b></p>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="gender" ngModel value="FEMALE"><small>Woman</small>
-              </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="gender" ngModel value="MALE"><small>Man</small>
-              </label>
-            </div>
-
-            <br><br>
-
-            <p class="border-bottom"><b>Between</b></p>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMin">
-              </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input type="number" class="form-control form-control-sm" ngModel min="18" max="75" step="1" name="ageMax">
-              </label>
-            </div>
-
-            <br><br>
-
-            <p class="border-bottom"><b>In</b></p>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input type="search" class="form-check-input" name="city" ngModel>
-              </label>
-            </div>
-
-            <br><br>
-
-            <button type="submit" class="btn btn-pink btn-block">Find your match</button>
-          </form>
-
-        <!--</div>-->
-
-      </div>
-
-      <div class="col-sm-9">
-
-        <!--<div class="container">-->
-
-
-            <img src="https://www.youngisthan.in/wp-content/uploads/2018/02/dating.jpg" class="mx-auto d-block" style="width:100%" alt="">
-
-
-        <!--</div>-->
-
-      </div>
-
-    </div>
-
-  <!--</div>-->
-
-</div>
 
 </div>

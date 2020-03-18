@@ -69,6 +69,7 @@ export class UserDetailsComponent implements OnInit{
     this.loadPersonalDetails(this.username);
     this.loadAppearance(this.username);
 
+    window.scroll(0,0);
 
     this.reloadData(this.username);
   }

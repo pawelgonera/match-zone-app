@@ -8,10 +8,12 @@ import {UrlPermission} from "./urlPermission/url.permissions";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
 import {ComingSoonComponent} from "./components/coming-soon/coming-soon.component";
 import {ResetPassComponent} from "./reset-pass/reset-pass.component";
+import {HomeComponent} from "./components/home/home.component";
 
 const routes: Routes = [
-  { path: '', component: UserListComponent},
-  { path: 'home', component: UserListComponent },//, canActivate: [UrlPermission] },
+  { path: 'users', component: UserListComponent},
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },//, canActivate: [UrlPermission] },
   { path: 'register', component: CreateUserComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile/:username', component: UserDetailsComponent },//, canActivate: [UrlPermission]},

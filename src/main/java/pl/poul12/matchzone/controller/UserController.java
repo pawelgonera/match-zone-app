@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
+import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.security.JwtProvider;
 import pl.poul12.matchzone.security.JwtResponse;
@@ -175,6 +176,23 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
+    @GetMapping("/users/filter")
+    public PagedListHolder<User> getFilteredUsers(@RequestParam("name") String name, @RequestParam("gender")Gender gender,
+                                                  @RequestParam("ageMin") int ageMin, @RequestParam("ageMax") int ageMax,
+                                                  @RequestParam("city") String city){
+
+        logger.info("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, city - {} ", name, gender, ageMin, ageMax, city);
+
+        FilterForm filterForm = new FilterForm();
+        filterForm.setName(name);
+        filterForm.setGender(gender);
+        filterForm.setAgeMin(ageMin);
+        filterForm.setAgeMax(ageMax);
+        filterForm.setCity(city);
+
+        return userService.filterUserList(filterForm);
+    }
+
     @PostMapping("/users/filter")
     public PagedListHolder<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
 
@@ -185,7 +203,6 @@ public class UserController {
 
     @GetMapping("/users/list")
     public Page<User> getUsersPage(@RequestParam("page") int page, @RequestParam("size") int size){
-
         Sort sort = new Sort(Sort.Direction.ASC, "firstName");
         Pageable pageable = PageRequest.of(page, size, sort);
         return userService.getPageableListOfUsers(pageable);

@@ -2,11 +2,14 @@ import { Observable } from "rxjs";
 import { UserService} from "../../service/user.service";
 import { User} from "../../model/user";
 import {Component, OnInit} from "@angular/core";
-import {Router, RouterStateSnapshot} from '@angular/router';
+import {Router, RouterStateSnapshot, ActivatedRoute} from '@angular/router';
 import {NgForm} from "@angular/forms";
 import {Filter} from "../../model/filter";
+import {FilterParams} from "../../model/filter-params";
 import {PageUser} from "../../model/page-user";
 import {TokenService} from "../../service/token.service";
+import {HttpParams} from "@angular/common/http";
+import {Gender} from "../../model/enum/gender";
 
 @Component({
   selector: "app-user-list",
@@ -22,43 +25,138 @@ export class UserListComponent implements OnInit {
 
   user: User = new User();
   usernameFromToken: string;
-  isSubmitted = false;
   isLogged = false;
 
   isReadyToDisplay = false;
 
   index: number = 0;
+  sortParam: string;
 
-  constructor(private userService: UserService, private router: Router, private tokenService: TokenService) {
+  constructor(private route: ActivatedRoute, private userService: UserService, private router: Router, private tokenService: TokenService) {
 
   }
 
   ngOnInit() {
-
-    console.log('isSubmitted', this.isSubmitted);
-
     this.usernameFromToken = this.tokenService.getUsername();
     if(this.usernameFromToken){
       this.isLogged = true;
-      //this.getPageUser(0);
     }
 
     console.log('isLogged', this.isLogged);
+    this.displayUsers();
   }
 
   reloadData() {
     this.users = this.userService.getUsersList();
   }
 
+  reloadPage(){
+    this.router.navigate(['users']);
+  }
+
+  displayUsers(){
+    let name;
+    let gender;
+    let ageMin;
+    let ageMax;
+    let city;
+    let ratingMin;
+    let ratingMax;
+    this.pageUser.page;
+    this.pageUser.size = 12;
+    this.pageUser.direction;
+    this.pageUser.sort;
+
+   this.route.queryParams.subscribe(params => {
+        name = params['name'];
+        gender = params['gender'];
+        ageMin = params['ageMin'];
+        ageMax = params['ageMax'];
+        city = params['city'];
+        ratingMin = params['ratingMin'];
+        ratingMax = params['ratingMax'];
+        this.pageUser.page = params['page'];
+        this.index = this.pageUser.page;
+        if(params['sort'] != null){
+          this.pageUser.direction = params['sort'].split('_')[1];
+          this.pageUser.sort = params['sort'].split('_')[0];
+        }
+        this.sortParam = params['sort'];
+        console.log('params subscribe: ', params);
+    });
+
+    if(name == null){
+      name = '';
+    }
+
+    if(ageMin == '' || ageMin == null || ageMin == 0){
+      ageMin = 18;
+    }
+
+    if(ageMax == '' || ageMax == null || ageMax == 0){
+      ageMax = 75;
+    }
+
+    if(ratingMin == '' || ratingMin == null || ratingMin == 0){
+      ratingMin = 1;
+    }
+
+    if(ratingMax == '' || ratingMax == null || ratingMax == 0){
+      ratingMax = 6;
+    }
+
+    if(gender == null || gender == ''){
+      gender = Gender.UNDEFINED;
+    }
+
+    if(city == null){
+      city = '';
+    }
+
+    if(this.pageUser.direction == null || this.pageUser.direction == ''){
+      this.pageUser.direction = 'ASC';
+    }
+    if(this.pageUser.sort == null || this.pageUser.sort == ''){
+      this.pageUser.sort = 'firstName';
+    }
+
+    if(this.pageUser.sort != 'firstName'){
+      this.pageUser.sort = 'personalDetails.' + this.pageUser.sort;
+    }
+
+    this.filter = new Filter(
+      name,
+      gender,
+      ageMin,
+      ageMax,
+      city,
+      ratingMin,
+      ratingMax,
+      this.pageUser
+    );
+
+    console.log('filter: ', this.filter);
+
+    this.userService.getFilteredUserList(this.filter).subscribe(response => {
+      console.log('filtered pageUser', response);
+      this.pageUser.content = response.pageList;
+      this.pageUser.totalPages = response.pageCount;
+      this.isReadyToDisplay = true;
+    }, error => {
+      console.log('filtered pageable error: ', error);
+    });
+
+  }
+
   onFilter(form: NgForm, page: number, sortOpt: NgForm){
     this.isReadyToDisplay = false;
 
-    console.log(form.value);
+    console.log('form', form.value);
 
     let name = '';
     let ageMin = 18;
     let ageMax = 75;
-    let gender = 0;
+    let gender: Gender;
     let city = '';
     let ratingMin = 1;
     let ratingMax = 6;
@@ -68,82 +166,82 @@ export class UserListComponent implements OnInit {
     this.pageUser.direction = 'ASC';
     this.pageUser.sort = 'firstName';
 
-    console.log('sortForm: ', sortOpt.value.select);
+    console.log('sortForm: ', sortOpt.value.sortParam);
 
-    if(sortOpt.value.select === 'Asc-name'){
+    if(sortOpt.value.sortParam == 'firstName_ASC'){
       console.log('sortOpt: ', sortOpt.value);
       this.pageUser.direction = 'ASC';
       this.pageUser.sort = 'firstName';
     }
-    if(sortOpt.value.select === 'Desc-name'){
+    if(sortOpt.value.sortParam == 'firstName_DESC'){
       console.log('sortOpt: ', sortOpt.value);
       this.pageUser.direction = 'DESC';
       this.pageUser.sort = 'firstName';
     }
-    if(sortOpt.value.select === 'Asc-age'){
+    if(sortOpt.value.sortParam == 'age_ASC'){
       console.log('sortOpt: ', sortOpt.value);
       this.pageUser.direction = 'ASC';
       this.pageUser.sort = 'personalDetails.age';
     }
-    if(sortOpt.value.select === 'Desc-age'){
+    if(sortOpt.value.sortParam == 'age_DESC'){
       console.log('sortOpt: ', sortOpt.value);
       this.pageUser.direction = 'DESC';
       this.pageUser.sort = 'personalDetails.age';
     }
-    if(sortOpt.value.select === 'Asc-rating'){
+    if(sortOpt.value.sortParam == 'rating_ASC'){
       console.log('sortOpt: ', sortOpt.value);
       this.pageUser.direction = 'ASC';
       this.pageUser.sort = 'personalDetails.rating';
     }
-    if(sortOpt.value.select === 'Desc-rating'){
+    if(sortOpt.value.sortParam == 'rating_DESC'){
       console.log('sortOpt: ', sortOpt.value);
       this.pageUser.direction = 'DESC';
       this.pageUser.sort = 'personalDetails.rating';
     }
 
-    if(sortOpt.value.name === null){
+    if(sortOpt.value.name == null){
       name = '';
     }
     else {
       name = sortOpt.value.name;
     }
 
-    if(form.value.ageMin === '' || form.value.ageMin === null || form.value.ageMin === 0){
+    if(form.value.ageMin == '' || form.value.ageMin === null || form.value.ageMin === 0){
       ageMin = 18;
     }
     else {
       ageMin = form.value.ageMin;
     }
 
-    if(form.value.ageMax === '' || form.value.ageMax === null || form.value.ageMax === 0){
+    if(form.value.ageMax == '' || form.value.ageMax === null || form.value.ageMax === 0){
       ageMax = 75;
     }
     else {
       ageMax = form.value.ageMax;
     }
 
-    if(form.value.gender !== ''){
+    if(form.value.gender !== null){
       gender = form.value.gender;
     }
-    if(form.value.gender === null){
-      gender = 0;
+    if(form.value.gender == null){
+      gender = Gender.UNDEFINED;
     }
 
-    if(form.value.city === null){
+    if(form.value.city == null){
       city = '';
     }
     else {
       city = form.value.city;
     }
 
-    if(form.value.ratingMin === '' || form.value.ratingMin === null || form.value.ratingMin === 0){
+    if(form.value.ratingMin == '' || form.value.ratingMin == null || form.value.ratingMin == 0){
       ratingMin = 1;
     }
     else {
       ratingMin = form.value.ratingMin;
     }
 
-    if(form.value.ratingMax === '' || form.value.ratingMax === null || form.value.ratingMax === 0){
+    if(form.value.ratingMax == '' || form.value.ratingMax == null || form.value.ratingMax == 0){
       ratingMax = 6;
     }
     else {
@@ -170,87 +268,63 @@ export class UserListComponent implements OnInit {
       console.log('filtered pageable error: ', error);
     });
 
+    let sortValue = this.pageUser.sort;
+    if(this.pageUser.sort.split('.')[1] != null){
+      sortValue = this.pageUser.sort.split('.')[1];
+    }
+    let sort = sortValue + '_' + this.pageUser.direction;
+
+    let filterParams: FilterParams = new FilterParams();
+
+    console.log('params: ', 'name:' + name + ' gender: ' + gender + ' ageMin: ' + ageMin + ' ageMax: ' + ageMax + ' ratingMin: ' + ratingMin + ' ratingMax: ' + ratingMax + ' city: ' + city);
+
+    if(name != ''){
+      filterParams.setName(name);
+    }
+    if(gender != 0 || gender != null){
+      filterParams.setGender(gender);
+    }
+    if(ageMin != 0 || ageMin != null){
+      filterParams.setAgeMin(ageMin);
+    }
+    if(ageMax != 0 || ageMax != null){
+      filterParams.setAgeMax(ageMax);
+    }
+    if(ratingMin != 0 || ratingMin != null){
+      filterParams.setRatingMin(ratingMin);
+    }
+    if(ratingMax != 0 || ratingMax != null){
+      filterParams.setRatingMax(ratingMax);
+    }
+    if(city != ''){
+      filterParams.setCity(city);
+    }
+    if(sortOpt.value.sortParam != null){
+      filterParams.setSort(sort);
+    }
+
+    filterParams.setPage(this.pageUser.page);
+
+    console.log('filterParams: ', filterParams);
+
+    this.router.navigate(['users'], { queryParams: filterParams });
+
     window.scroll(0,0);
   }
-
-  onSubmit(form: NgForm){
-    this.isReadyToDisplay = false;
-    console.log(form.value);
-
-    let ageMin = 18;
-    let ageMax = 75;
-    let gender = 0;
-    let city = '';
-    this.pageUser.page = 0;
-    this.pageUser.size = 12;
-    this.pageUser.direction = 'ASC';
-    this.pageUser.sort = 'firstName';
-
-    if(form.value.ageMin === '' || form.value.ageMin === null){
-      ageMin = 0;
-    }
-    else {
-      ageMin = form.value.ageMin;
-    }
-
-    if(form.value.ageMax === '' || form.value.ageMax === null){
-      ageMax = 0;
-    }
-    else {
-      ageMax = form.value.ageMax;
-    }
-
-    if(form.value.gender !== ''){
-      gender = form.value.gender;
-    }
-    if(form.value.gender === null){
-      gender = 0;
-    }
-
-    if(form.value.city === null){
-      city = '';
-    }
-    else {
-      city = form.value.city;
-    }
-
-    this.filter = new Filter(
-      name,
-      gender,
-      ageMin,
-      ageMax,
-      city,
-      0,
-      0,
-      this.pageUser
-    );
-
-    this.userService.getFilteredUserList(this.filter).subscribe(response => {
-      console.log('filtered pageUser', response);
-      this.pageUser.content = response.pageList;
-      this.pageUser.totalPages = response.pageCount;
-      this.isSubmitted = true;
-      this.isReadyToDisplay = true;
-    }, error => {
-      console.log('filtered pageable error: ', error);
-    });
-  }
-
-  /*getPageUser(page: number): void{
-    this.userService.getPageUser(page).subscribe(data => {
-      console.log("pageUser data: ", data);
-      this.pageUser = data;
-    }, error => {
-      console.log('pageable error: ', error);
-    })
-  }*/
-
   isFirstPage(page: number){
-    return page == 0;
+    if(page < 0){
+      this.router.navigate(['not-found']);
+    }
+
+    return page <= 0;
   }
 
   isLastPage(page: number){
-    return page == this.pageUser.totalPages-1;
+    if(page > this.pageUser.totalPages-1){
+      this.router.navigate(['not-found']);
+    }
+
+    return page >= this.pageUser.totalPages-1;
   }
 
   incrementPage(){
@@ -268,16 +342,6 @@ export class UserListComponent implements OnInit {
   getPage(page: NgForm){
     console.log("page from form: ", page.value.page);
     this.index = page.value.page;
-  }
-
-  deleteUser(id: number) {
-    this.userService.deleteUser(id)
-      .subscribe(
-        data => {
-          console.log(data);
-          this.reloadData();
-        },
-        error => console.log(error));
   }
 
   userDetails(username: string){
