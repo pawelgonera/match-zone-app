@@ -70,7 +70,7 @@
 
             <div class="tab-pane" id="messages">
 
-              <!--<div class="alert alert-info alert-dismissable text-center">
+              <div class="alert alert-info alert-dismissable text-center">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
                 This is an <strong>alert</strong>. Use this to show important messages to the user.
               </div>
@@ -89,9 +89,20 @@
                     </div>
                   </div>
                 </div>
-              </div>-->
+              </div>
 
-              <p class="text-center">Coming soon</p>
+              <form name="form-signin" (ngSubmit)="addComment(form)" #form="ngForm">
+                <h4>Post new comment</h4>
+                <hr>
+
+                <div class="form-group">
+                  <input type="text-area" class="form-control" name="content" placeholder="Type a comment" [(ngModel)]="comment.content"  required />
+                </div>
+
+                <button class="btn btn-pink btn-block">Post</button>
+
+              </form>
+
 
             </div>
 

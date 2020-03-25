@@ -5,10 +5,12 @@ import {UserService} from "../../service/user.service";
 import {HttpClient, HttpEventType, HttpResponse} from "@angular/common/http";
 import {PersonalDetails} from "../../model/personal-details";
 import {Appearance} from "../../model/appearance";
+import {Comment} from "../../model/comment";
 import {Vote} from "../../model/vote";
 import {OtherService} from "../../service/other.service";
 import {TokenService} from "../../service/token.service";
 import {Rating} from "../../model/rating";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-user-details',
@@ -30,6 +32,7 @@ export class UserDetailsComponent implements OnInit{
   personalDetails: PersonalDetails = new PersonalDetails();
   appearance: Appearance = new Appearance();
   vote: Vote = new Vote();
+  comment: Comment = new Comment();
 
   selectedFiles: FileList;
   selectedFile: File = null;
@@ -71,6 +74,7 @@ export class UserDetailsComponent implements OnInit{
 
     this.loadPersonalDetails(this.username);
     this.loadAppearance(this.username);
+    this.loadComments(this.username);
 
     window.scroll(0,0);
 
@@ -94,6 +98,15 @@ export class UserDetailsComponent implements OnInit{
       .subscribe(data => {
           console.log('appearance: ', data);
           this.appearance = data;
+        },
+        error => console.log(error));
+  }
+
+   loadComments(username: string){
+    return this.otherService.getComments(username)
+      .subscribe(data => {
+          console.log('comments: ', data);
+          this.comment = data;
         },
         error => console.log(error));
   }
@@ -185,6 +198,40 @@ export class UserDetailsComponent implements OnInit{
         }
       }, error => console.log(error));
 
+  }
+
+  addComment(form: NgForm){
+    //comment.setContent(form.value.content);
+    //comment.setAuthor(this.usernameFromToken);
+    //comment.setPostDate(new Date()); //<div>{{ today | date : 'yyyy/MMMM/dd, HH:mm:ss' }}</div>
+    this.comment.content = form.value.content;
+    this.comment.author = this.usernameFromToken;
+    this.comment.postDate = new Date();
+
+    this.otherService.addComment(this.username, this.comment)
+      .subscribe(data => {
+        console.log('addedComment: ', data);
+      }, err => {
+        console.log(err);
+      });
+  }
+
+  editComment(id: number, content: string){
+    this.otherService.editComment(id, content)
+      .subscribe(data => {
+        console.log('editedComment: ', data);
+      }, err => {
+        console.log(err);
+      });
+  }
+
+  deleteComment(id: number){
+    this.otherService.deleteComment(id)
+      .subscribe(data => {
+        console.log('deletedComment: ', data);
+      }, err => {
+        console.log(err);
+      });
   }
 
   onVote(vote: Vote){

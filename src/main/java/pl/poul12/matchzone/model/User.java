@@ -47,9 +47,14 @@ public class User {
     private Appearance appearance;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private List<Vote> votes;
+    @EqualsAndHashCode.Exclude
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private List<Comment> comments;
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -69,6 +74,9 @@ public class User {
                 ", timeZoneId='" + timeZoneId + '\'' +
                 ", personalDetails=" + personalDetails +
                 ", appearance=" + appearance +
+                ", votes=" + votes +
+                ", comments=" + comments +
+                ", roles=" + roles +
                 '}';
     }
 }

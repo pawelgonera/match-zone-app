@@ -1,22 +1,27 @@
 package pl.poul12.matchzone.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
 @Entity
-public class Vote{
+public class Comment{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer value;
+    private String content;
     private String author;
+    private LocalDateTime postDate;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
@@ -25,10 +30,12 @@ public class Vote{
 
     @Override
     public String toString() {
-        return "Vote{" +
+        return "Comment{" +
                 "id=" + id +
-                ", value=" + value +
+                ", content='" + content + '\'' +
                 ", author='" + author + '\'' +
+                ", postDate=" + postDate +
                 '}';
     }
 }
+

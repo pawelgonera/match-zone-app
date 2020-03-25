@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Vote} from "../model/vote";
+import {Comment} from "../model/comment";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -38,6 +39,22 @@ export class OtherService {
 
   addVote(username: string, vote: Vote): Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/votes/${username}`, vote, httpOptions);
+  }
+
+  addComment(username: string, comment: Comment): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/comments/${username}`, comment, httpOptions);
+  }
+
+  editComment(id: number, content: string): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/comments/${id}`, content);
+  }
+
+  deleteComment(id: number): Observable<Object> {
+    return this.http.delete(`${this.baseUrl}/comments/${id}`);
+  }
+
+  getComments(username: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/comments/${username}`);
   }
 
   checkIfLoggedUserVoted(username: string, usernameLogged: string){
