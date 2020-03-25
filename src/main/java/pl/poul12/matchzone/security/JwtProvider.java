@@ -25,36 +25,51 @@ public class JwtProvider {
 
     @Transactional
     public String generateJwtToken(Authentication authentication) {
+
+        System.out.println("Jestem w JwtProvider.generateJwtToken przed pobraniem principala do UserPrincipal " + new Date());
+
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
 
-        return Jwts.builder()
-                        .setSubject((userPrincipal.getUsername()))
-                        .setIssuedAt(new Date())
-                        .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
-                        .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                        .compact();
+        System.out.println("Jestem w JwtProvider.generateJwtToken przed zbudowaniem tokena " + new Date());
+
+        String token = Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpiration))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+
+        System.out.println("Zbudowany token: " + token + "  " + new Date());
+
+        return token;
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
+
+            System.out.println("Jestem w JwtProvider.validateJwtToken przed walidacją tokena " + new Date());
+
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
-            logger.error("Invalid JWT signature -> Message: {} ", e);
+            logger.error("Invalid JWT signature -> Message: {} ", e.getMessage());
         } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token -> Message: {}", e);
+            logger.error("Invalid JWT token -> Message: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
-            logger.error("Expired JWT token -> Message: {}", e);
+            logger.error("Expired JWT token -> Message: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            logger.error("Unsupported JWT token -> Message: {}", e);
+            logger.error("Unsupported JWT token -> Message: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty -> Message: {}", e);
+            logger.error("JWT claims string is empty -> Message: {}", e.getMessage());
         }
 
         return false;
     }
 
     public String getUserNameFromJwtToken(String token) {
+
+        System.out.println("Jestem w JwtProvider.getUserNameFromJwtToken przed pobraniem username z tokena " + new Date());
+
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

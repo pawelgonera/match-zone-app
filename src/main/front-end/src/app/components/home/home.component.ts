@@ -82,8 +82,6 @@ export class HomeComponent implements OnInit {
       city = form.value.city;
     }
 
-    //let sort = this.pageUser.sort + '_' + this.pageUser.direction;
-
     let filterParams: FilterParams = new FilterParams();
 
     console.log('params: ', 'name:' + name + ' gender: ' + gender + ' ageMin: ' + ageMin + ' ageMax: ' + ageMax + ' ratingMin: ' + ratingMin + ' ratingMax: ' + ratingMax + ' city: ' + city);
@@ -109,11 +107,12 @@ export class HomeComponent implements OnInit {
     if(city != ''){
       filterParams.setCity(city);
     }
-    //filterParams.setSort(sort);
 
     filterParams.setPage(this.pageUser.page);
 
     console.log('filterParams: ', filterParams);
+
+    console.log('=== Jestem w HomeComponent.onSubmit przed przekierowaniem do /users ==='), new Date();
 
     this.router.navigate(['users'], { queryParams: filterParams });
 

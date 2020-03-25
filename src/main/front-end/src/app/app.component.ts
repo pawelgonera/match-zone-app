@@ -18,6 +18,8 @@ export class AppComponent implements OnInit{
   user: User = new User();
   id: number;
 
+  expiration: Date;
+
   logo: any = "../assets/images/logo.png";
 
   constructor(private tokenService: TokenService, public router: Router) {
@@ -27,8 +29,15 @@ export class AppComponent implements OnInit{
     this.info = {
       token: this.tokenService.getToken(),
       username: this.tokenService.getUsername(),
-      authorities: this.tokenService.getAuthorities()
+      authorities: this.tokenService.getAuthorities(),
     };
+
+    /*this.expiration = this.tokenService.getExpirationDate(this.info.token)
+
+    if(this.tokenService.isTokenExpired(this.info.token)){
+      console.log('Token expired!');
+      this.logOut();
+    }*/
 
     this.username = this.tokenService.getUsername();
 
@@ -40,14 +49,17 @@ export class AppComponent implements OnInit{
 
   userDetails(username: string){
     console.log(username);
-    this.router.navigate(['profile', username]);
+    this.router.navigateByUrl('/profile', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/profile', username]));
   }
 
-  logOut() {
+  public logOut() {
     console.log('isLoggedIn in logOut()', this.isLoggedIn);
     this.isLoggedIn = false;
     this.tokenService.signOut();
+    this.tokenService.setLoggedOut('true');
     this.router.navigate(['/login']);
   }
+
 
 }

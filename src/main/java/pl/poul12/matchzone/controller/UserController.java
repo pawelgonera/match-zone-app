@@ -35,6 +35,9 @@ import pl.poul12.matchzone.util.MailSender;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -104,14 +107,24 @@ public class UserController {
     @PostMapping("/users/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginForm login) {
 
+        System.out.println("Jestem w loginUser przed Authentication " + new Date());
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
 
+        System.out.println("Jestem w loginUser przed ContextHolder " + new Date());
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        System.out.println("Jestem w loginUser przed wygenerowaniem tokena " + new Date());
 
         String jwt = jwtProvider.generateJwtToken(authentication);
 
+        System.out.println("Jestem w loginUser przed pobraniem principala do UserDetails " + new Date());
+
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        System.out.println("Jestem w loginUser przed zwróceniem response " + new Date());
 
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
@@ -176,35 +189,11 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
-    @GetMapping("/users/filter")
-    public PagedListHolder<User> getFilteredUsers(@RequestParam("name") String name, @RequestParam("gender")Gender gender,
-                                                  @RequestParam("ageMin") int ageMin, @RequestParam("ageMax") int ageMax,
-                                                  @RequestParam("city") String city){
-
-        logger.info("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, city - {} ", name, gender, ageMin, ageMax, city);
-
-        FilterForm filterForm = new FilterForm();
-        filterForm.setName(name);
-        filterForm.setGender(gender);
-        filterForm.setAgeMin(ageMin);
-        filterForm.setAgeMax(ageMax);
-        filterForm.setCity(city);
-
-        return userService.filterUserList(filterForm);
-    }
-
     @PostMapping("/users/filter")
     public PagedListHolder<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
 
         logger.info("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
 
         return userService.filterUserList(filterForm);
-    }
-
-    @GetMapping("/users/list")
-    public Page<User> getUsersPage(@RequestParam("page") int page, @RequestParam("size") int size){
-        Sort sort = new Sort(Sort.Direction.ASC, "firstName");
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return userService.getPageableListOfUsers(pageable);
     }
 }

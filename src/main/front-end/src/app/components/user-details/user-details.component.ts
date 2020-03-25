@@ -52,6 +52,9 @@ export class UserDetailsComponent implements OnInit{
   ngOnInit() {
 
     this.username = this.route.snapshot.params['username'];
+
+    console.log('=== Jestem w UserDetailsComponent.ngOnInit przed pobraniem username z tokenService ==='), new Date();
+
     this.usernameFromToken = this.tokenService.getUsername();
 
     this.otherService.checkIfLoggedUserVoted(this.username, this.usernameFromToken).subscribe((isVoted: boolean) => {
@@ -75,6 +78,9 @@ export class UserDetailsComponent implements OnInit{
   }
 
   loadPersonalDetails(username: string){
+
+    console.log('=== Jestem w UserDetailsComponent.loadPersonalDetails przed pobraniem personalDetails ==='), new Date();
+
     return this.otherService.getPersonalDetails(username)
       .subscribe(data => {
           console.log('personalDetails: ', data);
@@ -159,7 +165,7 @@ export class UserDetailsComponent implements OnInit{
   }
 
   reloadData(username: string) {
-    this.router.navigate(['profile', username]);
+    this.router.navigate(['/profile', username]);
   }
 
   list(){

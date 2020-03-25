@@ -40,15 +40,8 @@ export class UserService {
     return this.http.get(`${this.baseUrl}`);
   }
 
-  getFilteredUsers(name: string, gender: Gender, ageMin: number, ageMax: number, city: string): Observable<PagedListHolder> {
-    return this.http.get<PagedListHolder>(`${this.baseUrl}/filter?name=${name}&gender=${gender}&ageMin=${ageMin}&ageMax=${ageMax}&city=${city}`);
-  }
-
   getFilteredUserList(filter: Filter): Observable<PagedListHolder> {
     return this.http.post<PagedListHolder>(`${this.baseUrl}/filter`, filter, httpOptions);
   }
 
-  getPageUser(page: number): Observable<PageUser>{
-    return this.http.get<PageUser>(`${this.baseUrl}/list?page=${page}&size=12`);
-  }
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.security.UserPrinciple;
 
+import java.util.Date;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -20,6 +22,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
+
+        System.out.println("Jestem w UserDetailsServiceImpl.loadUserByUsername przed pobraniem Usera z bazy danych" + new Date());
 
         User userDetails = userService.getUserByUsername(username);
         System.out.println("userdetails" + userDetails.getUsername() + " : " + userDetails.getPassword());

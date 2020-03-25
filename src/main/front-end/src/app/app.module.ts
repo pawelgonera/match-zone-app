@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComingSoonComponent } from './components/coming-soon/coming-soon.component';
 import {MatNativeDateModule} from "@angular/material";
 import {ResetPassComponent} from "./reset-pass/reset-pass.component";
+import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor";
 
 //Angular Material Components
 import {MatCheckboxModule} from '@angular/material';
@@ -117,7 +118,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     OtherService,
     UserDetailsComponent,
     httpInterceptorProviders,
-    UrlPermission
+    UrlPermission,
+    AppComponent,
+    AuthenticationInterceptor,
+    LoginComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.poul12.matchzone.model.User;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,11 +33,16 @@ public class UserPrinciple implements UserDetails {
     }
 
     public static UserPrinciple build(User user) {
+
+        System.out.println("Jestem w UserPrincipal.build przed SimpleGrantedAuthority" + new Date() + user);
+
         List<GrantedAuthority> authorities = user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()
                         .name()))
                 .collect(Collectors.toList());
+
+        System.out.println("Jestem w UserPrincipal.build za SimpleGrantedAuthority" + new Date() + user);
 
         return new UserPrinciple(
                 user.getId(),

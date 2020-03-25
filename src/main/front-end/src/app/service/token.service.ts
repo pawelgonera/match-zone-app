@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 const TOKEN_KEY = 'AuthToken';
 const USERNAME_KEY = 'AuthUsername';
 const AUTHORITIES_KEY = 'AuthAuthorities';
+const LOGGED_OUT = 'LoggedOut';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
   private roles: Array<string> = [];
+  helper = new JwtHelperService();
   constructor() { }
 
   signOut() {
@@ -49,4 +52,29 @@ export class TokenService {
 
     return this.roles;
   }
+
+  public getExpirationDate(token: string): Date{
+    const expirationDate = this.helper.getTokenExpirationDate(token);
+    console.log('expirationDate: ', expirationDate);
+    if(expirationDate == null){
+      return new Date;
+    }
+    return expirationDate;
+  }
+
+  public isTokenExpired(token: string){
+    const expirationDate = this.getExpirationDate(token);
+    return expirationDate.valueOf() < new Date().valueOf();
+  }
+
+ public setLoggedOut(logged: string) {
+    window.sessionStorage.removeItem(LOGGED_OUT);
+    window.sessionStorage.setItem(LOGGED_OUT, logged);
+  }
+
+  public getLoggedOut(): string {
+    console.log('getLoggedOut', sessionStorage.getItem(LOGGED_OUT));
+    return sessionStorage.getItem(LOGGED_OUT);
+  }
+
 }

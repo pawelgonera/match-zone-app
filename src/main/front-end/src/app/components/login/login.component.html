@@ -1,13 +1,17 @@
 <div class="container">
 
-  <div *ngIf="isLoggedIn; else loggedOut">
-    Witamy
-  </div>
-
-  <ng-template #loggedOut>
   <div class="row">
 
       <div class="col-sm-6">
+
+        <div *ngIf="isLoggedIn" class="alert alert-success text-center">
+          <strong>Successfully logged in!</strong>
+        </div>
+
+        <div class="alert alert-danger alert-dismissable text-center" *ngIf="message">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+          <strong>{{message}}</strong>
+        </div>
 
         <div class="signup-form">
           <form name="form-signin" (ngSubmit)="f.form.valid && logIn()" #f="ngForm">
@@ -16,14 +20,15 @@
             <hr>
 
             <div class="form-group">
-              <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username" #username="ngModel" required />
-              <div *ngIf="f.submitted && username.invalid">
+              <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username" #username="ngModel" required minlength="4" />
+              <div class="alert alert-danger" *ngIf="f.submitted && username.invalid">
                 <div *ngIf="username.errors.required">Username is required</div>
+                <div *ngIf="username.errors.minlength">Username must be at least 4 characters</div>
               </div>
             </div>
             <div class="form-group">
               <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password" #password="ngModel" required minlength="6" />
-              <div *ngIf="f.submitted && password.invalid">
+              <div class="alert alert-danger" *ngIf="f.submitted && password.invalid">
                 <div *ngIf="password.errors.required">Password is required</div>
                 <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
               </div>
@@ -45,7 +50,6 @@
 
       </div>
 
-
     <div class="col-sm-6">
 
       <div class="container">
@@ -54,7 +58,6 @@
 
     </div>
   </div>
-  </ng-template>
 
 </div>
 
