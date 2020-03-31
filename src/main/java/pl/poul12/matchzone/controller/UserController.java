@@ -41,7 +41,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(value = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("api/v1")
 public class UserController {
@@ -94,6 +94,8 @@ public class UserController {
         }else {
             error = sb.toString().substring(0, sb.length()-1);
         }
+
+        System.out.println("error: " + error);
 
         if(errors.hasErrors()){
             return new ResponseEntity<>(new CustomErrorResponse(error), HttpStatus.BAD_REQUEST);

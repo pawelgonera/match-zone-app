@@ -32,7 +32,12 @@ export class UserDetailsComponent implements OnInit{
   personalDetails: PersonalDetails = new PersonalDetails();
   appearance: Appearance = new Appearance();
   vote: Vote = new Vote();
+
   comment: Comment = new Comment();
+  comments: Comment[];
+  commentAvatar: any;
+  authorDetails: PersonalDetails = new PersonalDetails();
+  postId: number = 0;
 
   selectedFiles: FileList;
   selectedFile: File = null;
@@ -102,11 +107,12 @@ export class UserDetailsComponent implements OnInit{
         error => console.log(error));
   }
 
-   loadComments(username: string){
+  loadComments(username: string){
     return this.otherService.getComments(username)
       .subscribe(data => {
           console.log('comments: ', data);
-          this.comment = data;
+          this.comments = data;
+          this.comments.sort((a, b)=> {return new Date(a.postDate).getTime() - new Date(b.postDate).getTime()});
         },
         error => console.log(error));
   }
@@ -117,7 +123,6 @@ export class UserDetailsComponent implements OnInit{
         console.log('userToUpdate: ', data);
         this.user = data;
       }, error => console.log(error));
-
 
     this.userService.updateUser(this.username, this.user)
       .subscribe(data => {
@@ -168,13 +173,13 @@ export class UserDetailsComponent implements OnInit{
           this.fileUploadProgress = '';
           console.log(events.body);
           console.log('File is completely uploaded!');
+          window.location.reload();
         }
     },error => {
       this.fileErrorMessage = error.error.errorMessage;
       console.log("file error", this.fileErrorMessage);
     });
 
-    this.reloadData(this.username);
   }
 
   reloadData(username: string) {
@@ -201,25 +206,35 @@ export class UserDetailsComponent implements OnInit{
   }
 
   addComment(form: NgForm){
-    //comment.setContent(form.value.content);
-    //comment.setAuthor(this.usernameFromToken);
-    //comment.setPostDate(new Date()); //<div>{{ today | date : 'yyyy/MMMM/dd, HH:mm:ss' }}</div>
+    console.log('ppostForm: ', form);
     this.comment.content = form.value.content;
+    console.log('comment.content: ', this.comment.content);
     this.comment.author = this.usernameFromToken;
     this.comment.postDate = new Date();
 
     this.otherService.addComment(this.username, this.comment)
       .subscribe(data => {
         console.log('addedComment: ', data);
+        this.loadComments(this.username);
+        this.comment.content = '';
       }, err => {
         console.log(err);
       });
   }
 
-  editComment(id: number, content: string){
-    this.otherService.editComment(id, content)
+  editPost(id: number){
+    this.postId = id;
+  }
+
+  editComment(commentUpdated: Comment){
+    let comment: Comment = new Comment();
+    comment.content = commentUpdated.content;
+    comment.postDate = commentUpdated.postDate;
+
+    this.otherService.editComment(commentUpdated.id, comment)
       .subscribe(data => {
         console.log('editedComment: ', data);
+        this.postId = 0;
       }, err => {
         console.log(err);
       });
@@ -229,6 +244,7 @@ export class UserDetailsComponent implements OnInit{
     this.otherService.deleteComment(id)
       .subscribe(data => {
         console.log('deletedComment: ', data);
+        this.loadComments(this.username);
       }, err => {
         console.log(err);
       });

@@ -1,5 +1,44 @@
-.card-columns{
+/*.card-columns{
   top-margin: 100px;
+}*/
+
+.edit-input {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.inline-custom{
+  display: inline-block;
+}
+
+.btn-edit-comm {
+  margin-left: 280px;
+}
+
+.btn-delete-comm {
+  margin-left: 30px;
+}
+
+.avatar {
+  margin-top: 10px;
+}
+
+.img-radius {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+}
+
+.btn-pink {
+  margin-left: 540px;
+  min-width: 150px;
+}
+
+.btn-pink-edit {
+  background: #e6407d;
+  margin-left: 200px;
+  min-width: 50px;
 }
 
 .star-rating {

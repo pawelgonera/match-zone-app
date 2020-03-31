@@ -5,7 +5,7 @@ import {Vote} from "../model/vote";
 import {Comment} from "../model/comment";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:4200' })
 };
 
 @Injectable({
@@ -45,8 +45,8 @@ export class OtherService {
     return this.http.post<string>(`${this.baseUrl}/comments/${username}`, comment, httpOptions);
   }
 
-  editComment(id: number, content: string): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/comments/${id}`, content);
+  editComment(id: number, comment: Comment): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/comments/${id}`, comment);
   }
 
   deleteComment(id: number): Observable<Object> {
@@ -54,8 +54,13 @@ export class OtherService {
   }
 
   getComments(username: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/comments/${username}`);
+    return this.http.get(`${this.baseUrl}/comments/${username}`, httpOptions);
   }
+
+  getAvatar(username: string){
+    return this.http.get(`${this.baseUrl}/personal/avatar/${username}`);
+  }
+
 
   checkIfLoggedUserVoted(username: string, usernameLogged: string){
     return this.http.get(`${this.baseUrl}/votes/is-voted/${username}/${usernameLogged}`);

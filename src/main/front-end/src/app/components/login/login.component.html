@@ -4,17 +4,23 @@
 
       <div class="col-sm-6">
 
-        <div *ngIf="isLoggedIn" class="alert alert-success text-center">
-          <strong>Successfully logged in!</strong>
-        </div>
-
-        <div class="alert alert-danger alert-dismissable text-center" *ngIf="message">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-          <strong>{{message}}</strong>
-        </div>
-
         <div class="signup-form">
+
           <form name="form-signin" (ngSubmit)="f.form.valid && logIn()" #f="ngForm">
+
+            <div *ngIf="isLoggedIn" class="alert alert-success text-center">
+              <strong>Successfully logged in!</strong>
+            </div>
+
+            <div class="alert alert-danger alert-dismissable text-center" *ngIf="message">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+              <strong>{{message}}</strong>
+            </div>
+
+            <div class="text-center" *ngIf="message && !isLoggedIn">
+              <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+            </div>
+
             <h2>Sign In</h2>
             <p class="text-center">Welcome to Match Zone</p>
             <hr>

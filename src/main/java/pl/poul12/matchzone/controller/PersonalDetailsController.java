@@ -33,4 +33,5 @@ public class PersonalDetailsController {
 
         return ResponseEntity.ok(updatedPersonalDetails);
     }
+
 }

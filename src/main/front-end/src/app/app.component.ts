@@ -32,13 +32,6 @@ export class AppComponent implements OnInit{
       authorities: this.tokenService.getAuthorities(),
     };
 
-    /*this.expiration = this.tokenService.getExpirationDate(this.info.token)
-
-    if(this.tokenService.isTokenExpired(this.info.token)){
-      console.log('Token expired!');
-      this.logOut();
-    }*/
-
     this.username = this.tokenService.getUsername();
 
     console.log('isLoggedIn in onInit()', this.isLoggedIn);

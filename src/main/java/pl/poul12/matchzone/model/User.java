@@ -39,11 +39,11 @@ public class User {
     private String timeZoneId;
     @JsonManagedReference
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.SELECT)
     private PersonalDetails personalDetails;
     @JsonManagedReference
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.SELECT)
     private Appearance appearance;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
@@ -54,7 +54,7 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
-    private List<Comment> comments;
+    private Set<Comment> comments;
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -72,11 +72,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", repeatedPassword='" + repeatedPassword + '\'' +
                 ", timeZoneId='" + timeZoneId + '\'' +
-                ", personalDetails=" + personalDetails +
-                ", appearance=" + appearance +
-                ", votes=" + votes +
-                ", comments=" + comments +
-                ", roles=" + roles +
                 '}';
     }
 }

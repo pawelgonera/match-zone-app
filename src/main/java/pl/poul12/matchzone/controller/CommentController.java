@@ -2,16 +2,19 @@ package pl.poul12.matchzone.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.poul12.matchzone.model.Comment;
+import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.service.CommentServiceImpl;
+import pl.poul12.matchzone.service.PersonalDetailsServiceImpl;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
-
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -21,27 +24,28 @@ public class CommentController {
     private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
     private CommentServiceImpl commentService;
+    private PersonalDetailsServiceImpl personalDetailsService;
 
-    public CommentController(CommentServiceImpl commentService) {
+    public CommentController(CommentServiceImpl commentService, PersonalDetailsServiceImpl personalDetailsService) {
         this.commentService = commentService;
-    }
-
-    @GetMapping("/comments/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable(value = "id") Long commentId) {
-
-        Comment comment = commentService.getCommentById(commentId);
-
-        return ResponseEntity.ok().body(comment);
+        this.personalDetailsService = personalDetailsService;
     }
 
     @GetMapping("/comments/{username}")
-    public List<Comment> getAllByUser(@PathVariable(value = "username") String username){
+    public ResponseEntity<List<Comment>> getAllByUser(@PathVariable(value = "username") String username){
 
-        return commentService.getAllByUser(username);
+        //return commentService.getAllByUser(username);
+        List<Comment> comments = commentService.getAllByUser(username);
+        System.out.println(comments);
+        return ResponseEntity.ok().body(comments);
+
     }
 
     @PostMapping("/comments/{username}")
     public ResponseEntity<?> addComment(@PathVariable(value = "username") String username, @RequestBody Comment comment) {
+
+        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(comment.getAuthor());
+        comment.setAvatar(personalDetails.getPhoto());
 
         commentService.createComment(username, comment);
 

@@ -75,34 +75,68 @@
                 This is an <strong>alert</strong>. Use this to show important messages to the user.
               </div>
 
-              <div class="card mb-3 shadow-sm" style="max-width:700px; max-height: 160px">
-                <div class="row no-gutters">
-                  <div class="col-md-2">
-                    <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?cs=srgb&dl=beautiful-blur-blurred-background-733872.jpg&fm=jpg" class="card-img" alt="...">
-                    <p  class="text-center"><small><b>Margarita</b></small></p>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <p class="card-text"><small>Hey, You looks stunning. I want to spend some time with You, send me a PM.  Hey, You looks stunning. I want to spend some time with You, send me a PM</small></p>
-                      <hr>
-                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              <div  *ngIf="comments">
+
+                <div class="col-md-12" *ngFor="let comment of comments">
+                  <div class="card mb-3 shadow-sm" style="max-width:800px; max-height: 200px">
+                    <div class="row no-gutters">
+                      <div class="col-md-2 avatar">
+                        <img src="data:image/png;base64,{{comment.avatar}}" class="mx-auto img-fluid img-circle d-block shadow img-radius" alt="avatar">
+                        <p  class="text-center"><small><b>{{comment.author}}</b></small></p>
+                      </div>
+                      <div class="col-md-10">
+                        <div class="card-body">
+                          <p class="card-text"><strong *ngIf="postId != comment.id">{{comment.content}}</strong></p>
+
+                          <div *ngIf="postId == comment.id">
+                            <form name="form-signin" (ngSubmit)="editComment(comment)" #form="ngForm">
+
+                              <mat-form-field class="edit-input">
+                                <mat-label>Edit post</mat-label>
+                                <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="3" [(ngModel)]="comment.content" name="content"></textarea>
+                                <hr>
+                                <button class="btn btn-pink-edit text-center">Edit</button>
+                              </mat-form-field>
+
+                            </form>
+                          </div>
+
+                          <hr>
+                          <p>
+                            <small class="text-muted">{{ comment.postDate | date : 'yyyy/MMMM/dd, HH:mm:ss' }}</small>
+                            <span *ngIf="postId != comment.id && comment.author == usernameFromToken" class="card-text">
+                              <a class="btn-edit-comm" (click)="editPost(comment.id)" ><mat-icon class="fa fa-edit">edit</mat-icon ></a>
+                              <a class="btn-delete-comm" (click)="deleteComment(comment.id)" ><mat-icon class="fa fa-trash">delete</mat-icon ></a>
+                            </span>
+                          </p>
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
               </div>
 
-              <form name="form-signin" (ngSubmit)="addComment(form)" #form="ngForm">
-                <h4>Post new comment</h4>
-                <hr>
+              <hr>
 
-                <div class="form-group">
-                  <input type="text-area" class="form-control" name="content" placeholder="Type a comment" [(ngModel)]="comment.content"  required />
-                </div>
+              <div  *ngIf="!allowAccess">
 
-                <button class="btn btn-pink btn-block">Post</button>
+                <form name="form-signin" (ngSubmit)="addComment(form)" #form="ngForm">
 
-              </form>
+                  <mat-form-field class="edit-input">
+                    <mat-label>Post new comment</mat-label>
+                    <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="4" [(ngModel)]="comment.content" name="content"></textarea>
+                  </mat-form-field>
 
+                  <!--<label for="PostNewComment">Post new comment</label>
+                  <textarea class="form-control" id="PostNewComment" rows="3" [(ngModel)]="comment.content" name="content" placeholder="Type a comment" [maxLength]="250"></textarea>-->
+
+                  <button class="btn btn-pink">Post</button>
+
+                </form>
+
+              </div>
 
             </div>
 

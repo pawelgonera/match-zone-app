@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthenticationService, private router: Router, private tokenService: TokenService) { }
 
   ngOnInit() {
-
+    window.scroll(0,0);
     this.token = this.tokenService.getToken();
     if (this.token) {
       this.message = null;
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 
     if(this.tokenService.getLoggedOut() == 'true'){
       console.log('loggedOut', this.tokenService.getLoggedOut());
-      this.message = 'User has been logged out';
+      this.message = 'User is logging out...';
       console.log('message expired', this.message);
       this.tokenService.setLoggedOut('false');
       window.location.reload();
@@ -52,6 +52,8 @@ export class LoginComponent implements OnInit {
 
   logIn() {
     console.log(this.form);
+
+    this.message = 'Logging in...';
 
     this.login = new Login(
       this.form.username,
@@ -71,6 +73,7 @@ export class LoginComponent implements OnInit {
         this.tokenService.setLoggedOut('false');
         this.isLoginFailed = false;
         this.isLoggedIn = true;
+        this.message = null;
 
         console.log('=== Jestem w LoginComponent.logIn przed pobraniem uprawnień ==='), new Date();
 
@@ -82,6 +85,7 @@ export class LoginComponent implements OnInit {
         console.log(error);
         this.errorMessage = error.error.message;
         this.isLoginFailed = true;
+        this.message = null;
       }
     );
 
