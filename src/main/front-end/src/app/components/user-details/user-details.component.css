@@ -20,6 +20,17 @@
   margin-left: 30px;
 }
 
+.btn-edit-photo {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 450px;
+  color: green;
+}
+
+.btn-delete-photo {
+  margin-left: 60px;
+  color: red;
+}
+
 .avatar {
   margin-top: 10px;
 }

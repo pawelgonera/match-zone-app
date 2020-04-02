@@ -11,6 +11,7 @@ import {OtherService} from "../../service/other.service";
 import {TokenService} from "../../service/token.service";
 import {Rating} from "../../model/rating";
 import {NgForm} from "@angular/forms";
+import {Image} from "../../model/image";
 
 @Component({
   selector: 'app-user-details',
@@ -41,8 +42,14 @@ export class UserDetailsComponent implements OnInit{
 
   selectedFiles: FileList;
   selectedFile: File = null;
-  fileUploadProgress: string = null;
-  fileErrorMessage: string;
+  avatarUploadProgress: string = null;
+  photoUploadProgress: string = null;
+  avatarErrorMessage: string;
+  photoId: number = 0;
+  photoErrorMessage: string;
+
+  images: Image[];
+  title: string;
 
   currentRate = 0;
 
@@ -80,6 +87,7 @@ export class UserDetailsComponent implements OnInit{
     this.loadPersonalDetails(this.username);
     this.loadAppearance(this.username);
     this.loadComments(this.username);
+    this.loadImages(this.username);
 
     window.scroll(0,0);
 
@@ -113,6 +121,17 @@ export class UserDetailsComponent implements OnInit{
           console.log('comments: ', data);
           this.comments = data;
           this.comments.sort((a, b)=> {return new Date(a.postDate).getTime() - new Date(b.postDate).getTime()});
+        },
+        error => console.log(error));
+  }
+
+   loadImages(username: string){
+    return this.otherService.getImages(username)
+      .subscribe(data => {
+          console.log('images: ', data);
+          this.images = data;
+          this.photoUploadProgress = '';
+          this.title = '';
         },
         error => console.log(error));
   }
@@ -151,7 +170,57 @@ export class UserDetailsComponent implements OnInit{
   onFileSelected(event){
     this.selectedFiles = event.target.files;
     console.log('event(file): ', event);
-    console.log('selectedFiles:', this.selectedFile);
+    console.log('selectedFiles:', this.selectedFiles);
+  }
+
+  onGalleryUpload(){
+    const formData: FormData = new FormData();
+    formData.append('photo', this.selectedFiles.item(0));
+    if(this.title == null){
+      this.title = '';
+    }
+    formData.append('title', this.title);
+    this.photoUploadProgress = '0%';
+
+     this.otherService.addImages(this.username, formData)
+      .subscribe(events => {
+        if(events.type === HttpEventType.UploadProgress){
+          this.photoUploadProgress = Math.round(events.loaded / events.total * 100) + '%';
+        }
+        console.log('File is completely uploaded!');
+        console.log('imageAdded: ', events);
+        this.loadImages(this.username);
+      },error => {
+        this.photoErrorMessage = error.error.errorMessage;
+        this.photoUploadProgress = '';
+        console.log("file error", this.photoErrorMessage);
+      });
+
+  }
+
+  editPhoto(id: number){
+    this.photoId = id;
+  }
+
+  editTitle(image: Image){
+    this.otherService.editImage(image.id, image)
+      .subscribe(data => {
+        console.log('editedImage: ', data);
+        this.photoId = 0;
+        this.title = '';
+      }, err => {
+        console.log(err);
+      });
+  }
+
+  deletePhoto(id: number){
+    this.otherService.deleteImage(id)
+      .subscribe(data => {
+        console.log('deletedImage: ', data);
+        this.loadImages(this.username);
+      }, err => {
+        console.log(err);
+      });
   }
 
   onUpload(){
@@ -159,25 +228,20 @@ export class UserDetailsComponent implements OnInit{
 
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile);
-    this.fileUploadProgress = '0%';
+    this.avatarUploadProgress = '0%';
 
-    this.http.post('http://localhost:8080/match-zone/api/v1/users/' + this.username + '/change-avatar', formData, {
-        reportProgress: true,
-        observe: 'events'
-      }
-    ).subscribe(events => {
+    this.otherService.changeAvatar(this.username, formData)
+    .subscribe(events => {
         if(events.type === HttpEventType.UploadProgress){
-          this.fileUploadProgress = Math.round(events.loaded / events.total * 100) + '%';
-
-        }else if(events.type === HttpEventType.Response){
-          this.fileUploadProgress = '';
-          console.log(events.body);
-          console.log('File is completely uploaded!');
-          window.location.reload();
+          this.avatarUploadProgress = Math.round(events.loaded / events.total * 100) + '%';
         }
-    },error => {
-      this.fileErrorMessage = error.error.errorMessage;
-      console.log("file error", this.fileErrorMessage);
+        console.log(events.body);
+        console.log('File is completely uploaded!');
+        this.loadPersonalDetails(this.username);
+      },error => {
+        this.avatarErrorMessage = error.error.errorMessage;
+        this.avatarUploadProgress = '';
+        console.log("file error", this.avatarErrorMessage);
     });
 
   }

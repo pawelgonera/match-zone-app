@@ -13,7 +13,6 @@ import pl.poul12.matchzone.service.PersonalDetailsServiceImpl;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)

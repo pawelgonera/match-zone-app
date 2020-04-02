@@ -56,6 +56,11 @@ public class User {
     @Fetch(FetchMode.JOIN)
     private Set<Comment> comments;
     @EqualsAndHashCode.Exclude
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private Set<Image> images;
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

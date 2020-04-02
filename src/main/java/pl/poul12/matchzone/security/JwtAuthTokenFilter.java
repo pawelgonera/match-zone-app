@@ -30,30 +30,17 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-
-            System.out.println("Jestem w JwtAuthTokenFilter.doFilterInternal przed pobraniem tokena z requesta " + new Date());
-
             String jwt = getJwt(request);
             if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
 
-                System.out.println("Jestem w JwtAuthTokenFilter.doFilterInternal przed pobraniem username z tokena " + new Date());
-
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
-
-                System.out.println("Jestem w JwtAuthTokenFilter.doFilterInternal przed pobraniem Usera do UserDetails " + new Date());
 
                 logger.info("username form tokenprovider: " + username);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                System.out.println("Jestem w JwtAuthTokenFilter.doFilterInternal przed pobraniem użytkownika i uprawnień do UsernamePasswordAuthenticationToken" + new Date());
-
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                System.out.println("Jestem w JwtAuthTokenFilter.doFilterInternal przed ustawieniem detali" + new Date());
-
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                System.out.println("Jestem w JwtAuthTokenFilter.doFilterInternal przed ContextHolder" + new Date());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -61,21 +48,14 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             logger.error("Cannot set user authentication -> Message: {}", e);
         }
 
-        System.out.println("Jestem w JwtAuthTokenFilter.doFilterInternal przed wykonaniem filtra" + new Date());
-
         filterChain.doFilter(request, response);
     }
 
     private String getJwt(HttpServletRequest request) {
 
-        System.out.println("Jestem w JwtAuthTokenFilter.getJwt przed pobraniem tokena z headera" + new Date());
-
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-
-            System.out.println("Jestem w JwtAuthTokenFilter.getJwt przed usunięciem Bearer z tokena" + new Date());
-
             return authHeader.replace("Bearer ", "");
         }
 

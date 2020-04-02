@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
-import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.security.JwtProvider;
 import pl.poul12.matchzone.security.JwtResponse;
@@ -29,15 +28,13 @@ import pl.poul12.matchzone.security.forms.RegisterForm;
 import pl.poul12.matchzone.service.PersonalDetailsService;
 import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.CustomErrorResponse;
+import pl.poul12.matchzone.util.FileValidator;
 import pl.poul12.matchzone.util.MailSender;
 
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -50,6 +47,8 @@ public class UserController {
 
     private final static Long MAX_FILE_SIZE = 10_000_000L;
     private static String IS_IMAGE_TYPE = Pattern.compile("image/.+").pattern();
+
+    private FileValidator validator = new FileValidator();
 
     private AuthenticationManager authenticationManager;
     private JwtProvider jwtProvider;
@@ -109,24 +108,14 @@ public class UserController {
     @PostMapping("/users/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginForm login) {
 
-        System.out.println("Jestem w loginUser przed Authentication " + new Date());
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
 
-        System.out.println("Jestem w loginUser przed ContextHolder " + new Date());
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        System.out.println("Jestem w loginUser przed wygenerowaniem tokena " + new Date());
 
         String jwt = jwtProvider.generateJwtToken(authentication);
 
-        System.out.println("Jestem w loginUser przed pobraniem principala do UserDetails " + new Date());
-
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        System.out.println("Jestem w loginUser przed zwróceniem response " + new Date());
 
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
@@ -157,19 +146,13 @@ public class UserController {
         PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(username);
 
         try {
-
-            if(file.getSize() > MAX_FILE_SIZE)
-            {
-                return new ResponseEntity<>(new CustomErrorResponse("File size is too large, maximum size is 10 MB"), HttpStatus.BAD_REQUEST);
+            try {
+                return validator.validate(file);
+            }catch (RuntimeException e){
+                personalDetails.setPhoto(file.getBytes());
+                personalDetailsService.savePersonalDetails(personalDetails);
+                logger.info("Photo uploaded");
             }
-
-            if(!Objects.requireNonNull(file.getContentType()).matches(IS_IMAGE_TYPE)){
-                return new ResponseEntity<>(new CustomErrorResponse("Media type not required, it must be an image type"), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-            }
-
-            personalDetails.setPhoto(file.getBytes());
-            personalDetailsService.savePersonalDetails(personalDetails);
-            logger.info("Photo uploaded");
             return ResponseEntity.status(HttpStatus.OK).body("You successfully uploaded " + file.getOriginalFilename() + "!");
         }catch (IOException e){
             logger.error("Something went wrong with your file: {}", file.getOriginalFilename());
@@ -193,9 +176,6 @@ public class UserController {
 
     @PostMapping("/users/filter")
     public PagedListHolder<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
-
-        logger.info("filterForm from controller: name - {}, gender - {}, ageMin - {}, ageMax - {}, ratingMin - {}, ratingMax - {},city - {} ", filterForm.getName(), filterForm.getGender(), filterForm.getAgeMin(), filterForm.getAgeMax(), filterForm.getRatingMin(), filterForm.getRatingMax(), filterForm.getCity());
-
         return userService.filterUserList(filterForm);
     }
 }

@@ -18,8 +18,6 @@ public interface UserService {
 
     List<User> getAllUsersBySort(Sort sort);
 
-    Page<User> getPageableListOfUsers(Pageable pageable);
-
     User saveUser(User user);
 
     User createUser(RegisterForm registerUser);

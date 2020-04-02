@@ -26,11 +26,7 @@ public class JwtProvider {
     @Transactional
     public String generateJwtToken(Authentication authentication) {
 
-        System.out.println("Jestem w JwtProvider.generateJwtToken przed pobraniem principala do UserPrincipal " + new Date());
-
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
-
-        System.out.println("Jestem w JwtProvider.generateJwtToken przed zbudowaniem tokena " + new Date());
 
         String token = Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
@@ -39,16 +35,11 @@ public class JwtProvider {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
 
-        System.out.println("Zbudowany token: " + token + "  " + new Date());
-
         return token;
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-
-            System.out.println("Jestem w JwtProvider.validateJwtToken przed walidacją tokena " + new Date());
-
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
@@ -67,9 +58,6 @@ public class JwtProvider {
     }
 
     public String getUserNameFromJwtToken(String token) {
-
-        System.out.println("Jestem w JwtProvider.getUserNameFromJwtToken przed pobraniem username z tokena " + new Date());
-
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

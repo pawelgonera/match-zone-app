@@ -8,24 +8,21 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
 @Entity
-public class Comment{
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String content;
-    private String author;
     @Type(type = "org.hibernate.type.ImageType")
     @Lob
-    private byte[] avatar;
-    private LocalDateTime postDate;
+    private byte[] photo;
+    private String title;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
@@ -34,12 +31,9 @@ public class Comment{
 
     @Override
     public String toString() {
-        return "Comment{" +
+        return "Image{" +
                 "id=" + id +
-                ", content='" + content + '\'' +
-                ", author='" + author + '\'' +
-                ", postDate=" + postDate +
+                ", title='" + title + '\'' +
                 '}';
     }
 }
-

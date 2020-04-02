@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpEvent} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Vote} from "../model/vote";
 import {Comment} from "../model/comment";
+import {Image} from "../model/image";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:4200' })
@@ -61,6 +62,25 @@ export class OtherService {
     return this.http.get(`${this.baseUrl}/personal/avatar/${username}`);
   }
 
+  addImages(username: string, image: FormData): Observable<HttpEvent<any>> {
+    return this.http.post<string>(`${this.baseUrl}/images/${username}`, image, { reportProgress: true, observe: 'events' });
+  }
+
+  editImage(id: number, image: Image): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/images/${id}`, image);
+  }
+
+  deleteImage(id: number): Observable<Object> {
+    return this.http.delete(`${this.baseUrl}/images/${id}`);
+  }
+
+  getImages(username: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/images/${username}`, httpOptions);
+  }
+
+  changeAvatar(username: string, avatar: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/users/${username}/change-avatar`, avatar, { reportProgress: true, observe: 'events' });
+  }
 
   checkIfLoggedUserVoted(username: string, usernameLogged: string){
     return this.http.get(`${this.baseUrl}/votes/is-voted/${username}/${usernameLogged}`);

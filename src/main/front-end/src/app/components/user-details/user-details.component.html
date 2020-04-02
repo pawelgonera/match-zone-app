@@ -142,7 +142,85 @@
 
             <div class="tab-pane" id="gallery">
 
-              <p class="text-center">Coming soon</p>
+              <!--Carousel Wrapper-->
+              <div id="carousel-example-2" class="carousel slide carousel-fade z-depth-1-half shadow" data-interval="false" data-ride="carousel" *ngIf="images">
+                <!--Indicators-->
+                <ol class="carousel-indicators">
+                  <!--<li data-target="#carousel-example-2" *ngFor="let image of images;index as i;first as isfirst" data-slide-to="i" [ngClass]="{'active':isfirst}"></li>-->
+                  <!--<li data-target="#carousel-example-2" data-slide-to="1"></li>
+                  <li data-target="#carousel-example-2" data-slide-to="2"></li>-->
+                </ol>
+                <!--/.Indicators-->
+                <!--Slides-->
+
+                <div class="carousel-inner" style="background-color: white" role="listbox">
+
+                  <div class="carousel-item" *ngFor="let image of images let i = index" [ngClass]="{'active' : i == 0}">
+                    <div class="view">
+                      <img class="d-block w-100" src="data:image/png;base64,{{image.photo}}" alt="{{image.title}}">
+                      <div class="mask rgba-black-light"></div>
+                    </div>
+                    <div class="carousel-caption">
+                      <h3 class="h3-responsive" *ngIf="photoId != image.id">{{image.title}}</h3>
+
+                      <div *ngIf="photoId == image.id">
+                        <form name="form-signin" (ngSubmit)="editTitle(image)" #form="ngForm">
+
+                          <mat-form-field class="edit-input">
+                            <mat-label>Edit title</mat-label>
+                            <input type="text" matInput [(ngModel)]="image.title" name="title">
+                            <hr>
+                            <button class="btn btn-pink-edit text-center">Edit</button>
+                          </mat-form-field>
+
+                        </form>
+                      </div>
+
+                    </div>
+                    <a class="btn-edit-photo" (click)="editPhoto(image.id)" ><mat-icon class="fa fa-edit">edit title</mat-icon ></a>
+                    <a class="btn-delete-photo" (click)="deletePhoto(image.id)" ><mat-icon class="fa fa-trash">delete</mat-icon ></a>
+                  </div>
+
+                </div>
+                <!--/.Slides-->
+                <!--Controls-->
+                <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+                <!--/.Controls-->
+              </div>
+              <!--/.Carousel Wrapper-->
+
+              <div *ngIf="allowAccess">
+
+                  <mat-form-field style="margin-left: 250px">
+                    <mat-label>Add title</mat-label>
+                    <input type="text" matInput [(ngModel)]="title" name="title">
+                  </mat-form-field>
+
+                <label for="Photo" class="col-form-label form-control-label" style="margin-left: 270px">
+                  <input type="file" id="Photo" class="custom-file-input" (change)="onFileSelected($event)">
+                  <span class="custom-file-control btn btn-primary">Add images</span>
+                </label>
+
+                <div style="margin-left: 8px">
+                  <div *ngIf="photoUploadProgress">
+                    Upload progress: {{ photoUploadProgress }}
+                    <mat-progress-bar mode="determinate" [value]="photoUploadProgress"></mat-progress-bar>
+                  </div>
+                  <div class="alert alert-danger text-center" *ngIf="photoErrorMessage">
+                    {{ photoErrorMessage }}
+                  </div>
+                </div>
+
+                  <button type="button" class="btn btn-success" style="margin-left: 293px" [disabled]="!selectedFiles" (click)="onGalleryUpload()">Upload</button>
+
+              </div>
 
             </div>
 
@@ -395,12 +473,12 @@
               <input type="file" id="File" class="custom-file-input" (change)="onFileSelected($event)">
               <span class="custom-file-control btn btn-primary">Change avatar</span>
             </label>
-            <div *ngIf="fileUploadProgress">
-              Upload progress: {{ fileUploadProgress }}
-              <mat-progress-bar mode="determinate" [value]="fileUploadProgress"></mat-progress-bar>
+            <div *ngIf="avatarUploadProgress">
+              Upload progress: {{ avatarUploadProgress }}
+              <mat-progress-bar mode="determinate" [value]="avatarUploadProgress"></mat-progress-bar>
             </div>
-            <div class="alert alert-danger" *ngIf="fileErrorMessage">
-              {{ fileErrorMessage }}
+            <div class="alert alert-danger" *ngIf="avatarErrorMessage">
+              {{ avatarErrorMessage }}
             </div>
             <button type="button" class="btn btn-success" [disabled]="!selectedFiles" (click)="onUpload()">Upload</button>
 

@@ -33,16 +33,11 @@ public class UserPrinciple implements UserDetails {
     }
 
     public static UserPrinciple build(User user) {
-
-        System.out.println("Jestem w UserPrincipal.build przed SimpleGrantedAuthority" + new Date() + user);
-
         List<GrantedAuthority> authorities = user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()
                         .name()))
                 .collect(Collectors.toList());
-
-        System.out.println("Jestem w UserPrincipal.build za SimpleGrantedAuthority" + new Date() + user);
 
         return new UserPrinciple(
                 user.getId(),
