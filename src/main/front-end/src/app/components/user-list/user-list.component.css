@@ -27,3 +27,9 @@
 .custom-width{
   width: 50px;
 }
+
+.custom-spinner{
+  color: #e6407d;
+  width: 5rem;
+  height: 5rem;
+}

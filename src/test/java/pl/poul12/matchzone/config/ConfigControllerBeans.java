@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import pl.poul12.matchzone.security.JwtProvider;
+import pl.poul12.matchzone.service.CommentService;
 import pl.poul12.matchzone.service.PersonalDetailsService;
 import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.MailSender;
@@ -37,4 +38,8 @@ public class ConfigControllerBeans {
         return Mockito.mock(UserService.class);
     }
 
+    @Bean
+    public CommentService commentService(){
+        return Mockito.mock(CommentService.class);
+    }
 }

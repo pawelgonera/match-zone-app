@@ -8,6 +8,8 @@ public interface CommentService {
 
     Comment getCommentById(Long id);
 
+    List<Comment> getCommentsByAuthor(String author);
+
     List<Comment> getAllByUser(String username);
 
     Comment createComment(String username, Comment comment);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.context.annotation.Scope;
@@ -20,8 +21,12 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 @Entity
-@Table(name = "users")
-@Scope("session")
+@Table(name = "users",
+        indexes = {
+                @Index(name = "firstnameindex",  columnList="firstName", unique = true)
+        }
+)
+//@Scope("session")
 public class User {
 
     @Id
@@ -38,26 +43,26 @@ public class User {
     private String repeatedPassword;
     private String timeZoneId;
     @JsonManagedReference
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     private PersonalDetails personalDetails;
     @JsonManagedReference
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     private Appearance appearance;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
-    private List<Vote> votes;
+    private Set<Vote> votes;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     private Set<Comment> comments;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     private Set<Image> images;
     @EqualsAndHashCode.Exclude

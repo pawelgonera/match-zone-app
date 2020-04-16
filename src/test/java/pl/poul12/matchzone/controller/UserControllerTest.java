@@ -16,17 +16,23 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.context.WebApplicationContext;
+import pl.poul12.matchzone.config.ConfigBeans;
 import pl.poul12.matchzone.config.ConfigControllerBeans;
+import pl.poul12.matchzone.model.Comment;
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.model.forms.PageUser;
+import pl.poul12.matchzone.service.CommentService;
 import pl.poul12.matchzone.service.PersonalDetailsService;
 import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.MailSender;
 
 import javax.mail.MessagingException;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -60,6 +66,9 @@ public class UserControllerTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Before
     public void setUp(){
@@ -120,6 +129,7 @@ public class UserControllerTest {
 
         //when
         doReturn(new PersonalDetails()).when(personalDetailsService).getPersonalDetails(USER_TEST.getUsername());
+        doReturn(Collections.singletonList(new Comment())).when(commentService).getCommentsByAuthor(USER_TEST.getUsername());
 
         final ResponseEntity responseEntityTest = userController.changeAvatar(USER_TEST.getUsername(), fileTest);
 

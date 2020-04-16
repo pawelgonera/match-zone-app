@@ -21,6 +21,7 @@ public class Image {
     private Long id;
     @Type(type = "org.hibernate.type.ImageType")
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] photo;
     private String title;
     @JsonBackReference

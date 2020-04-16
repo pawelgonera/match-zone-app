@@ -3,10 +3,10 @@ package pl.poul12.matchzone.config;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.poul12.matchzone.repository.AppearanceRepository;
-import pl.poul12.matchzone.repository.PersonalDetailsRepository;
-import pl.poul12.matchzone.repository.RoleRepository;
-import pl.poul12.matchzone.repository.UserRepository;
+import pl.poul12.matchzone.repository.*;
+import pl.poul12.matchzone.service.CommentService;
+import pl.poul12.matchzone.service.CommentServiceImpl;
+import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.MailSender;
 
 @Configuration
@@ -15,6 +15,11 @@ public class ConfigBeans {
     @Bean
     public UserRepository userRepository() {
         return Mockito.mock(UserRepository.class);
+    }
+
+    @Bean
+    CommentRepository commentRepository(){
+        return Mockito.mock(CommentRepository.class);
     }
 
     @Bean
@@ -35,6 +40,11 @@ public class ConfigBeans {
     @Bean
     public MailSender mailSender(){
         return Mockito.mock(MailSender.class);
+    }
+
+    @Bean
+    public CommentService commentService(){
+        return new CommentServiceImpl(commentRepository(), Mockito.mock(UserService.class));
     }
 
 }

@@ -28,7 +28,7 @@ public class AndFilter implements Filter {
                 if (!filteredUsers.isEmpty()) {
                     i++;
                     users = filteredUsers;
-                    log.info("filter: {}, filtered users: {}, i: {}", filterName, filteredUsers.size(), i);
+                    //log.info("filter: {}, filtered users: {}, i: {}", filterName, filteredUsers.size(), i);
                 }
                 else {
                     return Collections.emptyList();

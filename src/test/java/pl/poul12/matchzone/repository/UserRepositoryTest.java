@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.poul12.matchzone.MatchZoneApplication;
 import pl.poul12.matchzone.config.H2DbConfig;
+import pl.poul12.matchzone.model.Comment;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.enums.Gender;
 
@@ -33,6 +34,21 @@ public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Test
+    public void shouldGetCommentByAuthor(){
+        //given
+        String usernameTest = "Pablito01";
+
+        //when
+        List<Comment> comments = commentRepository.findByAuthor(usernameTest);
+
+        //then
+        assertEquals(usernameTest, comments.get(0).getAuthor());
+    }
 
     @Test
     public void shouldGetUserFromDatabaseByUsername() {

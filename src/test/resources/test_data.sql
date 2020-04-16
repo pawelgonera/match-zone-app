@@ -30,3 +30,5 @@ insert into appearance (id, about, eyes, hairColour, height, hobbies, physique, 
 insert into appearance (id, about, eyes, hairColour, height, hobbies, physique, user_id) values (8, 'About08', 1, 1, 185, 'Hobbies08', 1, 8);
 insert into appearance (id, about, eyes, hairColour, height, hobbies, physique, user_id) values (9, 'About09', 1, 1, 190, 'Hobbies09', 1, 9);
 insert into appearance (id, about, eyes, hairColour, height, hobbies, physique, user_id) values (10, 'About10', 1, 1, 195, 'Hobbies10', 1, 10);
+
+insert into comment (id, author, content, postDate, id_user, avatar) values (1, 'Pablito01', 'Hejka!', '2020-03-31 10:12:49.488', 1, null);

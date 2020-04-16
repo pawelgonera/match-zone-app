@@ -1,4 +1,9 @@
-<div class="container">
+
+<div class="text-center" *ngIf="!isReadyToDisplay">
+  <div class="spinner-border custom-spinner" role="status"></div>
+</div>
+
+<div class="container" *ngIf="isReadyToDisplay">
 
   <div class="col-sm-12">
 
@@ -69,7 +74,6 @@
             </div><!-- end of tab-pane -->
 
             <div class="tab-pane" id="messages">
-
               <div class="alert alert-info alert-dismissable text-center">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
                 This is an <strong>alert</strong>. Use this to show important messages to the user.
@@ -158,7 +162,7 @@
                   <div class="carousel-item" *ngFor="let image of images let i = index" [ngClass]="{'active' : i == 0}">
                     <div class="view">
                       <img class="d-block w-100" src="data:image/png;base64,{{image.photo}}" alt="{{image.title}}">
-                      <div class="mask rgba-black-light"></div>
+                      <!--<div class="mask rgba-black-light"></div>-->
                     </div>
                     <div class="carousel-caption">
                       <h3 class="h3-responsive" *ngIf="photoId != image.id">{{image.title}}</h3>
@@ -168,7 +172,7 @@
 
                           <mat-form-field class="edit-input">
                             <mat-label>Edit title</mat-label>
-                            <input type="text" matInput [(ngModel)]="image.title" name="title">
+                            <input type="text" matInput [(ngModel)]="image.title" name="title" required>
                             <hr>
                             <button class="btn btn-pink-edit text-center">Edit</button>
                           </mat-form-field>
@@ -462,6 +466,23 @@
         </div><!-- end of col-lg-8 -->
 
         <div class="col-lg-4 order-lg-1 text-center">
+
+          <div class="text-center" *ngIf="!croppedImage">
+            <div class="spinner-border custom-spinner" role="status"></div>
+          </div>
+
+          <image-cropper *ngIf="imageChangedEvent"
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 3"
+            [resizeToWidth]="256"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (loadImageFailed)="loadImageFailed()"
+          ></image-cropper>
+
+          <!--<img [src]="croppedImage" />-->
+
           <img *ngIf="personalDetails.photo" src="data:image/png;base64,{{personalDetails.photo}}" class="mx-auto img-fluid img-circle d-block shadow" alt="avatar">
           <h6 class="mt-2">{{user.firstName}}, {{personalDetails.age}} years old</h6>
 

@@ -1,20 +1,23 @@
 
   <div class="row">
 
-    <div class="col">
+    <!--<div class="col">
 
       <img [src]="logo" class="mx-auto d-block custom-image-logo" alt="Match Zone">
 
-    </div>
+    </div>-->
 
     <div class="col-7">
 
-      <ul class="nav nav-tabs nav-justified py-1 shadow-sm">
+      <ul class="nav nav-tabs nav-justified bg-white shadow fixed-top">
+        <li class="nav-item">
+          <a routerLink="home"><img [src]="logo" class="mx-auto d-block custom-image-logo" alt="Match Zone"></a>
+        </li>
         <li class="nav-item">
           <a routerLink="home" class="nav-link" routerLinkActive="active">HOME</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="coming-soon">STORY</a>
+          <a href="/coming-soon" class="nav-link" routerLink="coming-soon">STORY</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="coming-soon">ABOUT</a>
@@ -35,10 +38,9 @@
               <a class="dropdown-item fas" (click)="logOut()"><mat-icon class="fa fa-sign-out"></mat-icon > Log out</a>
             </div>
           </div>
-
         </li>
         <ng-template #loggedOut>
-        <li >
+        <li class="nav-item">
           <a class="nav-link nav-link-custom" routerLink="login"><i class="fa fa-user mr-1"></i> SIGN IN</a>
         </li>
         </ng-template>

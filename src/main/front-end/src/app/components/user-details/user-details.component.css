@@ -99,3 +99,9 @@
 .filled.bad {
   color: #ff1e1e;
 }
+
+.custom-spinner{
+  color: #e6407d;
+  width: 5rem;
+  height: 5rem;
+}

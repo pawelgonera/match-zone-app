@@ -35,7 +35,6 @@ public class CommentController {
 
         //return commentService.getAllByUser(username);
         List<Comment> comments = commentService.getAllByUser(username);
-        System.out.println(comments);
         return ResponseEntity.ok().body(comments);
 
     }

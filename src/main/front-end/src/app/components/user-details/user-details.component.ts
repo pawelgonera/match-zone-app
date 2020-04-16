@@ -12,6 +12,7 @@ import {TokenService} from "../../service/token.service";
 import {Rating} from "../../model/rating";
 import {NgForm} from "@angular/forms";
 import {Image} from "../../model/image";
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-user-details',
@@ -30,6 +31,8 @@ export class UserDetailsComponent implements OnInit{
   usernameFromSnapshot: string;
   allowAccess = false;
 
+  isReadyToDisplay = false;
+
   personalDetails: PersonalDetails = new PersonalDetails();
   appearance: Appearance = new Appearance();
   vote: Vote = new Vote();
@@ -41,12 +44,15 @@ export class UserDetailsComponent implements OnInit{
   postId: number = 0;
 
   selectedFiles: FileList;
-  selectedFile: File = null;
+  imageChangedEvent: any = '';
+  croppedImage: any = '0';
+  photoToSend: File = null;
   avatarUploadProgress: string = null;
   photoUploadProgress: string = null;
   avatarErrorMessage: string;
   photoId: number = 0;
   photoErrorMessage: string;
+  typeOfFile: string;
 
   images: Image[];
   title: string;
@@ -84,6 +90,7 @@ export class UserDetailsComponent implements OnInit{
 
     this.getAccess();
 
+    this.loadUser(this.username);
     this.loadPersonalDetails(this.username);
     this.loadAppearance(this.username);
     this.loadComments(this.username);
@@ -91,17 +98,23 @@ export class UserDetailsComponent implements OnInit{
 
     window.scroll(0,0);
 
-    this.reloadData(this.username);
+    //this.reloadData(this.username);
+  }
+
+  loadUser(username: string){
+    return this.userService.getUser(username)
+      .subscribe(data => {
+        console.log('user: ', data);
+        this.user = data;
+      }, error => console.log(error));
   }
 
   loadPersonalDetails(username: string){
-
-    console.log('=== Jestem w UserDetailsComponent.loadPersonalDetails przed pobraniem personalDetails ==='), new Date();
-
     return this.otherService.getPersonalDetails(username)
       .subscribe(data => {
           console.log('personalDetails: ', data);
           this.personalDetails = data;
+          this.isReadyToDisplay = true;
         },
         error => console.log(error));
   }
@@ -168,7 +181,10 @@ export class UserDetailsComponent implements OnInit{
   }
 
   onFileSelected(event){
+    this.croppedImage = '';
+    this.imageChangedEvent = event;
     this.selectedFiles = event.target.files;
+    this.personalDetails.photo = null;
     console.log('event(file): ', event);
     console.log('selectedFiles:', this.selectedFiles);
   }
@@ -223,11 +239,29 @@ export class UserDetailsComponent implements OnInit{
       });
   }
 
-  onUpload(){
-    this.selectedFile = this.selectedFiles.item(0);
+  imageCropped(croppedEvent) {
+      this.croppedImage = croppedEvent.base64;
+      console.log('croppedEvent:', croppedEvent)
+    }
 
+  dataURItoBlob(dataURI): Blob {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    this.typeOfFile = mimeString;
+    console.log('mimeString:', mimeString)
+    const ab = new ArrayBuffer(byteString.length);
+    let bytes = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      bytes[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([bytes], { type: mimeString });
+  }
+
+  onUpload(){
+    this.photoToSend = new File([this.dataURItoBlob(this.croppedImage)], 'avatar.png', { type: this.typeOfFile });
+    console.log('photoToSend:', this.photoToSend)
     const formData: FormData = new FormData();
-    formData.append('file', this.selectedFile);
+    formData.append('file', this.photoToSend);
     this.avatarUploadProgress = '0%';
 
     this.otherService.changeAvatar(this.username, formData)
@@ -237,6 +271,7 @@ export class UserDetailsComponent implements OnInit{
         }
         console.log(events.body);
         console.log('File is completely uploaded!');
+        this.imageChangedEvent = '';
         this.loadPersonalDetails(this.username);
       },error => {
         this.avatarErrorMessage = error.error.errorMessage;

@@ -33,7 +33,6 @@ public class ImageController {
     public ResponseEntity<List<Image>> getAllByUser(@PathVariable(value = "username") String username){
 
         List<Image> images = imageService.getAllByUser(username);
-        System.out.println(images);
         return ResponseEntity.ok().body(images);
 
     }

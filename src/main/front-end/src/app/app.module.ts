@@ -24,6 +24,7 @@ import { ComingSoonComponent } from './components/coming-soon/coming-soon.compon
 import {MatNativeDateModule} from "@angular/material";
 import {ResetPassComponent} from "./reset-pass/reset-pass.component";
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor";
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 //Angular Material Components
 import {MatCheckboxModule} from '@angular/material';
@@ -109,7 +110,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    ImageCropperModule
   ],
   providers: [
     UserService,

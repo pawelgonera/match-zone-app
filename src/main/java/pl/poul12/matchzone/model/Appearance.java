@@ -27,7 +27,7 @@ public class Appearance {
     @Column(length = 500)
     private String hobbies;
     @JsonBackReference
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     User user;

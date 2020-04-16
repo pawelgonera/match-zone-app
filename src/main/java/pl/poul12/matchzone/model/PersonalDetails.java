@@ -16,7 +16,12 @@ import java.util.Arrays;
 @Setter
 @EqualsAndHashCode
 @Entity
-@Table(name = "personal_details")
+@Table(name = "personal_details",
+        indexes = {
+                @Index(name = "ageindex",  columnList="age", unique = true),
+                @Index(name = "ratingindex",  columnList="rating", unique = true)
+        }
+)
 public class PersonalDetails {
 
     @Id
@@ -27,6 +32,7 @@ public class PersonalDetails {
     private Gender gender;
     @Type(type = "org.hibernate.type.ImageType")
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] photo;
     private Double rating;
     private String country;
@@ -36,7 +42,7 @@ public class PersonalDetails {
     private String education;
     private Religion religion;
     @JsonBackReference
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     User user;

@@ -18,6 +18,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import pl.poul12.matchzone.model.Comment;
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.forms.FilterForm;
@@ -25,6 +26,7 @@ import pl.poul12.matchzone.security.JwtProvider;
 import pl.poul12.matchzone.security.JwtResponse;
 import pl.poul12.matchzone.security.forms.LoginForm;
 import pl.poul12.matchzone.security.forms.RegisterForm;
+import pl.poul12.matchzone.service.CommentService;
 import pl.poul12.matchzone.service.PersonalDetailsService;
 import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.CustomErrorResponse;
@@ -54,16 +56,18 @@ public class UserController {
     private JwtProvider jwtProvider;
     private UserService userService;
     private PersonalDetailsService personalDetailsService;
+    private CommentService commentService;
     private MailSender mailSender;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     public UserController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserService userService,
-                          MailSender mailSender, PersonalDetailsService personalDetailsService) {
+                          MailSender mailSender, PersonalDetailsService personalDetailsService, CommentService commentService) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.userService = userService;
         this.mailSender = mailSender;
         this.personalDetailsService = personalDetailsService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/users")
@@ -143,13 +147,21 @@ public class UserController {
     @PostMapping("/users/{username}/change-avatar")
     public ResponseEntity<?> changeAvatar(@PathVariable(value = "username") String username, @RequestParam("file")MultipartFile file) {
 
+        System.out.println("before personaldetails");
         PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(username);
+        System.out.println("before get comment in controller");
+        List<Comment> comments = commentService.getCommentsByAuthor(username);
+        System.out.println("Comment: " + comments);
 
         try {
             try {
                 return validator.validate(file);
             }catch (RuntimeException e){
                 personalDetails.setPhoto(file.getBytes());
+                for(Comment comment : comments){
+                    comment.setAvatar(file.getBytes());
+                }
+
                 personalDetailsService.savePersonalDetails(personalDetails);
                 logger.info("Photo uploaded");
             }

@@ -126,7 +126,6 @@
               </mat-form-field>
 
               <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [disabled]="isLastPage(index)" >Next</button>
-
             </form>
           </div>
 
@@ -135,7 +134,7 @@
           <br><br>
 
           <div class="text-center" *ngIf="!isReadyToDisplay">
-            <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+            <div class="spinner-border custom-spinner" role="status"></div>
           </div>
 
           <div *ngIf="isReadyToDisplay">
@@ -148,7 +147,7 @@
                   <div class="card shadow animated">
                    <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
                     <div class="card-body">
-                      <h5 class="card-title">{{user.firstName}}</h5>
+                      <a href="/profile/{{user.username}}" class="nav-link" routerLink="/profile/{{user.username}}"><h5 class="card-title">{{user.firstName}}</h5></a>
                       <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
                       <small>{{user.appearance.about}}</small>
                       <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
