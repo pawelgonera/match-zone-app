@@ -11,6 +11,12 @@ import pl.poul12.matchzone.service.ImageServiceImpl;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 import pl.poul12.matchzone.util.FileValidator;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.swing.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,11 +47,13 @@ public class ImageController {
     public ResponseEntity<?> addImages(@PathVariable(value = "username") String username, @RequestParam("photo") MultipartFile photo, @RequestParam("title") String title) {
 
         Image image = new Image();
+
         try {
 
             try {
                 return validator.validate(photo);
             }catch (RuntimeException e){
+
                 image.setPhoto(photo.getBytes());
             }
 

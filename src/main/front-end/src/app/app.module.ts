@@ -25,6 +25,7 @@ import {MatNativeDateModule} from "@angular/material";
 import {ResetPassComponent} from "./reset-pass/reset-pass.component";
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor";
 import { ImageCropperModule } from 'ngx-image-cropper';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 //Angular Material Components
 import {MatCheckboxModule} from '@angular/material';
@@ -123,7 +124,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     UrlPermission,
     AppComponent,
     AuthenticationInterceptor,
-    LoginComponent
+    LoginComponent,
+    NgxImageCompressService
   ],
   bootstrap: [AppComponent]
 })

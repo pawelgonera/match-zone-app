@@ -41,6 +41,12 @@
   height: 70px;
 }
 
+.avatar-radius {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+}
+
 .btn-pink {
   margin-left: 540px;
   min-width: 150px;

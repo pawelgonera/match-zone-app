@@ -208,8 +208,9 @@
                   </mat-form-field>
 
                 <label for="Photo" class="col-form-label form-control-label" style="margin-left: 270px">
-                  <input type="file" id="Photo" class="custom-file-input" (change)="onFileSelected($event)">
-                  <span class="custom-file-control btn btn-primary">Add images</span>
+                  <!--<input type="file" id="Photo" class="custom-file-input" (change)="onFileSelected($event)">-->
+                  <button class="btn btn-primary" id="Photo" (click)="uploadFile()">Add images</button>
+                  <!--<span class="custom-file-control btn btn-primary">Add images</span>-->
                 </label>
 
                 <div style="margin-left: 8px">
@@ -222,7 +223,7 @@
                   </div>
                 </div>
 
-                  <button type="button" class="btn btn-success" style="margin-left: 293px" [disabled]="!selectedFiles" (click)="onGalleryUpload()">Upload</button>
+                  <button type="button" class="btn btn-success" style="margin-left: 293px" [disabled]="!image" (click)="onGalleryUpload()">Upload</button>
 
               </div>
 
@@ -474,16 +475,16 @@
           <image-cropper *ngIf="imageChangedEvent"
             [imageChangedEvent]="imageChangedEvent"
             [maintainAspectRatio]="true"
-            [aspectRatio]="4 / 3"
+            [aspectRatio]="1 / 1"
             [resizeToWidth]="256"
-            format="png"
+            [format]="png"
             (imageCropped)="imageCropped($event)"
             (loadImageFailed)="loadImageFailed()"
           ></image-cropper>
 
           <!--<img [src]="croppedImage" />-->
 
-          <img *ngIf="personalDetails.photo" src="data:image/png;base64,{{personalDetails.photo}}" class="mx-auto img-fluid img-circle d-block shadow" alt="avatar">
+          <img *ngIf="personalDetails.photo" src="data:image/png;base64,{{personalDetails.photo}}" class="shadow" alt="avatar">
           <h6 class="mt-2">{{user.firstName}}, {{personalDetails.age}} years old</h6>
 
           <br>
@@ -491,7 +492,7 @@
           <div *ngIf="allowAccess">
 
             <label for="File" class=" col-form-label form-control-label">
-              <input type="file" id="File" class="custom-file-input" (change)="onFileSelected($event)">
+              <input type="file" id="File" class="custom-file-input" (change)="onAvatarSelected($event)">
               <span class="custom-file-control btn btn-primary">Change avatar</span>
             </label>
             <div *ngIf="avatarUploadProgress">
@@ -501,7 +502,7 @@
             <div class="alert alert-danger" *ngIf="avatarErrorMessage">
               {{ avatarErrorMessage }}
             </div>
-            <button type="button" class="btn btn-success" [disabled]="!selectedFiles" (click)="onUpload()">Upload</button>
+            <button type="button" class="btn btn-success" [disabled]="!croppedImage" (click)="onUpload()">Upload</button>
 
             <h3>Rate</h3>
             <hr>

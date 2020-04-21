@@ -13,6 +13,7 @@ import {Rating} from "../../model/rating";
 import {NgForm} from "@angular/forms";
 import {Image} from "../../model/image";
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 @Component({
   selector: 'app-user-details',
@@ -53,6 +54,7 @@ export class UserDetailsComponent implements OnInit{
   photoId: number = 0;
   photoErrorMessage: string;
   typeOfFile: string;
+  image: any = '0';
 
   images: Image[];
   title: string;
@@ -67,7 +69,8 @@ export class UserDetailsComponent implements OnInit{
   username: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService,
-              private http: HttpClient, private otherService: OtherService, private tokenService: TokenService) {
+              private http: HttpClient, private otherService: OtherService, private tokenService: TokenService,
+              private imageCompress: NgxImageCompressService) {
   }
 
   ngOnInit() {
@@ -97,8 +100,6 @@ export class UserDetailsComponent implements OnInit{
     this.loadImages(this.username);
 
     window.scroll(0,0);
-
-    //this.reloadData(this.username);
   }
 
   loadUser(username: string){
@@ -180,18 +181,35 @@ export class UserDetailsComponent implements OnInit{
     this.update();
   }
 
-  onFileSelected(event){
+  onAvatarSelected(event){
     this.croppedImage = '';
     this.imageChangedEvent = event;
-    this.selectedFiles = event.target.files;
     this.personalDetails.photo = null;
+    console.log('event(file): ', event);
+  }
+
+ onFileSelected(event){
+    this.selectedFiles = event.target.files;
     console.log('event(file): ', event);
     console.log('selectedFiles:', this.selectedFiles);
   }
 
+  uploadFile(){
+    this.imageCompress.uploadFile().then(({image, orientation}) => {
+      console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
+      this.imageCompress.compressFile(image, null, 30, 30).then(
+        result => {
+          this.image = result;
+          console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
+        }
+      );
+    });
+  }
+
   onGalleryUpload(){
     const formData: FormData = new FormData();
-    formData.append('photo', this.selectedFiles.item(0));
+    this.photoToSend = new File([this.dataURItoBlob(this.image)], 'image.png', { type: this.typeOfFile });
+    formData.append('photo', this.photoToSend);
     if(this.title == null){
       this.title = '';
     }
@@ -205,6 +223,7 @@ export class UserDetailsComponent implements OnInit{
         }
         console.log('File is completely uploaded!');
         console.log('imageAdded: ', events);
+        this.image = '';
         this.loadImages(this.username);
       },error => {
         this.photoErrorMessage = error.error.errorMessage;
