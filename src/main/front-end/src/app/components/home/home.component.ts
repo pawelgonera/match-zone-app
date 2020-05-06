@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
+    window.scroll(0,0);
   }
 
   onSubmit(form: NgForm){

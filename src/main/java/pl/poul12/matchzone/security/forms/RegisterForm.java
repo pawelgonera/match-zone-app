@@ -18,7 +18,7 @@ import javax.validation.constraints.*;
 @Setter
 @Getter
 @Match(firstField = "password", secondField = "repeatedPassword", message = "Passwords must be the same")
-public class RegisterForm implements Serializable {
+public class RegisterForm extends UserValidationData implements Serializable {
     @NotBlank
     @Size(min = 4, max = 20)
     @NotExist(fieldName = FieldName.USERNAME, message = "This username is already exist")

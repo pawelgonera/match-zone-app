@@ -32,6 +32,14 @@ export class UserService {
     return this.http.put(`${this.baseUrl}/${username}`, value);
   }
 
+  changePassword(value: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/change-password`, value);
+  }
+
+  changeEmail(value: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/change-email`, value);
+  }
+
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
   }

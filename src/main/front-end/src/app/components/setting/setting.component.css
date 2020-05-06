@@ -1,0 +1,15 @@
+.grid-tiles {
+  display: flex;
+  grid-column-gap: 50px;
+  grid-template-columns: auto auto;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .nav-item.show .nav-link {
+  color: white;
+  background-color: #ec407a;
+}
+
+.input-position{
+  margin-left: 100px;
+}

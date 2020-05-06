@@ -1,0 +1,381 @@
+
+<div class="container">
+
+<br><br>
+
+  <div class="row grid-tiles">
+    <div class="col-3 col-background shadow-lg">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <br>
+        <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-home" aria-selected="true">User profile details</a>
+        <a class="nav-link" id="v-pills-email-tab" data-toggle="pill" href="#v-pills-email" role="tab" aria-controls="v-pills-profile" aria-selected="false">Change email</a>
+        <a class="nav-link" id="v-pills-pass-tab" data-toggle="pill" href="#v-pills-pass" role="tab" aria-controls="v-pills-profile" aria-selected="false">Change password</a>
+        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Payment data</a>
+        <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+      </div>
+    </div>
+
+    <div class="mr-4">
+      <!--gaps between-->
+    </div>
+
+    <div class="col-8 shadow-lg col-background">
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+
+          <br>
+
+          <div class="text-center" *ngIf="!isReadyToDisplay">
+            <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+          </div>
+
+          <form (ngSubmit)="f.form.valid && update()" #f="ngForm" *ngIf="isReadyToDisplay">
+
+            <br>
+            <div *ngIf="f.submitted && f.form.invalid && isChangeDataFailed" class="alert alert-danger">
+              <p class="text-center">Changed data failed!</p>
+              <div *ngIf="errorMessage">
+                <div *ngFor="let error of errorMessage.split('-'), let i = index">
+                  <p class="text-center">{{i+1}}. {{error}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="f.form.valid && !isChangeDataFailed" class="alert alert-success text-center">
+              <strong>{{success}}</strong>
+            </div>
+
+            <div class="text-center" *ngIf="!success">
+              <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+            </div>
+
+            <h4 class="text-center">Personal details</h4>
+            <div class="form-group row">
+              <label for="FirstName" class="col-lg-3 col-form-label form-control-label">First Name</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="FirstName" type="text" [(ngModel)]="user.firstName" name="firstName" #firstName="ngModel" required minlength="3" maxlength="20">
+                <div class="alert alert-danger" *ngIf="f.submitted && firstName.invalid">
+                  <div *ngIf="firstName.errors.required">First Name is required</div>
+                  <div *ngIf="firstName.errors.minlength">Name must be at least 3 characters</div>
+                  <div *ngIf="firstName.errors.maxlength">Name maximum length is 20 characters</div>
+                </div>
+              </div>
+            </div>
+            <!--<div class="form-group row">
+              <label for="DateOfBirth" class="col-lg-3 col-form-label form-control-label">Date Of Birth</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="DateOfBirth" type="date" required [(ngModel)]="personalDetails.dateOfBirth" name="dateOfBirth">
+              </div>
+            </div>-->
+            <label for="DateOfBirth" class=" form-control-label">Date Of Birth</label>
+            <mat-form-field class="input-position" color="danger">
+              <mat-label>Date of birth</mat-label>
+              <input id="DateOfBirth" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="dd/mm/yyyy"  [(ngModel)]="personalDetails.dateOfBirth" name="dateOfBirth" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle >
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <div class="form-group row">
+              <label for="Gender" class="col-lg-3 col-form-label form-control-label">Gender</label>
+              <div class="col-lg-9">
+                <select id="Gender" class="form-control" size="0" [(ngModel)]="personalDetails.gender" name="gender">
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="TimeZone" class="col-lg-3 col-form-label form-control-label">Time Zone</label>
+              <div class="col-lg-9">
+                <select id="TimeZone" class="form-control" size="0" [(ngModel)]="user.timeZoneId" name="timeZoneId">
+                  <option value="US/Samoa">(GMT-11:00) Samoa</option>
+                  <option value="US/Hawaii">(GMT-10:00) Hawaii</option>
+                  <option value="US/Alaska">(GMT-09:00) Alaska</option>
+                  <option value="Canada/Pacific">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                  <option value="US/Mountain">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                  <option value="US/Central">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                  <option value="America/Indiana/Petersburg">(GMT-05:00) Indiana (East)</option>
+                  <option value="Canada/Atlantic">(GMT-04:00) Atlantic Standard Time (Canada)</option>
+                  <option value="America/Argentina/Buenos_Aires">(GMT-03:00) Argentina Time</option>
+                  <option value="America/Noronha">(GMT-02:00) Noronha Time</option>
+                  <option value="Atlantic/Azores">(GMT-01:00) Azores Time</option>
+                  <option value="Etc/Greenwich">(GMT-00:00) Greenwich Time (ETC)</option>
+                  <option value="Europe/Belgrade" selected="selected">(GMT+01:00) Central European Time (Warsaw)</option>
+                  <option value="Europe/Sofia">(GMT+02:00) Eastern European Time (Sofia)</option>
+                  <option value="Asia/Bahrain">(GMT+03:00) Bahrain Time</option>
+                  <option value="Europe/Samara">(GMT+04:00) Samara, Armenia, Azerbaidjan, Georgia, Mauritius Times</option>
+                  <option value="PLT">(GMT+05:00) Pakistan Standard Time</option>
+                  <option value="BST">(GMT+06:00) Bangladesh Standard Time</option>
+                  <option value="Indian/Christmas">(GMT+07:00) Christmas Island Time (Australia)</option>
+                  <option value="Asia/Shanghai">(GMT+08:00) China Standard Time</option>
+                  <option value="Asia/Tokyo">(GMT+09:00) Japan Standard Time</option>
+                  <option value="Australia/Sydney">(GMT+10:00) East Australian Standard Time</option>
+                  <option value="Asia/Sakhalin">(GMT+11:00) Sakhalin Time</option>
+                  <option value="Pacific/Fiji">(GMT+12:00) New Zealand Standard Time</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Country" class="col-lg-3 col-form-label form-control-label">Country</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="Country" type="text" [(ngModel)]="personalDetails.country" #country="ngModel" name="country" required >
+                <div class="alert alert-danger" *ngIf="f.submitted && country.invalid">
+                  <div *ngIf="country.errors.required">Country is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="City" class="col-lg-3 col-form-label form-control-label">City</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="City" type="text" [(ngModel)]="personalDetails.city" #city="ngModel" name="city" required >
+                <div class="alert alert-danger" *ngIf="f.submitted && city.invalid">
+                  <div *ngIf="city.errors.required">City is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Occupation" class="col-lg-3 col-form-label form-control-label">Occupation</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="Occupation" type="text" [(ngModel)]="personalDetails.occupation" name="occupation">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="MaritalStatus" class="col-lg-3 col-form-label form-control-label">Marital status</label>
+              <div class="col-lg-9">
+                <select id="MaritalStatus" class="form-control" size="0" [(ngModel)]="personalDetails.maritalStatus" name="maritalStatus">
+                  <option value="MARRIED">Married</option>
+                  <option value="WIDOWED">Widowed</option>
+                  <option value="SEPARATED">Separated</option>
+                  <option value="DIVORCED">Divorced</option>
+                  <option value="SINGLE">Single</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Education" class="col-lg-3 col-form-label form-control-label">Education</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="Education" type="text" [(ngModel)]="personalDetails.education" name="education">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Religion" class="col-lg-3 col-form-label form-control-label">Religion</label>
+              <div class="col-lg-9">
+                <select id="Religion" class="form-control" size="0" [(ngModel)]="personalDetails.religion" name="religion">
+                  <option value="CHRISTIANITY">Christianity</option>
+                  <option value="ISLAM">Islam</option>
+                  <option value="HINDUISM">Hinduism</option>
+                  <option value="BUDDHISM">Buddhism</option>
+                  <option value="JUDAISM">Judaism</option>
+                  <option value="ATHEIST">Atheist</option>
+                </select>
+              </div>
+            </div>
+            <br>
+            <h4 class="text-center">Appearance</h4>
+            <div class="form-group row">
+              <label for="Eyes" class="col-lg-3 col-form-label form-control-label">Eyes</label>
+              <div class="col-lg-9">
+                <select id="Eyes" class="form-control" size="0" [(ngModel)]="appearance.eyes" name="eyes">
+                  <option value="BLUE">Blue</option>
+                  <option value="BROWN">Brown</option>
+                  <option value="GREEN">Green</option>
+                  <option value="HAZEL ">Hazel</option>
+                  <option value="GREY">Grey</option>
+                  <option value="AMBER">Amber</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="HairColour" class="col-lg-3 col-form-label form-control-label">Hair colour</label>
+              <div class="col-lg-9">
+                <select id="HairColour" class="form-control" size="0" [(ngModel)]="appearance.hairColour" name="hairColour">
+                  <option value="BLACK">Black</option>
+                  <option value="DARK_BROWN">Dark brown</option>
+                  <option value="LIGHT_BROWN">Light brown</option>
+                  <option value="BROWN">Brown</option>
+                  <option value="DARK_BLONDE">Dark blonde</option>
+                  <option value="LIGHT_BLONDE">Light blonde</option>
+                  <option value="BLONDE">Blonde</option>
+                  <option value="GINGER_RED">Ginger red</option>
+                  <option value="GREY">Grey</option>
+                  <option value="WHITE">White</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Height" class="col-lg-3 col-form-label form-control-label">Height</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="Height" type="number" min="140" max="210" [(ngModel)]="appearance.height" name="height">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Physique" class="col-lg-3 col-form-label form-control-label">Physique</label>
+              <div class="col-lg-9">
+                <select id="Physique" class="form-control" size="0" [(ngModel)]="appearance.physique" name="physique">
+                  <option value="SKINNY">Skinny</option>
+                  <option value="SLIM">Slim</option>
+                  <option value="NORMAL">Normal</option>
+                  <option value="SHAPELY">Shapely</option>
+                  <option value="MUSCULAR">Muscular</option>
+                  <option value="THICK">Thick</option>
+                  <option value="FAT">Fat</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="WriteAboutYourself">Write about yourself</label>
+              <textarea class="form-control" id="WriteAboutYourself" rows="3" [(ngModel)]="appearance.about" name="about" placeholder="Max 500 signs" [maxLength]="500"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="Hobbies">Hobbies</label>
+              <textarea class="form-control" id="Hobbies" rows="3" [(ngModel)]="appearance.hobbies" name="hobbies" placeholder="Max 256 signs" [maxLength]="256"></textarea>
+            </div>
+            <br><br>
+
+            <div class="alert alert-danger" *ngIf="f.submitted && f.form.invalid">
+              <p class="text-center">Error, please check all fields</p>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-9">
+                <input type="reset" class="btn btn-secondary" value="Cancel">
+                <input type="submit" class="btn btn-primary" value="Save Changes">
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+
+        <div class="tab-pane fade" id="v-pills-email" role="tabpanel" aria-labelledby="v-pills-email-tab">
+
+          <form (ngSubmit)="formMail.form.valid && changeEmail()" #formMail="ngForm">
+
+            <br>
+            <div *ngIf="formMail.submitted && isChangeDataFailed" class="alert alert-danger">
+              <p class="text-center">Changed data failed!</p>
+              <div *ngIf="errorMessage">
+                <div *ngFor="let error of errorMessage.split('-'), let i = index">
+                  <p class="text-center">{{i+1}}. {{error}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!isChangeDataFailed" class="alert alert-success text-center">
+              <strong>{{success}}</strong>
+            </div>
+
+            <div class="text-center" *ngIf="!success">
+              <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+            </div>
+
+            <h4 class="text-center">Change Email</h4>
+            <div class="form-group row">
+              <label for="NewEmail" class="col-lg-3 col-form-label form-control-label">New Email</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="NewEmail" type="email" required [(ngModel)]="emailForm.email" #email="ngModel" name="email" email maxlength="30" [value]="user.email">
+                <div class="alert alert-danger" *ngIf="formMail.submitted && email.invalid">
+                  <div *ngIf="email.errors.required">Email is required</div>
+                  <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                  <div *ngIf="email.errors.maxlength">Email maximum length is 30 characters</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Password" class="col-lg-3 col-form-label form-control-label">Your Password</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="Password" type="password" required [(ngModel)]="emailForm.password" #password="ngModel" name="password" minlength="6">
+                <div class="alert alert-danger" *ngIf="formMail.submitted && password.invalid">
+                  <div *ngIf="password.errors.required">Password is required</div>
+                  <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-9">
+                <input type="reset" class="btn btn-secondary" value="Cancel">
+                <input type="submit" class="btn btn-danger" value="Change Email">
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+
+        <div class="tab-pane fade" id="v-pills-pass" role="tabpanel" aria-labelledby="v-pills-pass-tab">
+
+          <form (ngSubmit)="formPass.form.valid && changePassword()" #formPass="ngForm">
+
+            <br>
+            <div *ngIf="formPass.submitted && isChangeDataFailed" class="alert alert-danger">
+              <p class="text-center">Changed data failed!</p>
+              <div *ngIf="errorMessage">
+                <div *ngFor="let error of errorMessage.split('-'), let i = index">
+                  <p class="text-center">{{i+1}}. {{error}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!isChangeDataFailed" class="alert alert-success text-center">
+              <strong>{{success}}</strong>
+            </div>
+
+            <div class="text-center" *ngIf="!success">
+              <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+            </div>
+
+            <h4 class="text-center">Change password</h4>
+            <div class="form-group row">
+              <label for="OldPassword" class="col-lg-3 col-form-label form-control-label">Old Password</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="OldPassword" type="password" required [(ngModel)]="passwordForm.oldPassword" #oldpassword="ngModel" name="oldPassword" minlength="6">
+                <div class="alert alert-danger" *ngIf="formPass.submitted && oldpassword.invalid">
+                  <div *ngIf="oldpassword.errors.required">Old Password is required</div>
+                  <div *ngIf="oldpassword.errors.minlength">Old Password must be at least 6 characters</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="NewPassword" class="col-lg-3 col-form-label form-control-label">New Password</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="NewPassword" type="password" required [(ngModel)]="passwordForm.password" #password="ngModel" name="password" minlength="6">
+                <div class="alert alert-danger" *ngIf="formPass.submitted && password.invalid">
+                  <div *ngIf="password.errors.required">Password is required</div>
+                  <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="ConfirmPassword" class="col-lg-3 col-form-label form-control-label">Confirm password</label>
+              <div class="col-lg-9">
+                <input class="form-control" id="ConfirmPassword" type="password" required [(ngModel)]="passwordForm.repeatedPassword" name="repeatedPassword" #repeatedPassword="ngModel" minlength="6">
+                <div class="alert alert-danger" *ngIf="formPass.submitted && repeatedPassword.invalid">
+                  <div *ngIf="repeatedPassword.errors.required">Password is required</div>
+                  <div *ngIf="repeatedPassword.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-9">
+                <input type="reset" class="btn btn-secondary" value="Cancel">
+                <input type="submit" class="btn btn-danger" value="Change Password">
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+
+        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+
+        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

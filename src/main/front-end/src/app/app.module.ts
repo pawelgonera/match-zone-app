@@ -21,6 +21,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComingSoonComponent } from './components/coming-soon/coming-soon.component';
+import { SettingComponent } from './components/setting/setting.component';
 import {MatNativeDateModule} from "@angular/material";
 import {ResetPassComponent} from "./reset-pass/reset-pass.component";
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor";
@@ -70,6 +71,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     HomeComponent,
     ComingSoonComponent,
     ResetPassComponent,
+    SettingComponent,
   ],
   imports: [
     BrowserModule,

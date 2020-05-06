@@ -29,7 +29,7 @@ export class CreateUserComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
-
+    window.scroll(0,200);
   }
 
   save() {
@@ -65,7 +65,6 @@ export class CreateUserComponent implements OnInit {
   }
 
   public calculateAge(dateOfBirth): number {
-
     let timeDifference = Math.abs(Date.now() - new Date(dateOfBirth).getTime());
     return Math.floor(timeDifference / (1000 * 3600 * 24) / 365.25);
   }

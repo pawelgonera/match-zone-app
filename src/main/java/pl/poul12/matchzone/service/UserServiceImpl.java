@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.*;
-import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.enums.RoleName;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.repository.*;
@@ -119,6 +118,15 @@ public class UserServiceImpl implements UserService{
         return pagedListHolder;
     }
 
+    public boolean isPasswordMatch(String username, String password){
+        User user = getUserByUsername(username);
+        System.out.println("user pass: " + user.getPassword());
+
+        System.out.println("pass to check: " + password);
+
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+
     private User buildUser(RegisterForm registerUser){
 
         User user = new User();
@@ -147,7 +155,9 @@ public class UserServiceImpl implements UserService{
 
         userFound.setUsername(user.getUsername());
         userFound.setFirstName(user.getFirstName());
-        userFound.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != null) {
+            userFound.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userFound.setEmail(user.getEmail());
         userFound.setTimeZoneId(user.getTimeZoneId());
 

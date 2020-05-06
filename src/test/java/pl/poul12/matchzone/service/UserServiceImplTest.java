@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.poul12.matchzone.config.ConfigBeans;
-import pl.poul12.matchzone.model.Comment;
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.Role;
 import pl.poul12.matchzone.model.User;
@@ -19,12 +18,10 @@ import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.enums.RoleName;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.model.forms.PageUser;
-import pl.poul12.matchzone.repository.CommentRepository;
 import pl.poul12.matchzone.repository.RoleRepository;
 import pl.poul12.matchzone.repository.UserRepository;
 import pl.poul12.matchzone.security.forms.RegisterForm;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
@@ -151,7 +148,6 @@ public class UserServiceImplTest {
 
     @Test
     public void shouldGetUpdatedUser() {
-
         //given
         User userUpdateTest = new User();
         userUpdateTest.setId(1L);

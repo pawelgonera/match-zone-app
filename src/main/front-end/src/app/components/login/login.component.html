@@ -1,8 +1,10 @@
-<div class="container">
+<div class="container shadow-lg">
 
   <div class="row">
 
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-background">
+
+        <br>
 
         <div class="signup-form">
 
@@ -40,7 +42,7 @@
               </div>
             </div>
             <div class="form-group">
-              <button class="btn btn-pink btn-block">Sign In</button>
+              <button class="btn btn-pink">Sign In</button>
               <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
                 <p class="text-center">Login failed!</p>
                 <p class="text-center">{{errorMessage}}</p>
@@ -54,9 +56,11 @@
           </div>
         </div>
 
+        <br>
+
       </div>
 
-    <div class="col-sm-6">
+    <div class="col-sm-6 col-background">
 
       <div class="container">
         <img [src]="pinkHeartPath" class="mx-auto d-block custom-image" alt="Pink Heart">

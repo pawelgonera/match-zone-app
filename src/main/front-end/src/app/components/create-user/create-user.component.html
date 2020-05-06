@@ -1,16 +1,20 @@
-<div class="container">
+<div class="container col-background shadow-lg">
+
+  <br><br>
 
   <div class="row">
 
-      <div class="col-sm-6">
+      <!--<div class="col-sm-6 col-background">
 
         <div class="container">
           <img [src]="pinkHeartPath" class="mx-auto d-block custom-image" alt="Pink Heart">
         </div>
 
-      </div>
+      </div>-->
 
-      <div class="col-sm-6">
+      <!--<div class="col-sm-6 col-background">-->
+
+        <br>
 
         <div class="signup-form">
           <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
@@ -24,7 +28,6 @@
                 <div *ngFor="let error of errorMessage.split('-'), let i = index">
                   <p>{{i+1}}. {{error}}</p>
                 </div>
-
               </div>
 
               <div class="form-group">
@@ -48,7 +51,7 @@
                 <div class="alert alert-danger" *ngIf="f.submitted && email.invalid">
                   <div *ngIf="email.errors.required">Email is required</div>
                   <div *ngIf="email.errors.email">Email must be a valid email address</div>
-                  <div *ngIf="email.errors.email">Email maximum length is 30 characters</div>
+                  <div *ngIf="email.errors.maxlength">Email maximum length is 30 characters</div>
                 </div>
               </div>
               <div class="form-group">
@@ -92,15 +95,19 @@
               </mat-form-field>
 
               <div class="form-group">
-                <button class="btn btn-primary btn-block btn-lg">Sign Up</button>
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Sign Up">
               </div>
 
           </form>
           <div class="text-center">Already have an account? <a routerLink="/login">Login here</a></div>
         </div>
 
-      </div><!-- end of col-sm-6 -->
+        <br>
+
+      <!--</div>end of col-sm-6 -->
 
   </div><!-- end of row -->
+
+  <br><br>
 
 </div><!-- end of container main -->

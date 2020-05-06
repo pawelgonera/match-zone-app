@@ -43,6 +43,7 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
                 .orElseThrow(() -> new ResourceNotFoundException("PersonalDetails not found for this id: " + userId));
 
         personalDetailsFound.setGender(personalDetails.getGender());
+        personalDetailsFound.setAge(personalDetails.getAge());
         personalDetailsFound.setReligion(personalDetails.getReligion());
         personalDetailsFound.setOccupation(personalDetails.getOccupation());
         personalDetailsFound.setMaritalStatus(personalDetails.getMaritalStatus());

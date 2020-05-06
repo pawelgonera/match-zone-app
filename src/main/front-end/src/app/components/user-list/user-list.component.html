@@ -1,176 +1,180 @@
 <div class="container">
 
-<!--<div class="container">-->
+  <!--<div class="container">-->
 
   <div class="row">
 
-    <div class="col-sm-3 shadow-sm">
+    <div class="col-sm-3 shadow col-background">
 
-      <!--<div class="container">-->
+      <form #form="ngForm" (ngSubmit)="onFilter(form, index, sort)">
 
-        <form #form="ngForm" (ngSubmit)="onFilter(form, index, sort)">
+        <h3 class="text-center border-bottom">Filters</h3>
 
-          <h3 class="text-center border-bottom">Filters</h3>
+        <br>
 
-          <br>
-
-          <p class="border-bottom"><b>Gender</b></p>
-          <mat-radio-group aria-label="Select gender" [(ngModel)]="filter.gender" name="gender">
-            <div class="form-check-inline">
-             <mat-radio-button value="MALE">Man</mat-radio-button>
-            </div>
-            <div class="form-check-inline">
-              <mat-radio-button value="FEMALE">Female</mat-radio-button>
-            </div>
-          </mat-radio-group>
-
-          <p class="border-bottom"><b>Age</b></p>
+        <p class="border-bottom"><b>Gender</b></p>
+        <mat-radio-group aria-label="Select gender" [(ngModel)]="filter.gender" name="gender">
           <div class="form-check-inline">
+            <mat-radio-button value="MALE">Man</mat-radio-button>
+          </div>
+          <div class="form-check-inline">
+            <mat-radio-button value="FEMALE">Female</mat-radio-button>
+          </div>
+        </mat-radio-group>
+
+        <p class="border-bottom"><b>Age</b></p>
+        <div class="form-check-inline">
           <mat-form-field class="custom-width">
             <mat-label>from</mat-label>
             <input type="number" matInput name="ageMin" [(ngModel)]="filter.ageMin" min="18" max="75" >
           </mat-form-field>
-          </div>
-          <div class="form-check-inline">
+        </div>
+        <div class="form-check-inline">
           <mat-form-field class="custom-width">
             <mat-label>to</mat-label>
             <input type="number" matInput name="ageMax" [(ngModel)]="filter.ageMax" min="18" max="75" >
           </mat-form-field>
-          </div>
+        </div>
 
-          <p class="border-bottom"><b>Rating</b></p>
-          <div class="form-check-inline">
-            <mat-form-field class="custom-width">
-              <mat-label>from</mat-label>
-              <input type="number" matInput name="ratingMin" [(ngModel)]="filter.ratingMin" min="1" max="6" step="0.25" >
-            </mat-form-field>
-          </div>
-          <div class="form-check-inline">
-            <mat-form-field class="custom-width">
-              <mat-label>to</mat-label>
-              <input type="number" matInput name="ratingMax" [(ngModel)]="filter.ratingMax" min="1" max="6" step="0.25" >
-            </mat-form-field>
-          </div>
-
-          <p class="border-bottom"><b>City</b></p>
-          <mat-form-field class="example-full-width">
-            <input type="text" placeholder="Search by city" matInput name="city" [(ngModel)]="filter.city" >
+        <p class="border-bottom"><b>Rating</b></p>
+        <div class="form-check-inline">
+          <mat-form-field class="custom-width">
+            <mat-label>from</mat-label>
+            <input type="number" matInput name="ratingMin" [(ngModel)]="filter.ratingMin" min="1" max="6" step="0.25" >
           </mat-form-field>
+        </div>
+        <div class="form-check-inline">
+          <mat-form-field class="custom-width">
+            <mat-label>to</mat-label>
+            <input type="number" matInput name="ratingMax" [(ngModel)]="filter.ratingMax" min="1" max="6" step="0.25" >
+          </mat-form-field>
+        </div>
 
-          <br><br>
-          <input type="reset" class="btn btn-secondary" value="Reset">
-          <button type="submit" class="btn btn-success">Apply</button>
-          <br><br>
+        <p class="border-bottom"><b>City</b></p>
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Search by city" matInput name="city" [(ngModel)]="filter.city" >
+        </mat-form-field>
 
-        </form>
+        <br><br>
+        <input type="reset" class="btn btn-secondary" value="Reset">
+        <button type="submit" class="btn btn-success">Apply</button>
+        <br><br>
 
-      <!--</div>--><!-- end of container -->
+      </form>
 
     </div><!-- end of col-sm-3 -->
 
-    <div class="col-sm-9">
+    <div class="mr-4">
+      <!--gaps between-->
+    </div>
 
-      <!--<div class="container">-->
+    <div class="col-sm-8 shadow col-background">
 
-        <!--<div class="container">-->
+      <form #sort="ngForm" (change)="onFilter(form, 0, sort)">
 
-          <form #sort="ngForm" (change)="onFilter(form, 0, sort)">
+        <div class="row">
 
-            <div class="row">
+          <div class="col-sm-4">
 
-              <div class="col-sm-4">
+            <br>
 
-              <br>
-
-                <mat-form-field>
-                  <mat-label>Sort by</mat-label>
-                  <mat-select ngModel [(ngModel)]="sortParam" name="sortParam"  (selectionChange)="onFilter(form, index, sort)">
-                    <mat-option>None</mat-option>
-                    <mat-option value="firstName_ASC" ><mat-icon class="fa fa-sort-amount-asc"></mat-icon> First Name</mat-option>
-                    <mat-option value="firstName_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> First Name</mat-option>
-                    <mat-option value="age_ASC"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Age</mat-option>
-                    <mat-option value="age_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Age</mat-option>
-                    <mat-option value="rating_ASC"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Rating</mat-option>
-                    <mat-option value="rating_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Rating</mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-              </div>
-
-              <div class="col-sm-4">
-
-                <br>
-
-                <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Search by name" matInput name="name" [(ngModel)]="filter.name" >
-                </mat-form-field>
-
-              </div>
-
-            </div>
-
-          </form>
-
-        <!--</div>-->
-
-          <div class="text-right">
-            <form #pageUpper="ngForm" (change)="getPage(pageUpper); onFilter(form, index, sort)">
-
-              <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [disabled]="isFirstPage(index)">Previous</button>
-
-              <mat-form-field class="custom-width text-center">
-                <input type="text" matInput name="page" [(ngModel)]="index" min="0" max="pageUser.totalPages">/
-              </mat-form-field>
-              <mat-form-field class="custom-width text-center">
-                <input type="text" matInput  [value]="pageUser.totalPages-1" readonly>
-              </mat-form-field>
-
-              <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [disabled]="isLastPage(index)" >Next</button>
-            </form>
-          </div>
-
-          <hr>
-
-          <br><br>
-
-          <div class="text-center" *ngIf="!isReadyToDisplay">
-            <div class="spinner-border custom-spinner" role="status"></div>
-          </div>
-
-          <div *ngIf="isReadyToDisplay">
-
-            <div class="row" *ngIf="pageUser?.content">
-
-              <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
-              <div class="col-sm-4" *ngFor="let user of pageUser.content">
-                <a (click)="userDetails(user.username)">
-                  <div class="card shadow animated">
-                   <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
-                    <div class="card-body">
-                      <a href="/profile/{{user.username}}" class="nav-link" routerLink="/profile/{{user.username}}"><h5 class="card-title">{{user.firstName}}</h5></a>
-                      <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
-                      <small>{{user.appearance.about}}</small>
-                      <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
-                    </div>
-                    <div class="card-footer">
-                      <small class="text-muted">Last updated 3 mins ago</small>
-                    </div>
-                  </div>
-                </a>
-
-                <br>
-                <br>
-
-              </div>
-
-            </div>
+            <mat-form-field>
+              <mat-label>Sort by</mat-label>
+              <mat-select ngModel [(ngModel)]="sortParam" name="sortParam"  (selectionChange)="onFilter(form, index, sort)">
+                <mat-option>None</mat-option>
+                <mat-option value="firstName_ASC" ><mat-icon class="fa fa-sort-amount-asc"></mat-icon> First Name</mat-option>
+                <mat-option value="firstName_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> First Name</mat-option>
+                <mat-option value="age_ASC"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Age</mat-option>
+                <mat-option value="age_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Age</mat-option>
+                <mat-option value="rating_ASC"><mat-icon class="fa fa-sort-amount-asc"></mat-icon> Rating</mat-option>
+                <mat-option value="rating_DESC"><mat-icon class="fa fa-sort-amount-desc"></mat-icon> Rating</mat-option>
+              </mat-select>
+            </mat-form-field>
 
           </div>
+
+          <div class="col-sm-4">
+
+            <br>
+
+            <mat-form-field class="example-full-width">
+              <input type="text" placeholder="Search by name" matInput name="name" [(ngModel)]="filter.name" >
+            </mat-form-field>
+
+          </div>
+
+        </div>
+
+      </form>
+
+      <!--</div>-->
+
+      <div class="text-right">
+        <form #pageUpper="ngForm" (change)="getPage(pageUpper); onFilter(form, index, sort)">
+
+          <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [disabled]="isFirstPage(index)">Previous</button>
+
+          <mat-form-field class="custom-width text-center">
+            <input type="text" matInput name="page" [(ngModel)]="index" min="0" max="pageUser.totalPages">
+          </mat-form-field>
+          /
+          <mat-form-field class="custom-width text-center">
+            <input type="text" matInput  [value]="pageUser.totalPages-1" readonly>
+          </mat-form-field>
+
+          <button class="btn btn-light" (click)="incrementPage(); onFilter(form, index, sort)" [disabled]="isLastPage(index)" >Next</button>
+
+        </form>
+      </div>
+
+      <hr>
+
+      <br><br>
+
+
+      <div class="text-center" *ngIf="!isReadyToDisplay">
+
+        <!--<mat-progress-spinner class="text-right" color="accent" mode="indeterminate"></mat-progress-spinner>-->
+        <div class="spinner-border" style="color: #e6407d;width: 5rem;height: 5rem;" role="status"></div>
+
+      </div>
+
+
+      <div *ngIf="isReadyToDisplay">
+
+        <div class="row" *ngIf="pageUser?.content">
+
+          <!--<div class="col-sm-4" *ngFor="let user of users | async">-->
+          <div class="col-sm-4" *ngFor="let user of pageUser.content">
+            <a (click)="userDetails(user.username)">
+              <div class="card shadow animated">
+                <img class="card-img-top" src="data:image/png;base64,{{user.personalDetails.photo}}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{user.firstName}}</h5>
+                  <p>{{user.personalDetails.age}} years old, {{user.personalDetails.city}}</p>
+                  <small>{{user.appearance.about}}</small>
+                  <p class="text-right">Rating:<b> {{user.personalDetails.rating | number: '1.1-1'}}</b></p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+              </div>
+            </a>
+
+            <br>
+            <br>
+
+          </div>
+
+        </div>
+
+      </div>
 
       <br><br>
 
       <hr>
-      <!--</div>--><!-- end of container -->
+
+
 
       <!--
           <nav aria-label="...">
@@ -183,11 +187,12 @@
       <div class="text-right">
         <form #pageLower="ngForm" (change)="getPage(pageLower); onFilter(form, index, sort)">
 
-        <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [disabled]="isFirstPage(index)" >Previous</button>
+          <button class="btn btn-light" (click)="decrementPage(); onFilter(form, index, sort)" [disabled]="isFirstPage(index)" >Previous</button>
 
           <mat-form-field class="custom-width text-center">
-            <input type="text" matInput name="page" [(ngModel)]="index" min="0" max="pageUser.totalPages">/
+            <input type="text" matInput name="page" [(ngModel)]="index" min="0" max="pageUser.totalPages">
           </mat-form-field>
+          /
           <mat-form-field class="custom-width text-center">
             <input type="text" matInput  [value]="pageUser.totalPages-1" readonly>
           </mat-form-field>
@@ -199,13 +204,11 @@
 
       <br>
 
-        <!--</div>-->
-
     </div><!-- end of col-sm-9 -->
 
   </div><!-- end of row -->
 
-<!--</div>--><!-- end of container main -->
+  <!--</div>--><!-- end of container main -->
 
 
 </div>

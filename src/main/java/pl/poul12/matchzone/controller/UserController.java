@@ -24,6 +24,8 @@ import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.security.JwtProvider;
 import pl.poul12.matchzone.security.JwtResponse;
+import pl.poul12.matchzone.security.forms.ChangeEmailForm;
+import pl.poul12.matchzone.security.forms.ChangePasswordForm;
 import pl.poul12.matchzone.security.forms.LoginForm;
 import pl.poul12.matchzone.security.forms.RegisterForm;
 import pl.poul12.matchzone.service.CommentService;
@@ -87,18 +89,7 @@ public class UserController {
     @PostMapping("/users/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterForm register, Errors errors) {
 
-        StringBuilder sb = new StringBuilder();
-        errors.getAllErrors().forEach(error -> sb.append(error.getDefaultMessage())
-                                                 .append("-"));
-
-        String error;
-        if(sb.toString().isEmpty()){
-            error = sb.toString();
-        }else {
-            error = sb.toString().substring(0, sb.length()-1);
-        }
-
-        System.out.println("error: " + error);
+        String error = errorsFormatter(errors);
 
         if(errors.hasErrors()){
             return new ResponseEntity<>(new CustomErrorResponse(error), HttpStatus.BAD_REQUEST);
@@ -144,6 +135,36 @@ public class UserController {
         }
     }
 
+    @PostMapping("users/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordForm userDetails, Errors errors){
+        String error = errorsFormatter(errors);
+
+        if(errors.hasErrors()){
+            return new ResponseEntity<>(new CustomErrorResponse(error), HttpStatus.BAD_REQUEST);
+        }else{
+            User user = userService.getUserByUsername(userDetails.getUsername());
+            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+            userService.saveUser(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+    }
+
+    @PostMapping("users/change-email")
+    public ResponseEntity<?> changePEmail(@Valid @RequestBody ChangeEmailForm userDetails, Errors errors){
+        String error = errorsFormatter(errors);
+
+        if(errors.hasErrors()){
+            return new ResponseEntity<>(new CustomErrorResponse(error), HttpStatus.BAD_REQUEST);
+        }else{
+            User user = userService.getUserByUsername(userDetails.getUsername());
+            user.setEmail(userDetails.getEmail());
+            userService.saveUser(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+    }
+
     @PostMapping("/users/{username}/change-avatar")
     public ResponseEntity<?> changeAvatar(@PathVariable(value = "username") String username, @RequestParam("file")MultipartFile file) {
 
@@ -174,10 +195,16 @@ public class UserController {
     }
 
     @PutMapping("/users/{username}")
-    public ResponseEntity<User> updateUser(@PathVariable(value = "username") String username, @Valid @RequestBody User userDetails) {
+    public ResponseEntity<?> updateUser(@PathVariable(value = "username") String username, @Valid @RequestBody User userDetails, Errors errors) {
 
-        final User updatedUser = userService.updateUser(username, userDetails);
-        return ResponseEntity.ok(updatedUser);
+        String error = errorsFormatter(errors);
+
+        if(errors.hasErrors()){
+            return new ResponseEntity<>(new CustomErrorResponse(error), HttpStatus.BAD_REQUEST);
+        }else{
+            final User updatedUser = userService.updateUser(username, userDetails);
+            return ResponseEntity.ok(updatedUser);
+        }
     }
 
     @DeleteMapping("/users/{id}")
@@ -189,5 +216,21 @@ public class UserController {
     @PostMapping("/users/filter")
     public PagedListHolder<User> getFilteredUserList(@Valid @RequestBody FilterForm filterForm){
         return userService.filterUserList(filterForm);
+    }
+
+    private String errorsFormatter(Errors errors){
+        StringBuilder sb = new StringBuilder();
+        errors.getAllErrors().forEach(error -> sb.append(error.getDefaultMessage()).append("-"));
+
+        String error;
+        if(sb.toString().isEmpty()){
+            error = sb.toString();
+        }else {
+            error = sb.toString().substring(0, sb.length()-1);
+        }
+
+        System.out.println("error: " + error);
+
+        return error;
     }
 }

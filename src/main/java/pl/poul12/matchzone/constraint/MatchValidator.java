@@ -1,12 +1,12 @@
 package pl.poul12.matchzone.constraint;
 
-import pl.poul12.matchzone.security.forms.RegisterForm;
+import pl.poul12.matchzone.security.forms.UserValidationData;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
 
-public class MatchValidator implements ConstraintValidator<Match, RegisterForm>
+public class MatchValidator implements ConstraintValidator<Match, UserValidationData>
 {
     private String firstField;
     private String secondField;
@@ -19,7 +19,7 @@ public class MatchValidator implements ConstraintValidator<Match, RegisterForm>
     }
 
     @Override
-    public boolean isValid(RegisterForm value, ConstraintValidatorContext context)
+    public boolean isValid(UserValidationData value, ConstraintValidatorContext context)
     {
         try
         {

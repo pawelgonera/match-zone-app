@@ -24,8 +24,6 @@ export class UserDetailsComponent implements OnInit{
 
   id: number;
   user: User = new User();
-  updated = false;
-  isChangeDataFailed = false;
   errorMessage = '';
 
   usernameFromToken: string;
@@ -150,36 +148,6 @@ export class UserDetailsComponent implements OnInit{
         error => console.log(error));
   }
 
-  update() {
-    this.userService.getUser(this.usernameFromToken)
-      .subscribe(data => {
-        console.log('userToUpdate: ', data);
-        this.user = data;
-      }, error => console.log(error));
-
-    this.userService.updateUser(this.username, this.user)
-      .subscribe(data => {
-        console.log('updatedUser: ', data);
-        this.isChangeDataFailed = false;
-      }, error => {
-        console.log(error);
-        this.errorMessage = error.error.message;
-        this.isChangeDataFailed = true;
-      });
-
-    this.otherService.updatePersonalDetails(this.username, this.personalDetails)
-      .subscribe(data => console.log('updatedPersonalDetails: ', data), error => console.log(error));
-
-    this.otherService.updateAppearance(this.username, this.appearance)
-      .subscribe(data => console.log('updatedAppearance: ', data), error => console.log(error));
-
-    this.reloadData(this.username);
-  }
-
-  onSubmit() {
-    this.updated = true;
-    this.update();
-  }
 
   onAvatarSelected(event){
     this.croppedImage = '';
