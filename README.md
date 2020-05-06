@@ -95,10 +95,10 @@ http://localhost:4200/
 
 
 #### Coming soon for features and content
-* gallery for user profile
-* comments and messages in user profile
+* ~~gallery for user profile~~ (v0.3)
+* ~~comments and messages in user profile~~ (v0.3)
 * private chat
-* settings option for logged user
+* ~~settings option for logged user~~ (v0.3)
 * matching system
 
 ### Author
