@@ -26,11 +26,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     public List<Comment> getCommentsByAuthor(String author)  {
-        System.out.println("before getComment");
         List<Comment> comments = commentRepository.findByAuthor(author);
-        System.out.println("after getComment");
-        //return commentFound.orElseThrow(() -> new ResourceNotFoundException("Comment not found for this id: " + author));
-        return comments;
+        if(comments.isEmpty())
+        {
+            throw new ResourceNotFoundException("Comments not found for this id: " + author);
+        }else {
+            return comments;
+        }
     }
 
     public List<Comment> getAllByUser(String username){
