@@ -27,6 +27,7 @@ import {ResetPassComponent} from "./reset-pass/reset-pass.component";
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor";
 import { ImageCropperModule } from 'ngx-image-cropper';
 import {NgxImageCompressService} from 'ngx-image-compress';
+import { PrivateChatComponent } from './components/private-chat/private-chat.component';
 
 //Angular Material Components
 import {MatCheckboxModule} from '@angular/material';
@@ -72,6 +73,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ComingSoonComponent,
     ResetPassComponent,
     SettingComponent,
+    PrivateChatComponent
   ],
   imports: [
     BrowserModule,

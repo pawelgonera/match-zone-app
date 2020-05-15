@@ -1,0 +1,130 @@
+<div class="container">
+
+  <div class="card chat-room">
+    <div class="card-body">
+
+      <!-- Grid row -->
+      <div class="row px-lg-2 px-2">
+
+        <!-- Grid column -->
+        <div class="col-md-6 col-xl-4 px-0">
+
+          <h6 class="font-weight-bold mb-3 text-center ">Member</h6>
+
+          <div class="white z-depth-1 px-2 pt-3 pb-0 members-panel-1 scrollbar-light-blue">
+
+            <ul class="list-unstyled friend-list" *ngFor="let member of members">
+
+              <li class="active grey lighten-3 p-2">
+                <a (click)="loadMessages(member.username, usernameFromToken)" class="d-flex justify-content-between">
+                  <img src="data:image/png;base64,{{member.personalDetails.photo}}" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                  <div class="text-small">
+                    <strong>{{member.username}}</strong>
+                    <p class="last-message text-muted">Hello, Are you there?</p>
+                  </div>
+                  <div class="chat-footer">
+                    <p class="text-smaller text-muted">Just now</p>
+                    <span class="badge badge-danger float-right">1</span>
+                  </div>
+                </a>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
+
+          <div class="chat-message members-panel-1 scrollbar-light-blue"  #scrollMe [scrollTop]="scrollTop">
+
+            <ul class="list-unstyled " *ngFor="let message of messages">
+
+              <!--<li class="d-flex mb-4">
+                <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-3 ml-3 z-depth-1">
+                <div class="chat-body white ml-3 mr-3 p-3 z-depth-1">
+                  <div class="header">
+                    <strong class="primary-font">Brad Pitt</strong>
+                    <small class="pull-right text-muted"><i class="far fa-clock"></i> 12 mins ago</small>
+                  </div>
+                  <hr class="w-100">
+                  <p class="mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua.
+                  </p>
+                </div>
+              </li>
+              <li class="d-flex mb-4">
+                <div class="chat-body white ml-3 mr-3 p-3 z-depth-1">
+                  <div class="header">
+                    <strong class="primary-font">Lara Croft</strong>
+                    <small class="pull-right text-muted"><i class="far fa-clock"></i> 13 mins ago</small>
+                  </div>
+                  <hr class="w-100">
+                  <p class="mb-0">
+                    Sed ut
+                  </p>
+                </div>
+                <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-3 ml-4 z-depth-1">
+              </li>-->
+
+
+              <li class="d-flex mb-4" *ngIf="message.sender != usernameFromToken">
+                <img src="data:image/png;base64,{{message.avatar}}" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-3 ml-3 z-depth-1">
+                <div class="chat-body white ml-3 mr-3 p-3 z-depth-1">
+                  <div class="header">
+                    <strong class="primary-font">{{message.sender}}</strong>
+                    <small class="pull-right text-muted"><i class="fas fa-clock"></i> {{ message.postDate | date : 'yyyy/MMMM/dd, HH:mm:ss' }}</small>
+                  </div>
+                  <hr class="w-100">
+                  <p class="mb-0">{{message.content}}</p>
+                </div>
+              </li>
+
+              <li class="d-flex mb-4" *ngIf="message.sender == usernameFromToken">
+                <div class="chat-body white ml-3 mr-3 p-3 z-depth-1">
+                  <div class="header">
+                    <strong class="primary-font">{{message.sender}}</strong>
+                    <small class="pull-right text-muted"><i class="fas fa-clock"></i> {{ message.postDate | date : 'yyyy/MMMM/dd, HH:mm:ss' }}</small>
+                  </div>
+                  <hr class="w-100">
+                  <p class="mb-0">{{message.content}}</p>
+                </div>
+                <img src="data:image/png;base64,{{message.avatar}}" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-3 ml-4 z-depth-1">
+              </li>
+
+            </ul>
+
+          </div>
+          <!-- Grid column -->
+
+          <div class="white">
+
+            <form name="form-signin" (ngSubmit)="form.form.valid && addMessage(form)" #form="ngForm">
+
+              <mat-form-field class="edit-input">
+                <mat-label>Post new message</mat-label>
+                <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="4" [(ngModel)]="message.content" name="content" required></textarea>
+              </mat-form-field>
+
+              <button type="submit" [disabled]="!form.valid" class="btn btn-pink float-right">Send</button>
+
+            </form>
+
+          </div>
+
+        </div>
+        <!-- Grid row -->
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

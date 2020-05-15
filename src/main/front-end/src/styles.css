@@ -15,14 +15,6 @@
   flex: 1;
 }
 
-.card:hover{
-  transform: scale(1.05, 1.05);
-}
-
-.card {
-  transition: 0.6s;
-}
-
 html{
   height: 100%;
 }

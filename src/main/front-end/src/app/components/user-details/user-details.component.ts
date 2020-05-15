@@ -367,4 +367,9 @@ export class UserDetailsComponent implements OnInit{
 
   }
 
+    privateChat(username: string){
+      this.router.navigate(['chat', username]);
+    }
+
+
 }

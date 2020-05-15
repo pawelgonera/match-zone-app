@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {Vote} from "../model/vote";
 import {Comment} from "../model/comment";
 import {Image} from "../model/image";
+import {Message} from "../model/message";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:4200' })
@@ -89,5 +90,17 @@ export class OtherService {
   resetPassword(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}/users/reset-pass`, formData, {reportProgress: true, responseType: 'text'});
   }
+
+  addMessage(username: string, message: Message): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/messages/${username}`, message, httpOptions);
+  }
+
+  getMessages(recipient: string, sender: string): Observable<any> {
+      return this.http.get(`${this.baseUrl}/messages/${recipient}/${sender}`, httpOptions);
+   }
+
+  getMembers(sender: string): Observable<any> {
+         return this.http.get(`${this.baseUrl}/messages/members/${sender}`, httpOptions);
+   }
 
 }

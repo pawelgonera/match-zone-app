@@ -10,6 +10,7 @@ import {ComingSoonComponent} from "./components/coming-soon/coming-soon.componen
 import {ResetPassComponent} from "./reset-pass/reset-pass.component";
 import {HomeComponent} from "./components/home/home.component";
 import {SettingComponent} from "./components/setting/setting.component";
+import { PrivateChatComponent } from './components/private-chat/private-chat.component';
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile/:username', component: UserDetailsComponent },//, canActivate: [UrlPermission]},
   { path: 'setting', component: SettingComponent },
+  { path: 'chat/:username', component: PrivateChatComponent },
   { path: 'reset-pass', component: ResetPassComponent},
   { path: 'not-found', component: NotFoundComponent },
   { path: 'coming-soon', component: ComingSoonComponent},

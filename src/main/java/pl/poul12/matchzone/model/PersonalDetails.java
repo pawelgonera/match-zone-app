@@ -18,8 +18,8 @@ import java.util.Arrays;
 @Entity
 @Table(name = "personal_details",
         indexes = {
-                @Index(name = "ageindex",  columnList="age", unique = true),
-                @Index(name = "ratingindex",  columnList="rating", unique = true)
+                @Index(name = "ageindex",  columnList="age"),
+                @Index(name = "ratingindex",  columnList="rating")
         }
 )
 public class PersonalDetails {
