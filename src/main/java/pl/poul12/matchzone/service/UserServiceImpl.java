@@ -7,6 +7,7 @@ import org.springframework.data.domain.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.*;
 import pl.poul12.matchzone.model.enums.RoleName;
@@ -15,6 +16,8 @@ import pl.poul12.matchzone.repository.*;
 import pl.poul12.matchzone.security.forms.RegisterForm;
 import pl.poul12.matchzone.service.filter.*;
 
+import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -25,17 +28,16 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
-    private PersonalDetailsRepository personalDetailsRepository;
-    private AppearanceRepository appearanceRepository;
+    private PersonalDetailsService personalDetailsService;
+    private AppearanceService appearanceService;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsRepository personalDetailsRepository,
-                           AppearanceRepository appearanceRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PersonalDetailsService personalDetailsService, AppearanceService appearanceService){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.personalDetailsRepository = personalDetailsRepository;
-        this.appearanceRepository = appearanceRepository;
+        this.personalDetailsService = personalDetailsService;
+        this.appearanceService = appearanceService;
     }
 
     public List<User> getAllUsers(){
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.save(user);
     }
 
+    @Transactional
     public User createUser(RegisterForm registerUser){
 
         User user = buildUser(registerUser);
@@ -89,6 +92,35 @@ public class UserServiceImpl implements UserService{
         User userUpdated = updateUser(userFound, user);
 
         return userRepository.save(userUpdated);
+    }
+
+    @Override
+    public void changeAvatar(String username, MultipartFile file) throws IOException {
+
+        /*User user = getUserByUsername(username);
+        System.out.println("before personaldetails");
+        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(user.getId());
+        System.out.println("before get comment in controller");
+        List<Comment> comments = commentService.getCommentsByAuthor(username);
+        System.out.println("Comments: " + comments);
+        List<Message> messages =  messageService.getMessagesBySender(username);
+        System.out.println("Messages: " + messages);
+
+        personalDetails.setPhoto(file.getBytes());
+
+        if(!comments.isEmpty()) {
+            for (Comment comment : comments) {
+                comment.setAvatar(file.getBytes());
+            }
+        }
+
+        for(Message message : messages){
+            message.setAvatar(file.getBytes());
+        }
+
+        personalDetailsService.savePersonalDetails(personalDetails);
+        //personalDetailsRepository.save(personalDetails);
+        logger.info("Photo uploaded");*/
     }
 
     public Map<String, Boolean> deleteUser(Long id) {
@@ -145,8 +177,8 @@ public class UserServiceImpl implements UserService{
         Appearance appearance = new Appearance();
         appearance.setUser(user);
 
-        personalDetailsRepository.save(personalDetails);
-        appearanceRepository.save(appearance);
+        personalDetailsService.savePersonalDetails(personalDetails);
+        appearanceService.saveAppearance(appearance);
 
         return user;
     }

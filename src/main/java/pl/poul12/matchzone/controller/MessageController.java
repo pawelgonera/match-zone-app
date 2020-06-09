@@ -8,6 +8,7 @@ import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.service.MessageService;
 import pl.poul12.matchzone.service.PersonalDetailsServiceImpl;
+import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 
 import javax.validation.Valid;
@@ -21,10 +22,12 @@ public class MessageController {
 
     private MessageService messageService;
     private PersonalDetailsServiceImpl personalDetailsService;
+    private UserService userService;
 
-    public MessageController(MessageService messageService, PersonalDetailsServiceImpl personalDetailsService) {
+    public MessageController(MessageService messageService, PersonalDetailsServiceImpl personalDetailsService, UserService userService) {
         this.messageService = messageService;
         this.personalDetailsService = personalDetailsService;
+        this.userService = userService;
     }
 
     @GetMapping("/messages/{recipient}/{sender}")
@@ -32,8 +35,15 @@ public class MessageController {
 
         List<Message> messages = messageService.getMessagesByRecipient(recipient, sender);
         return ResponseEntity.ok().body(messages);
-
     }
+
+    @GetMapping("/messages/{sender}")
+    public ResponseEntity<List<Message>> getAllBySender(@PathVariable(value = "sender") String sender){
+
+        List<Message> messages = messageService.getAllMessagesToAllBySender(sender);
+        return ResponseEntity.ok().body(messages);
+    }
+
 
     @GetMapping("/messages/members/{sender}")
     public ResponseEntity<Set<User>> getAllMembers(@PathVariable(value = "sender") String sender){
@@ -42,10 +52,31 @@ public class MessageController {
         return ResponseEntity.ok().body(members);
     }
 
+    @PostMapping("/messages/is-new-message-from-recipient/")
+    public ResponseEntity<Boolean> isNewMessageFromRecipient(@RequestBody Message message){
+
+        System.out.println("Message(byRecipient): " + message);
+
+        boolean isNew = messageService.isNewMessageFromRecipient(message);
+
+        return ResponseEntity.ok(isNew);
+    }
+
+    @PostMapping("/messages/is-new-message-from-sender/")
+    public ResponseEntity<Boolean> isNewMessageFromSender(@RequestBody Message message){
+
+        System.out.println("Message(bySender): " + message);
+
+        boolean isNew = messageService.isNewMessageFromSender(message);
+
+        return ResponseEntity.ok(isNew);
+    }
+
     @PostMapping("/messages/{username}")
     public ResponseEntity<?> addMessage(@PathVariable(value = "username") String username, @RequestBody Message message) {
 
-        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(message.getSender());
+        Long userId = userService.getUserByUsername(username).getId();
+        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(userId);
         message.setAvatar(personalDetails.getPhoto());
 
         messageService.createMessage(username, message);

@@ -28,6 +28,7 @@ import {AuthenticationInterceptor} from "./interceptor/authentication-intercepto
 import { ImageCropperModule } from 'ngx-image-cropper';
 import {NgxImageCompressService} from 'ngx-image-compress';
 import { PrivateChatComponent } from './components/private-chat/private-chat.component';
+import { DatePipe } from '@angular/common';
 
 //Angular Material Components
 import {MatCheckboxModule} from '@angular/material';
@@ -129,7 +130,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     AppComponent,
     AuthenticationInterceptor,
     LoginComponent,
-    NgxImageCompressService
+    NgxImageCompressService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

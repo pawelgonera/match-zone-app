@@ -42,7 +42,7 @@ public class PersonalDetails {
     private String education;
     private Religion religion;
     @JsonBackReference
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     User user;

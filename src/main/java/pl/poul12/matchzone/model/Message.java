@@ -22,12 +22,14 @@ public class Message {
     private String sender;
     private String recipient;
     private LocalDateTime postDate;
+    @Column(length = 1000)
     private String content;
+    private boolean unread;
     @Type(type = "org.hibernate.type.ImageType")
     @Lob
     private byte[] avatar;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     @EqualsAndHashCode.Exclude
     private User user;
@@ -40,6 +42,7 @@ public class Message {
                 ", recipient='" + recipient + '\'' +
                 ", postDate=" + postDate +
                 ", content='" + content + '\'' +
+                ", unread=" + unread +
                 '}';
     }
 }

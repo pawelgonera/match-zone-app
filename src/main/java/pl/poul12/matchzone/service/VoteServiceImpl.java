@@ -5,7 +5,6 @@ import pl.poul12.matchzone.controller.Rating;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.Vote;
-import pl.poul12.matchzone.repository.UserRepository;
 import pl.poul12.matchzone.repository.VoteRepository;
 
 import java.util.List;

@@ -3,6 +3,7 @@ package pl.poul12.matchzone.controller;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +20,14 @@ import org.springframework.web.context.WebApplicationContext;
 import pl.poul12.matchzone.config.ConfigBeans;
 import pl.poul12.matchzone.config.ConfigControllerBeans;
 import pl.poul12.matchzone.model.Comment;
+import pl.poul12.matchzone.model.Message;
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.enums.Gender;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.model.forms.PageUser;
 import pl.poul12.matchzone.service.CommentService;
+import pl.poul12.matchzone.service.MessageService;
 import pl.poul12.matchzone.service.PersonalDetailsService;
 import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.MailSender;
@@ -37,8 +40,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -69,6 +71,9 @@ public class UserControllerTest {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private MessageService messageService;
 
     @Before
     public void setUp(){
@@ -128,8 +133,10 @@ public class UserControllerTest {
         final HttpStatus responseEntityOk = HttpStatus.OK;
 
         //when
-        doReturn(new PersonalDetails()).when(personalDetailsService).getPersonalDetails(USER_TEST.getUsername());
+        doReturn(USER_TEST).when(userService).getUserByUsername(USER_TEST.getUsername());
+        doReturn(new PersonalDetails()).when(personalDetailsService).getPersonalDetails(USER_TEST.getId());
         doReturn(Collections.singletonList(new Comment())).when(commentService).getCommentsByAuthor(USER_TEST.getUsername());
+        doReturn(Collections.singletonList(new Message())).when(messageService).getMessagesBySender(USER_TEST.getUsername());
 
         final ResponseEntity responseEntityTest = userController.changeAvatar(USER_TEST.getUsername(), fileTest);
 
@@ -150,7 +157,10 @@ public class UserControllerTest {
         final HttpStatus responseEntityBadRequest = HttpStatus.BAD_REQUEST;
 
         //when
-        doReturn(new PersonalDetails()).when(personalDetailsService).getPersonalDetails(USER_TEST.getUsername());
+        doReturn(new User()).when(userService).getUserByUsername(USER_TEST.getUsername());
+        doReturn(new PersonalDetails()).when(personalDetailsService).getPersonalDetails(USER_TEST.getId());
+        doReturn(Collections.singletonList(new Comment())).when(commentService).getCommentsByAuthor(USER_TEST.getUsername());
+        doReturn(Collections.singletonList(new Message())).when(messageService).getMessagesBySender(USER_TEST.getUsername());
 
         final ResponseEntity responseEntityTest = userController.changeAvatar(USER_TEST.getUsername(), fileTest);
 
@@ -170,7 +180,10 @@ public class UserControllerTest {
         final HttpStatus responseEntityUnsupportedMediaType = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 
         //when
-        doReturn(new PersonalDetails()).when(personalDetailsService).getPersonalDetails(USER_TEST.getUsername());
+        doReturn(new User()).when(userService).getUserByUsername(USER_TEST.getUsername());
+        doReturn(new PersonalDetails()).when(personalDetailsService).getPersonalDetails(USER_TEST.getId());
+        doReturn(Collections.singletonList(new Comment())).when(commentService).getCommentsByAuthor(USER_TEST.getUsername());
+        doReturn(Collections.singletonList(new Message())).when(messageService).getMessagesBySender(USER_TEST.getUsername());
 
         final ResponseEntity responseEntityTest = userController.changeAvatar(USER_TEST.getUsername(), fileTest);
 

@@ -43,26 +43,26 @@ public class User {
     private String repeatedPassword;
     private String timeZoneId;
     @JsonManagedReference
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
     private PersonalDetails personalDetails;
     @JsonManagedReference
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
     private Appearance appearance;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private Set<Vote> votes;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private Set<Comment> comments;
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private Set<Image> images;
     @JsonManagedReference

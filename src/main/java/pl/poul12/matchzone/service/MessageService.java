@@ -12,9 +12,21 @@ public interface MessageService {
 
     List<Message> getMessagesBySender(String sender);
 
+    List<Message> getAllMessagesToAllBySender(String sender);
+
+    List<Message> getMessagesBySenderOrRecipient(String sender);
+
     List<Message> getMessagesByRecipient(String recipient, String sender);
 
     Set<User> getMembers(String owner);
+
+    Message getLastMessageToAllBySender(String sender, String recipient);
+
+    Message getLastMessageToRecipientBySender(String recipient, String sender);
+
+    boolean isNewMessageFromRecipient(Message lastMessage);
+
+    boolean isNewMessageFromSender(Message lastMessage);
 
     Message createMessage(String username, Message message);
 

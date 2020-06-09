@@ -7,5 +7,6 @@ sender: string;
 recipient: string;
 avatar: Blob;
 postDate: Date;
+unread: boolean;
 user: User;
 }

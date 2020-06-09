@@ -10,7 +10,6 @@
   transition: 0.6s;
 }
 
-
 .edit-input {
   display: flex;
   flex-direction: column;
@@ -123,4 +122,5 @@
   color: #e6407d;
   width: 5rem;
   height: 5rem;
+  margin-top: 250px;
 }

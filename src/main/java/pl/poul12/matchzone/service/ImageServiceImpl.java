@@ -29,9 +29,8 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public List<Image> getAllByUser(String username) {
-        User user = userService.getUserByUsername(username);
-        return imageRepository.findAllByUser(user);
+    public List<Image> getAllByUser(Long userId) {
+        return imageRepository.findAllByUserId(userId);
     }
 
     @Override

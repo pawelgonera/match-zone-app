@@ -92,10 +92,10 @@ export class UserDetailsComponent implements OnInit{
     this.getAccess();
 
     this.loadUser(this.username);
-    this.loadPersonalDetails(this.username);
-    this.loadAppearance(this.username);
-    this.loadComments(this.username);
-    this.loadImages(this.username);
+    /*this.loadPersonalDetails(this.user);
+    this.loadAppearance(this.user);
+    this.loadComments(this.user);
+    this.loadImages(this.user);*/
 
     window.scroll(0,0);
   }
@@ -105,11 +105,15 @@ export class UserDetailsComponent implements OnInit{
       .subscribe(data => {
         console.log('user: ', data);
         this.user = data;
+        this.loadPersonalDetails(this.user);
+        this.loadAppearance(this.user);
+        this.loadComments(this.user);
+        this.loadImages(this.user);
       }, error => console.log(error));
   }
 
-  loadPersonalDetails(username: string){
-    return this.otherService.getPersonalDetails(username)
+  loadPersonalDetails(user: User){
+    return this.otherService.getPersonalDetails(user.id)
       .subscribe(data => {
           console.log('personalDetails: ', data);
           this.personalDetails = data;
@@ -118,8 +122,8 @@ export class UserDetailsComponent implements OnInit{
         error => console.log(error));
   }
 
-  loadAppearance(username: string){
-    return this.otherService.getAppearance(username)
+  loadAppearance(user: User){
+    return this.otherService.getAppearance(user.id)
       .subscribe(data => {
           console.log('appearance: ', data);
           this.appearance = data;
@@ -127,8 +131,8 @@ export class UserDetailsComponent implements OnInit{
         error => console.log(error));
   }
 
-  loadComments(username: string){
-    return this.otherService.getComments(username)
+  loadComments(user: User){
+    return this.otherService.getComments(user.id)
       .subscribe(data => {
           console.log('comments: ', data);
           this.comments = data;
@@ -137,8 +141,8 @@ export class UserDetailsComponent implements OnInit{
         error => console.log(error));
   }
 
-   loadImages(username: string){
-    return this.otherService.getImages(username)
+   loadImages(user: User){
+    return this.otherService.getImages(user.id)
       .subscribe(data => {
           console.log('images: ', data);
           this.images = data;
@@ -192,7 +196,7 @@ export class UserDetailsComponent implements OnInit{
         console.log('File is completely uploaded!');
         console.log('imageAdded: ', events);
         this.image = '';
-        this.loadImages(this.username);
+        this.loadImages(this.user);
       },error => {
         this.photoErrorMessage = error.error.errorMessage;
         this.photoUploadProgress = '';
@@ -220,7 +224,7 @@ export class UserDetailsComponent implements OnInit{
     this.otherService.deleteImage(id)
       .subscribe(data => {
         console.log('deletedImage: ', data);
-        this.loadImages(this.username);
+        this.loadImages(this.user);
       }, err => {
         console.log(err);
       });
@@ -259,7 +263,7 @@ export class UserDetailsComponent implements OnInit{
         console.log(events.body);
         console.log('File is completely uploaded!');
         this.imageChangedEvent = '';
-        this.loadPersonalDetails(this.username);
+        this.loadPersonalDetails(this.user);
       },error => {
         this.avatarErrorMessage = error.error.errorMessage;
         this.avatarUploadProgress = '';
@@ -298,10 +302,10 @@ export class UserDetailsComponent implements OnInit{
     this.comment.author = this.usernameFromToken;
     this.comment.postDate = new Date();
 
-    this.otherService.addComment(this.username, this.comment)
+    this.otherService.addComment(this.user.id, this.comment)
       .subscribe(data => {
         console.log('addedComment: ', data);
-        this.loadComments(this.username);
+        this.loadComments(this.user);
         this.comment.content = '';
       }, err => {
         console.log(err);
@@ -330,7 +334,7 @@ export class UserDetailsComponent implements OnInit{
     this.otherService.deleteComment(id)
       .subscribe(data => {
         console.log('deletedComment: ', data);
-        this.loadComments(this.username);
+        this.loadComments(this.user);
       }, err => {
         console.log(err);
       });
@@ -357,7 +361,7 @@ export class UserDetailsComponent implements OnInit{
       this.rating.sumOfVotes += this.currentRate;
       this.personalDetails.rating = this.rating.sumOfVotes / this.rating.countedVotes;
 
-      this.otherService.updatePersonalDetails(this.username, this.personalDetails)
+      this.otherService.updatePersonalDetails(this.user.id, this.personalDetails)
         .subscribe(data => {
             console.log('updatedPersonalDetailsForRating: ', data)
           }, error => console.log(error));
