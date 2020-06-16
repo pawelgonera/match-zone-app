@@ -12,6 +12,7 @@ import pl.poul12.matchzone.service.UserService;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +45,12 @@ public class MessageController {
         return ResponseEntity.ok().body(messages);
     }
 
+    @GetMapping("/messages/last-message/{sender}")
+    public ResponseEntity<Message> getLastMessageToAllBySender(@PathVariable(value = "sender") String sender){
+
+        Message message = messageService.getLastMessageToAllBySender(sender);
+        return ResponseEntity.ok().body(message);
+    }
 
     @GetMapping("/messages/members/{sender}")
     public ResponseEntity<Set<User>> getAllMembers(@PathVariable(value = "sender") String sender){
@@ -62,12 +69,12 @@ public class MessageController {
         return ResponseEntity.ok(isNew);
     }
 
-    @PostMapping("/messages/is-new-message-from-sender/")
-    public ResponseEntity<Boolean> isNewMessageFromSender(@RequestBody Message message){
+    @PostMapping("/messages/is-new-message-from-sender/{username}")
+    public ResponseEntity<Boolean> isNewMessageFromSender(@RequestBody Message message, @PathVariable(value = "username") String username){
 
-        System.out.println("Message(bySender): " + message);
+        System.out.println("Message(bySender): " + message + " : " + username );
 
-        boolean isNew = messageService.isNewMessageFromSender(message);
+        boolean isNew = messageService.isNewMessageFromSender(message, username);
 
         return ResponseEntity.ok(isNew);
     }

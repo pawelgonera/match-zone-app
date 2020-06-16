@@ -103,6 +103,10 @@ export class OtherService {
       return this.http.get<Message[]>(`${this.baseUrl}/messages/${sender}`, httpOptions);
   }
 
+  getLastMessageBySender(sender: string): Observable<any> {
+         return this.http.get(`${this.baseUrl}/messages/last-message/${sender}`, httpOptions);
+  }
+
   getMembers(sender: string): Observable<any> {
          return this.http.get(`${this.baseUrl}/messages/members/${sender}`, httpOptions);
   }
@@ -111,8 +115,8 @@ export class OtherService {
          return this.http.post<any>(`${this.baseUrl}/messages/is-new-message-from-recipient/`, lastMessage, httpOptions);
   }
 
-  isNewMessageFromSender(lastMessage: Message): Observable<any> {
-         return this.http.post<any>(`${this.baseUrl}/messages/is-new-message-from-sender/`, lastMessage, httpOptions);
+  isNewMessageFromSender(lastMessage: Message, username: string): Observable<any> {
+         return this.http.post<any>(`${this.baseUrl}/messages/is-new-message-from-sender/${username}`, lastMessage, httpOptions);
   }
 
   editMessage(id: number, message: Message): Observable<Object> {

@@ -104,13 +104,15 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message getLastMessageToRecipientBySender(String recipient, String sender) {
 
-        return messageRepository.findFirstByRecipientAndSenderOrderByPostDateDesc(recipient, sender).orElseThrow(() -> new ResourceNotFoundException("Messages not found for this recipient and sender: " + recipient + " " + sender ));
+        List<Message> messages = getMessagesByRecipient(recipient, sender);
+        return messages.get(messages.size() - 1);
+        //return messageRepository.findFirstByRecipientAndSenderOrderByPostDateDesc(recipient, sender).orElseThrow(() -> new ResourceNotFoundException("Messages not found for this recipient and sender: " + recipient + " " + sender ));
     }
 
     @Override
-    public Message getLastMessageToAllBySender(String sender, String recipient) {
+    public Message getLastMessageToAllBySender(String sender) {
 
-        return messageRepository.findFirstBySenderOrRecipientOrderByPostDateDesc(sender, recipient).orElseThrow(() -> new ResourceNotFoundException("Messages not found for this sender or recipient: " + sender + " " + recipient ));
+        return messageRepository.findFirstBySenderOrRecipientOrderByPostDateDesc(sender, sender).orElseThrow(() -> new ResourceNotFoundException("Messages not found for this sender or recipient: " + sender + " " + sender ));
     }
 
     @Override
@@ -125,14 +127,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public boolean isNewMessageFromSender(Message lastMessage) {
+    public boolean isNewMessageFromSender(Message lastMessage, String username) {
 
-        LocalDateTime lastMessagePostDateFromSender = getLastMessageToAllBySender(lastMessage.getRecipient(), lastMessage.getRecipient()).getPostDate();
+        LocalDateTime lastMessagePostDateFromSender = getLastMessageToAllBySender(username).getPostDate();
 
         System.out.println("lastMessage: " + lastMessage.getPostDate());
         System.out.println("lastMessagePostDateFromSender: " + lastMessagePostDateFromSender);
 
-        return lastMessage.getPostDate().isAfter(lastMessagePostDateFromSender);
+        return lastMessage.getPostDate().isBefore(lastMessagePostDateFromSender);
     }
 
     @Override
