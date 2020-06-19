@@ -21,8 +21,8 @@ Standalone frontend module uses an Angular 8 for retrieving data from endpoints 
 
 ### Functionality 
 As dating service, in this app you can register new user and fill your profile with personal data and also upload photo for avatar. 
-You can search other registered users, browse their profile and gives them rate star. You can filter the displayed list of users by gender, age,
-rating, location and you can sort it.
+You can search other registered users, browse their profile, gives them rate star, post comments, view gallery and chat. 
+You can filter the displayed list of users by gender, age, rating, location and you can sort it.
 
 ### How to lunch project
 Clone this repo
@@ -97,9 +97,10 @@ http://localhost:4200/
 #### Coming soon for features and content
 * ~~gallery for user profile~~ (v0.3)
 * ~~comments and messages in user profile~~ (v0.3)
-* private chat
+* ~~private chat~~ (v0.4)
 * ~~settings option for logged user~~ (v0.3)
 * matching system
+* admin panel
 
 ### Author
 Created by [Paweł Gónera](https://www.linkedin.com/in/pawe%C5%82-g%C3%B3nera-87055aa2/)
