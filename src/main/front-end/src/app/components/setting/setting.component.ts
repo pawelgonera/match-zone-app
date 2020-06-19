@@ -37,21 +37,21 @@ export class SettingComponent implements OnInit {
   constructor(private userService: UserService, private otherService: OtherService, private tokenService: TokenService,
               private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit() {
+   ngOnInit() {
 
     this.username = this.tokenService.getUsername();
 
     this.loadUser(this.username);
-    this.loadPersonalDetails(this.user);
-    this.loadAppearance(this.user);
-
+    console.log('this.user: ', this.user);
   }
 
-  loadUser(username: string){
+   loadUser(username: string){
     return this.userService.getUser(username)
       .subscribe(data => {
         console.log('user: ', data);
         this.user = data;
+        this.loadPersonalDetails(this.user);
+        this.loadAppearance(this.user);
         this.isReadyToDisplay = true;
       }, error => {
           console.log(error);

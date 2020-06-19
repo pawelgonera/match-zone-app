@@ -1,6 +1,8 @@
 {
-  "/api/v1/users": {
-    "target": "http://localhost:8081/match-zone/",
-    "secure": false
+  "/api/v1/*": {
+    "target": "http://localhost:8080/match-zone/",
+    "changeOrigin": true,
+    "secure": false,
+    "pathRewrite": {"^/api" : ""}
   }
 }

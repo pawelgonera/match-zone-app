@@ -38,7 +38,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 
-@CrossOrigin(value = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("api/v1")
 public class UserController {
