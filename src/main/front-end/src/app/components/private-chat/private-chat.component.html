@@ -1,0 +1,115 @@
+<div class="container">
+
+  <div class="card chat-room">
+    <div class="card-body">
+
+      <!-- Grid row -->
+      <div class="row px-lg-2 px-2">
+
+        <!-- Grid column -->
+        <div class="col-md-6 col-xl-4 px-0">
+
+          <h6 class="font-weight-bold mb-3 text-center ">Member's list</h6>
+
+          <div class="white z-depth-1 px-2 pt-3 pb-0 members-panel-1 scrollbar-light-blue">
+
+            <ul class="list-unstyled friend-list" *ngFor="let member of members">
+
+              <li class="lighten-3 p-2">
+                <a [routerLink]="" (click)="loadMessages(member.username, usernameFromToken, members); select(member.username)" [ngClass]="{active: isActive(member.username)}" class="member-card d-flex justify-content-between">
+                <!--<a (click)="loadMessages(member.username, usernameFromToken, members); clicked = member" [class.active]="clicked === member" class="d-flex justify-content-between">-->
+                  <img src="data:image/png;base64,{{member.personalDetails.photo}}" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                  <div class="text-small">
+                    <strong>{{member.username}}</strong>
+                    <br><br>
+                    <p class="last-message text-muted">{{member.lastMessage}}</p>
+                    <small class="text-smaller text-muted">{{member.lastTime}} {{member.timeFormat}}</small>
+                  </div>
+                  <div class="chat-footer">
+                    <span class="badge badge-danger float-right" *ngIf="member.notification != 0">{{member.notification}}</span>
+                  </div>
+                </a>
+              </li>
+
+              <hr>
+
+            </ul>
+
+          </div>
+
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-6 col-xl-8 pl-md-3 px-lg-auto px-0">
+
+          <div class="chat-message members-panel-1 scrollbar-light-blue" #scrollMe [scrollTop]="scrollTop">
+
+            <div class="text-center" *ngIf="!isReadyToDisplay">
+              <div class="spinner-border custom-spinner" role="status"></div>
+            </div>
+
+            <div *ngIf="isReadyToDisplay">
+
+              <div class="alert alert-info alert-dismissable text-center">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                You can now talk to <strong>{{currentMember}}</strong>.
+              </div>
+
+            <ul class="list-unstyled " *ngFor="let message of messages">
+
+              <li class="d-flex mb-4" *ngIf="message.sender != usernameFromToken">
+                <img src="data:image/png;base64,{{message.avatar}}" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-3 ml-3 z-depth-1">
+                <div class="chat-body recipient-message ml-3 mr-3 p-3 z-depth-1">
+                  <div class="header">
+                    <strong class="primary-font">{{message.sender}}</strong>
+                    <small class="pull-right text-muted"><i class="fas fa-clock"></i> {{ message.postDate | date : 'yyyy/MM/dd, HH:mm:ss' }}</small>
+                  </div>
+                  <hr class="w-100">
+                  <p class="mb-0">{{message.content}}</p>
+                </div>
+              </li>
+
+              <li class="d-flex mb-4" *ngIf="message.sender == usernameFromToken">
+                <div class="chat-body sender-message ml-3 mr-3 p-3 z-depth-1">
+                  <div class="header">
+                    <strong class="primary-font">{{message.sender}}</strong>
+                    <small class="pull-right text-muted"><i class="fas fa-clock"></i> {{ message.postDate | date : 'yyyy/MM/dd, HH:mm:ss' }}</small>
+                  </div>
+                  <hr class="w-100">
+                  <p class="mb-0">{{message.content}}</p>
+                </div>
+                <img src="data:image/png;base64,{{message.avatar}}" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-3 ml-4 z-depth-1">
+              </li>
+
+            </ul>
+
+            </div>
+
+          </div>
+          <!-- Grid column -->
+
+          <div class="white">
+
+            <form name="form-signin" (ngSubmit)="form.form.valid && addMessage(form)" #form="ngForm">
+
+              <mat-form-field class="edit-input">
+                <mat-label>Post new message</mat-label>
+                <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="4" [(ngModel)]="message.content" name="content" required></textarea>
+              </mat-form-field>
+
+              <button type="submit" [disabled]="!form.valid" class="btn btn-pink float-right">Send</button>
+
+            </form>
+
+          </div>
+
+        </div>
+        <!-- Grid row -->
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -4,7 +4,9 @@ import pl.poul12.matchzone.model.Appearance;
 
 public interface AppearanceService {
 
-    Appearance getAppearance(String username);
+    Appearance saveAppearance(Appearance appearance);
 
-    Appearance updateAppearance(String username, Appearance appearance);
+    Appearance getAppearance(Long userId);
+
+    Appearance updateAppearance(Long userId, Appearance appearance);
 }

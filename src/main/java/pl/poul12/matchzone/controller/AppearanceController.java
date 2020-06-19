@@ -18,18 +18,18 @@ public class AppearanceController {
         this.appearanceService = appearanceService;
     }
 
-    @GetMapping("/appearance/{username}")
-    public ResponseEntity<Appearance> getAppearance(@PathVariable(value = "username") String username) {
+    @GetMapping("/appearance/{id}")
+    public ResponseEntity<Appearance> getAppearance(@PathVariable(value = "id") Long id) {
 
-        Appearance appearance = appearanceService.getAppearance(username);
+        Appearance appearance = appearanceService.getAppearance(id);
 
         return ResponseEntity.ok().body(appearance);
     }
 
-    @PutMapping("/appearance/{username}")
-    public ResponseEntity<?> updateAppearance(@PathVariable(value = "username") String username, @Valid @RequestBody Appearance appearance) {
+    @PutMapping("/appearance/{id}")
+    public ResponseEntity<?> updateAppearance(@PathVariable(value = "id") Long id, @Valid @RequestBody Appearance appearance) {
 
-        Appearance appearanceDetails = appearanceService.updateAppearance(username, appearance);
+        Appearance appearanceDetails = appearanceService.updateAppearance(id, appearance);
 
         return ResponseEntity.ok(appearanceDetails);
     }

@@ -1,0 +1,93 @@
+  .card.chat-room .members-panel-1,
+  .card.chat-room .chat-1{
+    position: relative;
+    overflow-y: scroll;
+  }
+
+  .card.chat-room .members-panel-1 {
+    height: 570px;
+  }
+
+  .card.chat-room .chat-1 {
+    height: 175px;
+  }
+
+  .card.chat-room .friend-list li {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .card.chat-room .friend-list li:last-of-type {
+    border-bottom: none;
+  }
+
+  .scrollbar-light-blue::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+  }
+
+  .scrollbar-light-blue::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #82B1FF;
+  }
+
+.active{
+  /*background-color: #ffe6f0;*/
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.chat-body:hover{
+  transform: scale(1.05, 1.05);
+}
+
+.chat-body{
+  transition: 0.6s;
+}
+
+.mb-0{
+  width: 475px;
+}
+
+.edit-input {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.avatar{
+  width: 90px;
+  height: 90px;
+  margin-left: 15px;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.2), 0 10px 30px 0 rgba(0, 0, 0, 0.19);
+}
+
+.custom-spinner{
+  color: #e6407d;
+  width: 5rem;
+  height: 5rem;
+  margin-top: 250px;
+}
+
+.sender-message{
+   background-color: #ccf2ff;
+ }
+
+.recipient-message{
+  background-color: #ffe6f0;
+}
+
+.text-smaller{
+  margin-left: 115px;
+}
+
+.text-small{
+  color: black;
+}
+
+.lighten-3{
+  height: 115px;
+}
+
+.member-card{
+  height: 122px;
+  width: 320px;
+}

@@ -2,7 +2,7 @@ INSERT INTO roles (id, name) VALUES (1, 'ADMIN');
 INSERT INTO roles (id, name) VALUES (2, 'USER');
 
 /*CREATE INDEX index_users ON users(first_name, username);*/
-
+/*
 insert into users (id, email, first_name, password, time_zone_id, username) values (3, 'nmorison2@gnu.org', 'Nero', '3635640e9e8a431ce78524376996e6191942866e', 'Asia/Manila', 'nvern2');
 insert into users (id, email, first_name, password, time_zone_id, username) values (4, 'csaban3@adobe.com', 'Clarinda', '3635640e9e8a431ce78524376996e6191942866e', 'Europe/Minsk', 'cletessier3');
 insert into users (id, email, first_name, password, time_zone_id, username) values (5, 'rchalfont4@theguardian.com', 'Reggy', '3635640e9e8a431ce78524376996e6191942866e', 'Europe/Warsaw', 'rbeekman4');
@@ -1001,11 +1001,11 @@ insert into users (id, email, first_name, password, time_zone_id, username) valu
 insert into users (id, email, first_name, password, time_zone_id, username) values (998, 'gkhanrp@bloglines.com', 'Goddard', 'ca69e0472d0e0cc5284b849c953abd89e74fe8df', 'Asia/Chongqing', 'gmcknishrp');
 insert into users (id, email, first_name, password, time_zone_id, username) values (999, 'apiechnikrq@google.co.uk', 'Alvy', 'ca69e0472d0e0cc5284b849c953abd89e74fe8df', 'America/Sao_Paulo', 'adorerq');
 insert into users (id, email, first_name, password, time_zone_id, username) values (1000, 'gfosbraeyrr@histats.com', 'Greta', 'ca69e0472d0e0cc5284b849c953abd89e74fe8df', 'America/Bogota', 'gjurgensonrr');
-
+*/
 
 /*CREATE INDEX index_personal_details ON personal_details(age, city, gender, rating);*/
 
-
+/*
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (3, 22, 'Salas', 'Peru', '1969-08-07', 'Universidad Nacional Agraria La Molina', 1, 1, 'Computer Systems Analyst I', null, 1.3, 3, 3);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (4, 32, 'Haljala', 'Estonia', '1984-08-14', 'Estonian University of Life Sciences', 2, 0, 'Executive Secretary', null, 1.6, 1, 4);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (5, 20, 'Santo André', 'Brazil', '1946-01-13', 'Universidade Vale do Rio Doce', 1, 4, 'Editor', null, 4.4, 4, 5);
@@ -2004,9 +2004,9 @@ insert into personal_details (id, age, city, country, date_of_birth, education, 
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (998, 31, 'Horodnya', 'Ukraine', '1977-08-12', 'National University of Food Technologies', 1, 3, 'Pharmacist', null, 4.9, 2, 998);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (999, 21, 'Bunigeulis', 'Indonesia', '1973-02-23', 'Universitas Lancang Kuning', 2, 2, 'Analog Circuit Design manager', null, 4.9, 3, 999);
 insert into personal_details (id, age, city, country, date_of_birth, education, gender, marital_status, occupation, photo, rating, religion, user_id) values (1000, 19, 'Sanqiao', 'China', '1948-08-10', 'Anhui University', 1, 0, 'Research Nurse', null, 4.1, 4, 1000);
+*/
 
-
-
+/*
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (3, 'Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 2, 6, 179, 'Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.', 1, 3);
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (4, 'Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.', 1, 4, 181, 'Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', 1, 4);
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (5, 'Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.', 5, 1, 168, 'Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh.', 6, 5);
@@ -3005,3 +3005,4 @@ insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique,
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (998, 'Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero.', 4, 9, 193, 'Sed sagittis. Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci. Nullam molestie nibh in lectus.', 0, 998);
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (999, 'Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.', 2, 6, 185, 'Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.', 6, 999);
 insert into appearance (id, about, eyes, hair_colour, height, hobbies, physique, user_id) values (1000, 'Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.', 4, 6, 194, 'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam. Suspendisse potenti.', 3, 1000);
+*/

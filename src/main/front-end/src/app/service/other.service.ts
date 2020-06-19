@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {Vote} from "../model/vote";
 import {Comment} from "../model/comment";
 import {Image} from "../model/image";
+import {Message} from "../model/message";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:4200' })
@@ -18,20 +19,20 @@ export class OtherService {
 
   constructor(private http: HttpClient) { }
 
-  getPersonalDetails(username: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/personal/${username}`);
+  getPersonalDetails(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/personal/${id}`);
   }
 
-  updatePersonalDetails(username: string, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/personal/${username}`, value);
+  updatePersonalDetails(id: number, value: any): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/personal/${id}`, value);
   }
 
-  getAppearance(username: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/appearance/${username}`);
+  getAppearance(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/appearance/${id}`);
   }
 
-  updateAppearance(username: string, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/appearance/${username}`, value);
+  updateAppearance(id: number, value: any): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/appearance/${id}`, value);
   }
 
   getRatingInfo(username: string): Observable<any> {
@@ -42,8 +43,8 @@ export class OtherService {
     return this.http.post<string>(`${this.baseUrl}/votes/${username}`, vote, httpOptions);
   }
 
-  addComment(username: string, comment: Comment): Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/comments/${username}`, comment, httpOptions);
+  addComment(id: number, comment: Comment): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/comments/${id}`, comment, httpOptions);
   }
 
   editComment(id: number, comment: Comment): Observable<Object> {
@@ -54,8 +55,8 @@ export class OtherService {
     return this.http.delete(`${this.baseUrl}/comments/${id}`);
   }
 
-  getComments(username: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/comments/${username}`, httpOptions);
+  getComments(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/comments/${id}`, httpOptions);
   }
 
   getAvatar(username: string){
@@ -74,8 +75,8 @@ export class OtherService {
     return this.http.delete(`${this.baseUrl}/images/${id}`);
   }
 
-  getImages(username: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/images/${username}`, httpOptions);
+  getImages(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/images/${id}`, httpOptions);
   }
 
   changeAvatar(username: string, avatar: FormData): Observable<any> {
@@ -90,4 +91,35 @@ export class OtherService {
     return this.http.post(`${this.baseUrl}/users/reset-pass`, formData, {reportProgress: true, responseType: 'text'});
   }
 
+  addMessage(username: string, message: Message): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/messages/${username}`, message, httpOptions);
+  }
+
+  getMessagesBySenderAndRecipient(recipient: string, sender: string): Observable<Message[]> {
+      return this.http.get<Message[]>(`${this.baseUrl}/messages/${recipient}/${sender}`, httpOptions);
+  }
+
+  getMessagesBySender(sender: string): Observable<Message[]> {
+      return this.http.get<Message[]>(`${this.baseUrl}/messages/${sender}`, httpOptions);
+  }
+
+  getLastMessageBySender(sender: string): Observable<any> {
+         return this.http.get(`${this.baseUrl}/messages/last-message/${sender}`, httpOptions);
+  }
+
+  getMembers(sender: string): Observable<any> {
+         return this.http.get(`${this.baseUrl}/messages/members/${sender}`, httpOptions);
+  }
+
+  isNewMessageFromRecipient(lastMessage: Message): Observable<any> {
+         return this.http.post<any>(`${this.baseUrl}/messages/is-new-message-from-recipient/`, lastMessage, httpOptions);
+  }
+
+  isNewMessageFromSender(lastMessage: Message, username: string): Observable<any> {
+         return this.http.post<any>(`${this.baseUrl}/messages/is-new-message-from-sender/${username}`, lastMessage, httpOptions);
+  }
+
+  editMessage(id: number, message: Message): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/messages/${id}`, message);
+  }
 }

@@ -2,10 +2,12 @@ package pl.poul12.matchzone.service;
 
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.multipart.MultipartFile;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.forms.FilterForm;
 import pl.poul12.matchzone.security.forms.RegisterForm;;
 
+import java.io.IOException;
 import java.util.*;
 
 public interface UserService {
@@ -25,6 +27,8 @@ public interface UserService {
     User getUserByEmail(String email);
 
     User updateUser(String username, User user);
+
+    void changeAvatar(String username, MultipartFile file) throws IOException;
 
     Map<String, Boolean> deleteUser(Long id);
 

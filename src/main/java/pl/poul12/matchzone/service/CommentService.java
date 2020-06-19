@@ -10,9 +10,9 @@ public interface CommentService {
 
     List<Comment> getCommentsByAuthor(String author);
 
-    List<Comment> getAllByUser(String username);
+    List<Comment> getAllByUser(Long userId);
 
-    Comment createComment(String username, Comment comment);
+    Comment createComment(Long userId, Comment comment);
 
     Comment editComment(Long commentId, Comment comment);
 

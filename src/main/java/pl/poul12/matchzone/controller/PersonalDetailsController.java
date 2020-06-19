@@ -18,18 +18,18 @@ public class PersonalDetailsController {
         this.personalDetailsService = personalDetailsService;
     }
 
-    @GetMapping("/personal/{username}")
-    public ResponseEntity<PersonalDetails> getPersonalDetails(@PathVariable(value = "username") String username) {
+    @GetMapping("/personal/{id}")
+    public ResponseEntity<PersonalDetails> getPersonalDetails(@PathVariable(value = "id") Long id) {
 
-        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(username);
+        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(id);
 
         return ResponseEntity.ok().body(personalDetails);
     }
 
-    @PutMapping("/personal/{username}")
-    public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "username") String username, @Valid @RequestBody PersonalDetails personalDetails) {
+    @PutMapping("/personal/{id}")
+    public ResponseEntity<?> updatePersonalDetails(@PathVariable(value = "id") Long id, @Valid @RequestBody PersonalDetails personalDetails) {
 
-        PersonalDetails updatedPersonalDetails =  personalDetailsService.updatePersonalDetails(username, personalDetails);
+        PersonalDetails updatedPersonalDetails =  personalDetailsService.updatePersonalDetails(id, personalDetails);
 
         return ResponseEntity.ok(updatedPersonalDetails);
     }

@@ -8,7 +8,7 @@ public interface ImageService {
 
     Image getImageById(Long id);
 
-    List<Image> getAllByUser(String username);
+    List<Image> getAllByUser(Long userId);
 
     Image createImage(String username, Image image);
 

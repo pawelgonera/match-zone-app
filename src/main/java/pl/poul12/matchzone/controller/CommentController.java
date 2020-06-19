@@ -29,22 +29,21 @@ public class CommentController {
         this.personalDetailsService = personalDetailsService;
     }
 
-    @GetMapping("/comments/{username}")
-    public ResponseEntity<List<Comment>> getAllByUser(@PathVariable(value = "username") String username){
+    @GetMapping("/comments/{id}")
+    public ResponseEntity<List<Comment>> getAllByUser(@PathVariable(value = "id") Long id){
 
-        //return commentService.getAllByUser(username);
-        List<Comment> comments = commentService.getAllByUser(username);
+        List<Comment> comments = commentService.getAllByUser(id);
         return ResponseEntity.ok().body(comments);
 
     }
 
-    @PostMapping("/comments/{username}")
-    public ResponseEntity<?> addComment(@PathVariable(value = "username") String username, @RequestBody Comment comment) {
+    @PostMapping("/comments/{id}")
+    public ResponseEntity<?> addComment(@PathVariable(value = "id") Long id, @RequestBody Comment comment) {
 
-        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(comment.getAuthor());
+        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(id);
         comment.setAvatar(personalDetails.getPhoto());
 
-        commentService.createComment(username, comment);
+        commentService.createComment(id, comment);
 
         return new ResponseEntity<>(new CustomErrorResponse("Comment created successfully"), HttpStatus.OK);
     }

@@ -5,7 +5,7 @@ import pl.poul12.matchzone.model.PersonalDetails;
 public interface PersonalDetailsService {
     PersonalDetails savePersonalDetails(PersonalDetails personalDetails);
 
-    PersonalDetails getPersonalDetails(String username);
+    PersonalDetails getPersonalDetails(Long userId);
 
-    PersonalDetails updatePersonalDetails(String username, PersonalDetails personalDetails);
+    PersonalDetails updatePersonalDetails(Long userId, PersonalDetails personalDetails);
 }

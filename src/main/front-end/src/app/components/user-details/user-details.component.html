@@ -77,6 +77,9 @@
             <pre class="text-right">Rate: <b> {{vote.value}} </b></pre>
           </div>
 
+          <button *ngIf="!allowAccess" class="btn btn-primary" (click)="privateChat(user.username)">Chat</button>
+          <br><br>
+
         </div><!-- end of col-lg-3 -->
 
         <div class="mr-4">

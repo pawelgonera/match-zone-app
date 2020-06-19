@@ -22,7 +22,9 @@ public class Message {
     private String sender;
     private String recipient;
     private LocalDateTime postDate;
+    @Column(length = 1000)
     private String content;
+    private boolean unread;
     @Type(type = "org.hibernate.type.ImageType")
     @Lob
     private byte[] avatar;
@@ -40,6 +42,7 @@ public class Message {
                 ", recipient='" + recipient + '\'' +
                 ", postDate=" + postDate +
                 ", content='" + content + '\'' +
+                ", unread=" + unread +
                 '}';
     }
 }

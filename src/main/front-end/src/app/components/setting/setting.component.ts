@@ -37,21 +37,21 @@ export class SettingComponent implements OnInit {
   constructor(private userService: UserService, private otherService: OtherService, private tokenService: TokenService,
               private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit() {
+   ngOnInit() {
 
     this.username = this.tokenService.getUsername();
 
     this.loadUser(this.username);
-    this.loadPersonalDetails(this.username);
-    this.loadAppearance(this.username);
-
+    console.log('this.user: ', this.user);
   }
 
-  loadUser(username: string){
+   loadUser(username: string){
     return this.userService.getUser(username)
       .subscribe(data => {
         console.log('user: ', data);
         this.user = data;
+        this.loadPersonalDetails(this.user);
+        this.loadAppearance(this.user);
         this.isReadyToDisplay = true;
       }, error => {
           console.log(error);
@@ -59,8 +59,8 @@ export class SettingComponent implements OnInit {
       });
   }
 
-  loadPersonalDetails(username: string){
-    return this.otherService.getPersonalDetails(username)
+  loadPersonalDetails(user: User){
+    return this.otherService.getPersonalDetails(user.id)
       .subscribe(data => {
           console.log('personalDetails: ', data);
           this.personalDetails = data;
@@ -71,8 +71,8 @@ export class SettingComponent implements OnInit {
         });
   }
 
-  loadAppearance(username: string){
-    return this.otherService.getAppearance(username)
+  loadAppearance(user: User){
+    return this.otherService.getAppearance(user.id)
       .subscribe(data => {
           console.log('appearance: ', data);
           this.appearance = data;
@@ -103,12 +103,12 @@ export class SettingComponent implements OnInit {
     this.personalDetails.age = this.calculateAge(this.personalDetails.dateOfBirth);
     console.log('dateOfBirth: ', this.personalDetails.dateOfBirth);
     console.log('age: ', this.personalDetails.age);
-    console.log('personalDetails: ', this.personalDetails);
+    console.log('personalDetailsUpdate: ', this.personalDetails);
 
-    this.otherService.updatePersonalDetails(this.username, this.personalDetails)
+    this.otherService.updatePersonalDetails(this.user.id, this.personalDetails)
       .subscribe(data => console.log('updatedPersonalDetails: ', data), error => console.log(error));
 
-    this.otherService.updateAppearance(this.username, this.appearance)
+    this.otherService.updateAppearance(this.user.id, this.appearance)
       .subscribe(data => console.log('updatedAppearance: ', data), error => console.log(error));
 
 

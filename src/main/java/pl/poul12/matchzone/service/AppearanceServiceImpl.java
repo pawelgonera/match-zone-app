@@ -3,7 +3,6 @@ package pl.poul12.matchzone.service;
 import org.springframework.stereotype.Service;
 import pl.poul12.matchzone.exception.ResourceNotFoundException;
 import pl.poul12.matchzone.model.Appearance;
-import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.repository.AppearanceRepository;
 
 import java.util.Optional;
@@ -12,26 +11,23 @@ import java.util.Optional;
 public class AppearanceServiceImpl implements AppearanceService{
 
     private AppearanceRepository appearanceRepository;
-    private UserService userService;
 
-    public AppearanceServiceImpl(AppearanceRepository appearanceRepository, UserService userService) {
+    public AppearanceServiceImpl(AppearanceRepository appearanceRepository) {
         this.appearanceRepository = appearanceRepository;
-        this.userService = userService;
     }
 
-    public Appearance getAppearance(String username) {
+    public Appearance saveAppearance(Appearance appearance){
+        return appearanceRepository.save(appearance);
+    }
 
-        Long userId = getUserId(username);
+    public Appearance getAppearance(Long userId) {
 
         Optional<Appearance> appearanceFound = appearanceRepository.findByUserId(userId);
 
-        return appearanceFound.orElseThrow(() -> new ResourceNotFoundException("Appearance not found for this id: " + userId)
-        );
+        return appearanceFound.orElseThrow(() -> new ResourceNotFoundException("Appearance not found for this id: " + userId));
     }
 
-    public Appearance updateAppearance(String username, Appearance appearance) {
-
-        Long userId = getUserId(username);
+    public Appearance updateAppearance(Long userId, Appearance appearance) {
 
         Appearance appearanceFound = appearanceRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Appearance not found for this id: " + userId));
@@ -46,8 +42,4 @@ public class AppearanceServiceImpl implements AppearanceService{
         return appearanceRepository.save(appearanceFound);
     }
 
-    private Long getUserId(String username) {
-        User user = userService.getUserByUsername(username);
-        return user.getId();
-    }
 }

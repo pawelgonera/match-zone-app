@@ -6,6 +6,7 @@ import pl.poul12.matchzone.model.Comment;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.repository.CommentRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,19 +30,18 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> comments = commentRepository.findByAuthor(author);
         if(comments.isEmpty())
         {
-            throw new ResourceNotFoundException("Comments not found for this id: " + author);
+            return Collections.emptyList();
         }else {
             return comments;
         }
     }
 
-    public List<Comment> getAllByUser(String username){
-        User user = userService.getUserByUsername(username);
-        return commentRepository.findAllByUser(user);
+    public List<Comment> getAllByUser(Long userId){
+        return commentRepository.findAllByUserId(userId);
     }
 
-    public Comment createComment(String username, Comment comment){
-        User user = userService.getUserByUsername(username);
+    public Comment createComment(Long userId, Comment comment){
+        User user = userService.getUserById(userId);
         comment.setUser(user);
 
         return commentRepository.save(comment);
@@ -65,4 +65,3 @@ public class CommentServiceImpl implements CommentService {
         return true;
     }
 }
-

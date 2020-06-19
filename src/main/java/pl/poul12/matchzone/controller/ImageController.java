@@ -35,10 +35,10 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @GetMapping("/images/{username}")
-    public ResponseEntity<List<Image>> getAllByUser(@PathVariable(value = "username") String username){
+    @GetMapping("/images/{id}")
+    public ResponseEntity<List<Image>> getAllByUser(@PathVariable(value = "id") Long id){
 
-        List<Image> images = imageService.getAllByUser(username);
+        List<Image> images = imageService.getAllByUser(id);
         return ResponseEntity.ok().body(images);
 
     }

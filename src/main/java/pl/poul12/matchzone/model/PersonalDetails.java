@@ -18,8 +18,8 @@ import java.util.Arrays;
 @Entity
 @Table(name = "personal_details",
         indexes = {
-                @Index(name = "ageindex",  columnList="age", unique = true),
-                @Index(name = "ratingindex",  columnList="rating", unique = true)
+                @Index(name = "ageindex",  columnList="age"),
+                @Index(name = "ratingindex",  columnList="rating")
         }
 )
 public class PersonalDetails {
@@ -42,7 +42,7 @@ public class PersonalDetails {
     private String education;
     private Religion religion;
     @JsonBackReference
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     User user;

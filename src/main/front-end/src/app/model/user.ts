@@ -1,6 +1,7 @@
 import {PersonalDetails} from "./personal-details";
 import {Vote} from "./vote";
 import {Appearance} from "./appearance";
+import {Message} from "./message";
 
 export class User{
     id: number;
@@ -13,5 +14,10 @@ export class User{
     personalDetails: PersonalDetails;
     appearance: Appearance;
     votes: Vote[];
-
+    messages: Message[];
+    lastMessage: string;
+    lastTime: number;
+    lastPostDate: Date;
+    timeFormat: string;
+    notification: number = 0;
 }

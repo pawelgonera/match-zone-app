@@ -33,3 +33,11 @@
   width: 5rem;
   height: 5rem;
 }
+
+.card:hover{
+  transform: scale(1.05, 1.05);
+}
+
+.card {
+  transition: 0.6s;
+}

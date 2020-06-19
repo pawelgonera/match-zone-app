@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.support.PagedListHolder;
-import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import pl.poul12.matchzone.model.Comment;
+import pl.poul12.matchzone.model.Message;
 import pl.poul12.matchzone.model.PersonalDetails;
 import pl.poul12.matchzone.model.User;
 import pl.poul12.matchzone.model.forms.FilterForm;
@@ -28,48 +28,44 @@ import pl.poul12.matchzone.security.forms.ChangeEmailForm;
 import pl.poul12.matchzone.security.forms.ChangePasswordForm;
 import pl.poul12.matchzone.security.forms.LoginForm;
 import pl.poul12.matchzone.security.forms.RegisterForm;
-import pl.poul12.matchzone.service.CommentService;
-import pl.poul12.matchzone.service.PersonalDetailsService;
-import pl.poul12.matchzone.service.UserService;
+import pl.poul12.matchzone.service.*;
 import pl.poul12.matchzone.util.CustomErrorResponse;
 import pl.poul12.matchzone.util.FileValidator;
 import pl.poul12.matchzone.util.MailSender;
-
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
-@CrossOrigin(value = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("api/v1")
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private final static Long MAX_FILE_SIZE = 10_000_000L;
-    private static String IS_IMAGE_TYPE = Pattern.compile("image/.+").pattern();
-
     private FileValidator validator = new FileValidator();
+
+    private PersonalDetailsService personalDetailsService;
+    private CommentService commentService;
+    private MessageService messageService;
 
     private AuthenticationManager authenticationManager;
     private JwtProvider jwtProvider;
     private UserService userService;
-    private PersonalDetailsService personalDetailsService;
-    private CommentService commentService;
     private MailSender mailSender;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     public UserController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserService userService,
-                          MailSender mailSender, PersonalDetailsService personalDetailsService, CommentService commentService) {
+                          MailSender mailSender, PersonalDetailsService personalDetailsService, CommentService commentService, MessageService messageService) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.userService = userService;
         this.mailSender = mailSender;
         this.personalDetailsService = personalDetailsService;
         this.commentService = commentService;
+        this.messageService = messageService;
     }
 
     @GetMapping("/users")
@@ -168,19 +164,31 @@ public class UserController {
     @PostMapping("/users/{username}/change-avatar")
     public ResponseEntity<?> changeAvatar(@PathVariable(value = "username") String username, @RequestParam("file")MultipartFile file) {
 
+        User user = userService.getUserByUsername(username);
         System.out.println("before personaldetails");
-        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(username);
+        PersonalDetails personalDetails = personalDetailsService.getPersonalDetails(user.getId());
         System.out.println("before get comment in controller");
         List<Comment> comments = commentService.getCommentsByAuthor(username);
-        System.out.println("Comment: " + comments);
+        System.out.println("Comments: " + comments);
+        List<Message> messages =  messageService.getMessagesBySender(username);
+        System.out.println("Messages: " + messages);
 
         try {
             try {
                 return validator.validate(file);
             }catch (RuntimeException e){
+
+                //userService.changeAvatar(username, file);
                 personalDetails.setPhoto(file.getBytes());
-                for(Comment comment : comments){
-                    comment.setAvatar(file.getBytes());
+
+                if(!comments.isEmpty()) {
+                    for (Comment comment : comments) {
+                        comment.setAvatar(file.getBytes());
+                    }
+                }
+
+                for(Message message : messages){
+                    message.setAvatar(file.getBytes());
                 }
 
                 personalDetailsService.savePersonalDetails(personalDetails);
